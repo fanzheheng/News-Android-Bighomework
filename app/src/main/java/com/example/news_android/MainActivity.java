@@ -1,5 +1,7 @@
 package com.example.news_android;
 
+import android.view.Window;
+import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.AsyncTask;
@@ -32,7 +34,10 @@ public class MainActivity extends AppCompatActivity
         //JsonGetter jsonGetter = new NewsContentJsonGetter(newsContentURL);
         //JsonGetter jsonGetter = new EntityJsonGetter(entityURL);
         JsonGetter jsonGetter = new ExpertJsonGetter(expertURL);
-        jsonGetter.execute();
+        //jsonGetter.execute();
+
+        //UI init
+
     }
 
 }
