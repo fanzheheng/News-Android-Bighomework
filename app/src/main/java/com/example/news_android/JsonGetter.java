@@ -1,5 +1,6 @@
 package com.example.news_android;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 import org.json.JSONArray;
@@ -13,16 +14,18 @@ import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
 public class JsonGetter extends AsyncTask
 {
     String url;
-
-    public JsonGetter(String url)
+    Context context;
+    public JsonGetter(String url,Context context)
     {
         this.url = url;
+        this.context=context;
     }
 
     @Override
@@ -68,9 +71,9 @@ public class JsonGetter extends AsyncTask
 
 class CountryDataJsonGetter extends JsonGetter
 {
-    public CountryDataJsonGetter(String url)
+    public CountryDataJsonGetter(String url,Context context)
     {
-        super(url);
+        super(url,context);
     }
     static JSONObject countryDataJson=null;
     @Override
@@ -99,9 +102,9 @@ class CountryDataJsonGetter extends JsonGetter
 
 class NewsEventJsonGetter extends JsonGetter
 {
-    public NewsEventJsonGetter(String url)
+    public NewsEventJsonGetter(String url,Context context)
     {
-        super(url);
+        super(url,context);
     }
     static JSONObject newsEventJson=null;
     static JSONArray newsEventJsonArray=null;
@@ -110,7 +113,7 @@ class NewsEventJsonGetter extends JsonGetter
     {
         super.onPostExecute(o);
         newsEventJson= (JSONObject) o;
-
+        NewsRepo newsRepo=new NewsRepo(context);
         try
         {
             newsEventJsonArray=newsEventJson.getJSONArray("datas");
@@ -124,21 +127,42 @@ class NewsEventJsonGetter extends JsonGetter
             {
                 try
                 {
-                    System.out.println(newsEventJsonArray.get(i));
+                    News news=new News();
+                    JSONObject newsObj= (JSONObject) newsEventJsonArray.get(i);
+                    news.set_id(newsObj.getString(News._idKey));
+                    news.setType(newsObj.getString(News.typeKey));
+                    news.setTitle(newsObj.getString(News.titleKey));
+                    news.setLang(newsObj.getString(News.langKey));
+                    news.setCategory(newsObj.getString(News.categoryKey));
+                    news.setTime(newsObj.getString(News.timeKey));
+                    News potentialExisting=newsRepo.getNewsById(news._id);
+                    if(potentialExisting==null)
+                        newsRepo.insert(news);
+                    //System.out.println(newsEventJsonArray.get(i));
                 } catch (JSONException e)
                 {
                     e.printStackTrace();
                 }
             }
+
+
+
+            ArrayList<News> newsList=newsRepo.getNewsList();
+            for(int i=0;i<newsList.size();i++)
+            {
+                System.out.println(newsList.get(i).title);
+            }
+
+
         }
     }
 }
 
 class NewsContentJsonGetter extends JsonGetter
 {
-    public NewsContentJsonGetter(String url)
+    public NewsContentJsonGetter(String url,Context context)
     {
-        super(url);
+        super(url,context);
     }
     static JSONObject newsContentJson=null;
 
@@ -161,9 +185,9 @@ class NewsContentJsonGetter extends JsonGetter
 
 class EntityJsonGetter extends JsonGetter
 {
-    public EntityJsonGetter(String url)
+    public EntityJsonGetter(String url,Context context)
     {
-        super(url);
+        super(url,context);
     }
     static JSONObject entityJson=null;
     static JSONArray entityJsonArray=null;
@@ -199,9 +223,9 @@ class EntityJsonGetter extends JsonGetter
 
 class ExpertJsonGetter extends JsonGetter
 {
-    public ExpertJsonGetter(String url)
+    public ExpertJsonGetter(String url,Context context)
     {
-        super(url);
+        super(url,context);
     }
     static JSONObject expertJson=null;
     static JSONArray expertJsonArray=null;

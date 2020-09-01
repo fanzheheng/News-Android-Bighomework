@@ -1,0 +1,197 @@
+package com.example.news_android;
+
+import java.util.ArrayList;
+
+public class News
+{
+
+    public static final String TABLE="News";
+
+    public static final String _idKey="_id";
+    public static final String typeKey="type";
+    public static final String titleKey="title";
+    public static final String categoryKey="category";
+    public static final String timeKey="time";
+    public static final String langKey="lang";
+    public static final String originTextKey="originText";
+    public static final String geoNameKey="geoName";
+    public static final String latitudeKey="latitude";
+    public static final String longitudeKey="longitude";
+
+    public static final String contentKey="content";
+    public static final String dateKey="date";
+    public static final String sourceKey="source";
+    public static final String entitiesKey="entities";
+    public static final String relatedEventsKey="related_events";
+
+    public  String _id;
+    public  String type;
+    public  String title;
+    public  String category;
+    public  String time;
+    public  String lang;
+
+    public String get_id()
+    {
+        return _id;
+    }
+
+    public void set_id(String _id)
+    {
+        this._id = _id;
+    }
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+
+    public String getTitle()
+    {
+        return title;
+    }
+
+    public void setTitle(String title)
+    {
+        this.title = title;
+    }
+
+    public String getCategory()
+    {
+        return category;
+    }
+
+    public void setCategory(String category)
+    {
+        this.category = category;
+    }
+
+    public String getTime()
+    {
+        return time;
+    }
+
+    public void setTime(String time)
+    {
+        this.time = time;
+    }
+
+    public String getLang()
+    {
+        return lang;
+    }
+
+    public void setLang(String lang)
+    {
+        this.lang = lang;
+    }
+
+    public String getOriginText()
+    {
+        return originText;
+    }
+
+    public void setOriginText(String originText)
+    {
+        this.originText = originText;
+    }
+
+    public String getGeoName()
+    {
+        return geoName;
+    }
+
+    public void setGeoName(String geoName)
+    {
+        this.geoName = geoName;
+    }
+
+    public String getLatitude()
+    {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude)
+    {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude()
+    {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude)
+    {
+        this.longitude = longitude;
+    }
+
+    public String getContent()
+    {
+        return content;
+    }
+
+    public void setContent(String content)
+    {
+        this.content = content;
+    }
+
+    public String getDate()
+    {
+        return date;
+    }
+
+    public void setDate(String date)
+    {
+        this.date = date;
+    }
+
+    public String getSource()
+    {
+        return source;
+    }
+
+    public void setSource(String source)
+    {
+        this.source = source;
+    }
+
+
+
+    public ArrayList<String> getEntities()
+    {
+        return entities;
+    }
+
+    public void setEntities(ArrayList<String> entities)
+    {
+        this.entities = entities;
+    }
+
+    public ArrayList<String> getRelatedEvents()
+    {
+        return relatedEvents;
+    }
+
+    public void setRelatedEvents(ArrayList<String> relatedEvents)
+    {
+        this.relatedEvents = relatedEvents;
+    }
+
+    public  String originText;
+    public  String geoName;
+    public  String latitude;
+    public  String longitude;
+
+    public  String content;
+    public  String date;
+    public  String source;
+    public ArrayList<String> entities=new ArrayList<String>();//label of related entities
+    public ArrayList<String> relatedEvents=new ArrayList<String>();//id of related events
+
+}
