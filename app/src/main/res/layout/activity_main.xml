@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
 
     <fragment android:layout_width="match_parent" android:layout_height="55dp"
-              android:background="@android:color/holo_green_light"
               android:id="@+id/class_bar_fragment"
-              android:name="com.example.news_android.SearchFragment"
+              android:name="com.example.news_android.NewsList.SearchFragment"
     />
-    <TextView android:layout_width="match_parent" android:layout_height="56dp"
-              android:id="@+id/search_bar_fragment"
-    />
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-              android:id="@+id/news_list_fragment"
-    />
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  >
+        <com.google.android.material.tabs.TabLayout
+                android:id="@+id/class_tab_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:tabMode="scrollable"/>
+        <Button android:layout_width="50dp" android:layout_height="wrap_content"
+                android:text="@string/add_signal"/>
+    </LinearLayout>
+
+
+    <androidx.viewpager.widget.ViewPager android:layout_width="match_parent" android:layout_height="0dp"
+                                         android:layout_weight="1"
+                                         android:id="@+id/viewPager"/>
 </LinearLayout>

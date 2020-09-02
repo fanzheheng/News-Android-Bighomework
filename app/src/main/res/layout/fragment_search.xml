@@ -5,7 +5,7 @@
               android:layout_height="match_parent"
               android:background="@android:color/holo_red_light"
               android:orientation="horizontal"
-              tools:context=".SearchFragment">
+              tools:context=".NewsList.SearchFragment">
         <EditText android:layout_width="0dp" android:layout_height="match_parent"
                   android:inputType="text"
                   android:layout_weight="1"

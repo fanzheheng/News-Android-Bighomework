@@ -1,22 +1,25 @@
-package com.example.news_android;
+package com.example.news_android.NewsList;
 
+import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.PagerTabStrip;
+import androidx.viewpager.widget.ViewPager;
+import com.example.news_android.R;
+import com.google.android.material.tabs.TabLayout;
 
-import java.net.URL;
-import java.net.*;
-import java.io.*;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity
 {
+    private List<NewsListFragment> mFragmensts = new ArrayList<>();
+    private ViewPager mViewPager;
+    private TabLayout mTablayout;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -31,8 +34,20 @@ public class MainActivity extends AppCompatActivity
         //JsonGetter jsonGetter = new NewsEventJsonGetter(newsEventURL);
         //JsonGetter jsonGetter = new NewsContentJsonGetter(newsContentURL);
         //JsonGetter jsonGetter = new EntityJsonGetter(entityURL);
-        JsonGetter jsonGetter = new ExpertJsonGetter(expertURL);
-        jsonGetter.execute();
+        //JsonGetter jsonGetter = new ExpertJsonGetter(expertURL);
+        //jsonGetter.execute();
+
+        //viewPager
+        mViewPager = findViewById(R.id.viewPager);
+        mTablayout = findViewById(R.id.class_tab_layout);
+        mTablayout.setupWithViewPager(mViewPager);
+        String[] classNames = new String[]{"event", "paper", "news"};
+        for(String className : classNames) {
+            mFragmensts.add(NewsListFragment.newInstance(className));
+        }
+        mViewPager.setAdapter(new NewsClassFragmentPagerAdapter(getSupportFragmentManager(), mFragmensts));
+
     }
 
 }
+
