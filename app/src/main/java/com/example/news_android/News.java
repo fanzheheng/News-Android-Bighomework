@@ -13,10 +13,7 @@ public class News
     public static final String categoryKey="category";
     public static final String timeKey="time";
     public static final String langKey="lang";
-    public static final String originTextKey="originText";
-    public static final String geoNameKey="geoName";
-    public static final String latitudeKey="latitude";
-    public static final String longitudeKey="longitude";
+
 
     public static final String contentKey="content";
     public static final String dateKey="date";
@@ -91,46 +88,6 @@ public class News
         this.lang = lang;
     }
 
-    public String getOriginText()
-    {
-        return originText;
-    }
-
-    public void setOriginText(String originText)
-    {
-        this.originText = originText;
-    }
-
-    public String getGeoName()
-    {
-        return geoName;
-    }
-
-    public void setGeoName(String geoName)
-    {
-        this.geoName = geoName;
-    }
-
-    public String getLatitude()
-    {
-        return latitude;
-    }
-
-    public void setLatitude(String latitude)
-    {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude()
-    {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude)
-    {
-        this.longitude = longitude;
-    }
-
     public String getContent()
     {
         return content;
@@ -182,11 +139,6 @@ public class News
     {
         this.relatedEvents = relatedEvents;
     }
-
-    public  String originText;
-    public  String geoName;
-    public  String latitude;
-    public  String longitude;
 
     public  String content;
     public  String date;

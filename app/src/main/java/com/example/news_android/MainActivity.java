@@ -24,9 +24,23 @@ public class MainActivity extends AppCompatActivity
     {
         NewsRepo newsRepo=new NewsRepo(this);
         ArrayList<News>newsList=newsRepo.getNewsList();
+        System.out.println("SIZE IS : "+newsList.size());
         for(int i=0;i<newsList.size();i++)
         {
             System.out.println(newsList.get(i).title);
+            System.out.println(newsList.get(i).content);
+            System.out.println(newsList.get(i).date);
+            System.out.println(newsList.get(i).type);
+            for(int j=0;j<newsList.get(i).entities.size();j++)
+            {
+                System.out.println(newsList.get(i).entities.get(j));
+            }
+
+            for(int j=0;j<newsList.get(i).relatedEvents.size();j++)
+            {
+                System.out.println(newsList.get(i).relatedEvents.get(j));
+            }
+
         }
     }
     void clearDB()
@@ -34,21 +48,16 @@ public class MainActivity extends AppCompatActivity
         NewsRepo newsRepo=new NewsRepo(this);
         newsRepo.clearTable();
     }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //clearDB();
         printNewsDB();
-        String countryURL = "https://covid-dashboard.aminer.cn/api/dist/epidemic.json";
-        String newsEventURL="https://covid-dashboard.aminer.cn/api/dist/events.json";
-        String newsContentURL="https://covid-dashboard.aminer.cn/api/event/5f05f3f69fced0a24b2f84ee";//this one is just for test
-        String entityURL="https://innovaapi.aminer.cn/covid/api/v1/pneumonia/entityquery?entity=病毒";//this one is just for test
-        String expertURL="https://innovaapi.aminer.cn/predictor/api/v1/valhalla/highlight/get_ncov_expers_list?v=2";
 
-        JsonGetter jsonGetter = new NewsEventJsonGetter(newsEventURL,this);
+
+        JsonGetter jsonGetter = new NewsEventJsonGetter(Utils.newsEventURL,this);
         //JsonGetter jsonGetter = new NewsContentJsonGetter(newsContentURL);
         //JsonGetter jsonGetter = new EntityJsonGetter(entityURL);
         //JsonGetter jsonGetter = new ExpertJsonGetter(expertURL);

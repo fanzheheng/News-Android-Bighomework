@@ -23,12 +23,8 @@ public class NewsRepo
         values.put(News.contentKey,news.content);
         values.put(News.dateKey,news.date);
         values.put(News.entitiesKey,Utils.convertArrayToString(news.entities));
-        values.put(News.geoNameKey,news.geoName);
         values.put(News._idKey,news._id);
         values.put(News.langKey,news.lang);
-        values.put(News.latitudeKey,news.latitude);
-        values.put(News.longitudeKey,news.longitude);
-        values.put(News.originTextKey,news.originText);
         values.put(News.sourceKey,news.source);
         values.put(News.timeKey,news.time);
         values.put(News.titleKey,news.title);
@@ -60,12 +56,8 @@ public class NewsRepo
         values.put(News.contentKey,news.content);
         values.put(News.dateKey,news.date);
         values.put(News.entitiesKey,Utils.convertArrayToString(news.entities));
-        values.put(News.geoNameKey,news.geoName);
         values.put(News._idKey,news._id);
         values.put(News.langKey,news.lang);
-        values.put(News.latitudeKey,news.latitude);
-        values.put(News.longitudeKey,news.longitude);
-        values.put(News.originTextKey,news.originText);
         values.put(News.sourceKey,news.source);
         values.put(News.timeKey,news.time);
         values.put(News.titleKey,news.title);
@@ -84,11 +76,7 @@ public class NewsRepo
                 News.contentKey+","+
                 News.dateKey+","+
                 News.entitiesKey+","+
-                News.geoNameKey+","+
                 News.langKey+","+
-                News.latitudeKey+","+
-                News.longitudeKey+","+
-                News.originTextKey+","+
                 News.sourceKey+","+
                 News.timeKey+","+
                 News.titleKey+","+
@@ -105,11 +93,7 @@ public class NewsRepo
                 news.setContent(cursor.getString(cursor.getColumnIndex(News.contentKey)));
                 news.setDate(cursor.getString(cursor.getColumnIndex(News.dateKey)));
                 news.setEntities(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(News.entitiesKey))));
-                news.setGeoName(cursor.getString(cursor.getColumnIndex(News.geoNameKey)));
                 news.setLang(cursor.getString(cursor.getColumnIndex(News.langKey)));
-                news.setLatitude(cursor.getString(cursor.getColumnIndex(News.latitudeKey)));
-                news.setLongitude(cursor.getString(cursor.getColumnIndex(News.longitudeKey)));
-                news.setOriginText(cursor.getString(cursor.getColumnIndex(News.longitudeKey)));
                 news.setSource(cursor.getString(cursor.getColumnIndex(News.sourceKey)));
                 news.setTime(cursor.getString(cursor.getColumnIndex(News.timeKey)));
                 news.setTitle(cursor.getString(cursor.getColumnIndex(News.titleKey)));
@@ -132,11 +116,7 @@ public class NewsRepo
                 News.contentKey + "," +
                 News.dateKey + "," +
                 News.entitiesKey + "," +
-                News.geoNameKey + "," +
                 News.langKey + "," +
-                News.latitudeKey + "," +
-                News.longitudeKey + "," +
-                News.originTextKey + "," +
                 News.sourceKey + "," +
                 News.timeKey + "," +
                 News.titleKey + "," +
@@ -156,11 +136,7 @@ public class NewsRepo
                 news.setContent(cursor.getString(cursor.getColumnIndex(News.contentKey)));
                 news.setDate(cursor.getString(cursor.getColumnIndex(News.dateKey)));
                 news.setEntities(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(News.dateKey))));
-                news.setGeoName(cursor.getString(cursor.getColumnIndex(News.geoNameKey)));
                 news.setLang(cursor.getString(cursor.getColumnIndex(News.langKey)));
-                news.setLatitude(cursor.getString(cursor.getColumnIndex(News.latitudeKey)));
-                news.setLongitude(cursor.getString(cursor.getColumnIndex(News.longitudeKey)));
-                news.setOriginText(cursor.getString(cursor.getColumnIndex(News.longitudeKey)));
                 news.setSource(cursor.getString(cursor.getColumnIndex(News.sourceKey)));
                 news.setTime(cursor.getString(cursor.getColumnIndex(News.timeKey)));
                 news.setTitle(cursor.getString(cursor.getColumnIndex(News.titleKey)));

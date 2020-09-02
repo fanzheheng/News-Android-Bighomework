@@ -102,9 +102,26 @@ class CountryDataJsonGetter extends JsonGetter
 
 class NewsEventJsonGetter extends JsonGetter
 {
+    static int page=1;
+    static String type="all";
+    static int size=20;
+
+    public static void updatePage(int page)
+    {
+        NewsEventJsonGetter.page=page;
+    }
+    public static void updateType(String type)
+    {
+        NewsEventJsonGetter.type=type;
+    }
+    public static void updateSize(int size)
+    {
+        NewsEventJsonGetter.size=size;
+    }
+
     public NewsEventJsonGetter(String url,Context context)
     {
-        super(url,context);
+        super(url+"?type="+type+"&page="+page+"&size="+size,context);
     }
     static JSONObject newsEventJson=null;
     static JSONArray newsEventJsonArray=null;
@@ -113,10 +130,13 @@ class NewsEventJsonGetter extends JsonGetter
     {
         super.onPostExecute(o);
         newsEventJson= (JSONObject) o;
+
+        page+=1;//increment the page number for future use;
+
         NewsRepo newsRepo=new NewsRepo(context);
         try
         {
-            newsEventJsonArray=newsEventJson.getJSONArray("datas");
+            newsEventJsonArray=newsEventJson.getJSONArray("data");
         } catch (JSONException e)
         {
             e.printStackTrace();
@@ -135,35 +155,34 @@ class NewsEventJsonGetter extends JsonGetter
                     news.setLang(newsObj.getString(News.langKey));
                     news.setCategory(newsObj.getString(News.categoryKey));
                     news.setTime(newsObj.getString(News.timeKey));
-                    News potentialExisting=newsRepo.getNewsById(news._id);
-                    if(potentialExisting==null)
-                        newsRepo.insert(news);
-                    //System.out.println(newsEventJsonArray.get(i));
+
+                    String newsContentURL="https://covid-dashboard.aminer.cn/api/event/"+news._id;
+                    NewsContentJsonGetter newsContentJsonGetter=new NewsContentJsonGetter(newsContentURL,context,news);
+                    newsContentJsonGetter.execute();//get more details
                 } catch (JSONException e)
                 {
                     e.printStackTrace();
                 }
             }
 
-
-
-            ArrayList<News> newsList=newsRepo.getNewsList();
-            for(int i=0;i<newsList.size();i++)
-            {
-                System.out.println(newsList.get(i).title);
-            }
-
-
         }
+//        if(page<5)
+//        {
+//            JsonGetter jsonGetter=new NewsEventJsonGetter(Utils.newsEventURL,context);
+//            jsonGetter.execute();
+//        }
     }
 }
 
 class NewsContentJsonGetter extends JsonGetter
 {
-    public NewsContentJsonGetter(String url,Context context)
+    public NewsContentJsonGetter(String url,Context context,News news)
     {
         super(url,context);
+        this.news=news;
     }
+
+    News news;
     static JSONObject newsContentJson=null;
 
     @Override
@@ -171,15 +190,32 @@ class NewsContentJsonGetter extends JsonGetter
     {
         super.onPostExecute(o);
         JSONObject topObject= (JSONObject) o;
+        NewsRepo newsRepo=new NewsRepo(context);
+
         try
         {
             newsContentJson=topObject.getJSONObject("data");
+            news.setContent(newsContentJson.getString(News.contentKey));
+            news.setDate(newsContentJson.getString(News.dateKey));
+            JSONArray relatedEventArray=newsContentJson.getJSONArray(News.relatedEventsKey);
+            JSONArray entities=newsContentJson.getJSONArray(News.entitiesKey);
+            for(int i=0;i<relatedEventArray.length();i++)
+            {
+                JSONObject obj= (JSONObject) relatedEventArray.get(i);
+                news.relatedEvents.add(obj.getString("id"));
+            }
+            for(int i=0;i<entities.length();i++)
+            {
+                JSONObject obj= (JSONObject) entities.get(i);
+                news.entities.add(obj.getString("label"));
+            }
         } catch (JSONException e)
         {
             e.printStackTrace();
         }
-        System.out.println(newsContentJson);
-
+        News potentialExisting=newsRepo.getNewsById(news._id);//check if this news is already stored
+        if(potentialExisting==null)
+            newsRepo.insert(news);
     }
 }
 
