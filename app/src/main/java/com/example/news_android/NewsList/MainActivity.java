@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity
         mViewPager = findViewById(R.id.viewPager);
         mTablayout = findViewById(R.id.class_tab_layout);
         mTablayout.setupWithViewPager(mViewPager);
-        String[] classNames = new String[]{"event", "paper", "news"};
+        String[] classNames = new String[]{"event", "paper", "news", "class1", "football", "computer", "tsinghua"};
         for(String className : classNames) {
             mFragmensts.add(NewsListFragment.newInstance(className));
         }
