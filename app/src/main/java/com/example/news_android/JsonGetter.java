@@ -198,11 +198,7 @@ class NewsEventJsonGetter extends JsonGetter
             }
 
         }
-//        if(page<5)
-//        {
-//            JsonGetter jsonGetter=new NewsEventJsonGetter(Utils.newsEventURL,context);
-//            jsonGetter.execute();
-//        }
+
     }
 }
 
