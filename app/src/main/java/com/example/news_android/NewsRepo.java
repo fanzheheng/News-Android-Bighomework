@@ -45,7 +45,7 @@ public class NewsRepo
     public void delete(String _id)
     {
         SQLiteDatabase db=dbHelper.getWritableDatabase();
-        db.delete(News.TABLE,News._idKey+"=?",new String[]{"\'"+_id+"\'"});
+        db.delete(News.TABLE,News._idKey+"=?",new String[]{_id});
         db.close();
     }
     public void update(News news)

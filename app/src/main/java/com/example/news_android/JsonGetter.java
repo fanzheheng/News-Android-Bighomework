@@ -1,16 +1,20 @@
 package com.example.news_android;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Environment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UTFDataFormatException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -233,6 +237,32 @@ class EntityJsonGetter extends JsonGetter
         super.onPostExecute(o);
         entityJson= (JSONObject) o;
 
+
+        File sdcard = Environment.getExternalStorageDirectory() ;
+
+        final File folder = new File(sdcard.getAbsoluteFile(), Utils.imgDirectory);//the dot makes this directory hidden to the user
+        folder.mkdir();
+        final ImageDownloader imgDownloader=new ImageDownloader(new ImageDownloader.OnImageLoaderListener()
+        {
+            @Override
+            public void onError(ImageDownloader.ImageError error)
+            {
+
+            }
+
+            @Override
+            public void onProgressChange(int percent)
+            {
+
+            }
+
+            @Override
+            public void onComplete(Bitmap result,String imgUrl)
+            {
+                File file = new File(folder.getAbsoluteFile(), imgUrl + ".jpg") ;
+                ImageDownloader.writeToDisk(file,result,null,Bitmap.CompressFormat.JPEG,false);
+            }
+        });
         try
         {
             entityJsonArray= entityJson.getJSONArray("data");
@@ -246,7 +276,48 @@ class EntityJsonGetter extends JsonGetter
             {
                 try
                 {
-                    System.out.println(entityJsonArray.get(i));
+                    JSONObject obj= (JSONObject) entityJsonArray.get(i);
+                    Entity entity=new Entity();
+                    entity.setBaidu(obj.getString(Entity.baiduKey));
+                    entity.setUrl(obj.getString(Entity.urlKey));
+                    JSONObject abstractInfo=obj.getJSONObject(Entity.abstractInfoKey);
+                    entity.setBaidu(abstractInfo.getString(Entity.baiduKey));
+                    entity.setEnwiki(abstractInfo.getString(Entity.enwikiKey));
+                    entity.setZhwiki(abstractInfo.getString(Entity.zhwikiKey));
+                    JSONObject COVID=abstractInfo.getJSONObject(Entity.COVIDKey);
+                    JSONObject properties=abstractInfo.getJSONObject(Entity.propertiesKey);
+                    Iterator<String>propKeys=properties.keys();
+                    while(propKeys.hasNext())
+                    {
+                        String keyName=propKeys.next();
+                        String value=properties.getString(keyName);
+                        entity.properties.put(keyName,value);
+                    }
+                    JSONArray relations=COVID.getJSONArray(Entity.relationsKey);
+                    for(int j=0;j<relations.length();j++)
+                    {
+                        JSONObject rel= (JSONObject) relations.get(j);
+                        boolean forward=rel.getBoolean(Entity.forwardKey);
+                        String relation=rel.getString("relation");
+                        String url=rel.getString("url");
+                        String label=rel.getString("label");
+                        String res=relation+ Utils.strSeparator+url+Utils.strSeparator+label;
+                        if(forward)
+                        {
+                            entity.parents.add(res);
+                        }
+                        else
+                        {
+                            entity.children.add(res);
+                        }
+                    }
+
+                    String imgUrl=obj.getString(Entity.imgKey);
+                    entity.setImg(imgUrl);
+                    File potentialExisting = new File(folder.getAbsoluteFile(), imgUrl + ".jpg") ;
+                    if(imgUrl!=null&&!potentialExisting.exists())
+                        imgDownloader.download(imgUrl,true);
+//                    System.out.println(entityJsonArray.get(i));
                 } catch (JSONException e)
                 {
                     e.printStackTrace();
