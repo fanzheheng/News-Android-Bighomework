@@ -41,7 +41,7 @@ public class NewsDBHelper extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase)
     {
-        String CREATE_TABLE_STUDENT="CREATE TABLE "+ News.TABLE+"("
+        String CREATE_TABLE="CREATE TABLE "+ News.TABLE+"("
                          +News._idKey+" TEXT PRIMARY KEY,"
                          +News.typeKey+" TEXT,"
                          +News.titleKey+" TEXT,"
@@ -53,7 +53,7 @@ public class NewsDBHelper extends SQLiteOpenHelper
                          +News.sourceKey+" TEXT,"
                          +News.entitiesKey+" TEXT,"
                          +News.relatedEventsKey+" TEXT)";
-        sqLiteDatabase.execSQL(CREATE_TABLE_STUDENT);
+        sqLiteDatabase.execSQL(CREATE_TABLE);
     }
 
     @Override

@@ -21,14 +21,14 @@ public class EntityRepo
         values.put(Entity.baiduKey,entity.baidu);
         values.put(Entity.childrenKey,Utils.convertArrayToString(entity.children));
         values.put(Entity.enwikiKey,entity.enwiki);
-        values.put(Entity.imgKey,entity.img);
+        values.put(Entity.imgURLKey,entity.imgURL);
         values.put(Entity.labelKey,entity.label);
         values.put(Entity.urlKey,entity.url);
         values.put(Entity.parentsKey,Utils.convertArrayToString(entity.parents));
         values.put(Entity.propertiesKey,Utils.convertHashMapToString(entity.properties));
         values.put(Entity.zhwikiKey,entity.zhwiki);
-
-        db.insert(Entity.TABLE,null,values);
+        if(getEntityByLabel(entity.label)==null)
+            db.insert(Entity.TABLE,null,values);
         db.close();
     }
 
@@ -52,7 +52,7 @@ public class EntityRepo
         values.put(Entity.baiduKey,entity.baidu);
         values.put(Entity.childrenKey,Utils.convertArrayToString(entity.children));
         values.put(Entity.enwikiKey,entity.enwiki);
-        values.put(Entity.imgKey,entity.img);
+        values.put(Entity.imgURLKey,entity.imgURL);
         values.put(Entity.labelKey,entity.label);
         values.put(Entity.urlKey,entity.url);
         values.put(Entity.parentsKey,Utils.convertArrayToString(entity.parents));
@@ -69,7 +69,7 @@ public class EntityRepo
         String selectQuery="SELECT "+
                 Entity.baiduKey+","+
                 Entity.childrenKey+","+
-                Entity.imgKey+","+
+                Entity.imgURLKey+","+
                 Entity.labelKey+","+
                 Entity.parentsKey+","+
                 Entity.enwikiKey+","+
@@ -85,7 +85,7 @@ public class EntityRepo
                 entity.setBaidu(cursor.getString(cursor.getColumnIndex(Entity.baiduKey)));
                 entity.setChildren(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(Entity.childrenKey))));
                 entity.setEnwiki(cursor.getString(cursor.getColumnIndex(Entity.enwikiKey)));
-                entity.setImg(cursor.getString(cursor.getColumnIndex(Entity.imgKey)));
+                entity.setImgURL(cursor.getString(cursor.getColumnIndex(Entity.imgURLKey)));
                 entity.setLabel(cursor.getString(cursor.getColumnIndex(Entity.labelKey)));
                 entity.setParents(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(Entity.parentsKey))));
                 entity.setProperties(Utils.convertStringToHashMap(cursor.getString(cursor.getColumnIndex(Entity.propertiesKey))));
@@ -105,7 +105,7 @@ public class EntityRepo
         String selectQuery="SELECT "+
                 Entity.baiduKey+","+
                 Entity.childrenKey+","+
-                Entity.imgKey+","+
+                Entity.imgURLKey+","+
                 Entity.labelKey+","+
                 Entity.parentsKey+","+
                 Entity.enwikiKey+","+
@@ -124,7 +124,7 @@ public class EntityRepo
                 entity.setBaidu(cursor.getString(cursor.getColumnIndex(Entity.baiduKey)));
                 entity.setChildren(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(Entity.childrenKey))));
                 entity.setEnwiki(cursor.getString(cursor.getColumnIndex(Entity.enwikiKey)));
-                entity.setImg(cursor.getString(cursor.getColumnIndex(Entity.imgKey)));
+                entity.setImgURL(cursor.getString(cursor.getColumnIndex(Entity.imgURLKey)));
                 entity.setLabel(cursor.getString(cursor.getColumnIndex(Entity.labelKey)));
                 entity.setParents(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(Entity.parentsKey))));
                 entity.setProperties(Utils.convertStringToHashMap(cursor.getString(cursor.getColumnIndex(Entity.propertiesKey))));

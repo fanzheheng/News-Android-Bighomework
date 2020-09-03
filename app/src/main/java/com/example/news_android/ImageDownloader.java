@@ -23,13 +23,15 @@ import java.util.Set;
  * @author Vadim Zuev
  * @version 1.1
  */
-public class ImageDownloader {
+public class ImageDownloader
+{
 
     private OnImageLoaderListener mImageLoaderListener;
     private Set<String> mUrlsInProgress = new HashSet<>();
     private final String TAG = this.getClass().getSimpleName();
 
-    public ImageDownloader(@NonNull OnImageLoaderListener listener) {
+    public ImageDownloader(@NonNull OnImageLoaderListener listener)
+    {
         this.mImageLoaderListener = listener;
     }
 
@@ -37,7 +39,8 @@ public class ImageDownloader {
      * Interface definition for callbacks to be invoked
      * when the image download status changes.
      */
-    public interface OnImageLoaderListener {
+    public interface OnImageLoaderListener
+    {
         /**
          * Invoked if an error has occurred and thus
          * the download did not complete
@@ -58,7 +61,7 @@ public class ImageDownloader {
          *
          * @param result the downloaded image
          */
-        void onComplete(Bitmap result,String imgUrl);
+        void onComplete(Bitmap result, String imgUrl);
     }
 
     /**
@@ -70,46 +73,56 @@ public class ImageDownloader {
      *                        callback will be triggered to notify the caller of the download progress
      */
     @SuppressLint("StaticFieldLeak")
-    public void download(@NonNull final String imageUrl, final boolean displayProgress) {
-        if (mUrlsInProgress.contains(imageUrl)) {
+    public void download(@NonNull final String imageUrl, final boolean displayProgress)
+    {
+        if (mUrlsInProgress.contains(imageUrl))
+        {
             Log.w(TAG, "a download for this url is already running, " +
                     "no further download will be started");
             return;
         }
 
-        new AsyncTask<Void, Integer, Bitmap>() {
+        new AsyncTask<Void, Integer, Bitmap>()
+        {
 
             private ImageError error;
 
             @Override
-            protected void onPreExecute() {
+            protected void onPreExecute()
+            {
                 mUrlsInProgress.add(imageUrl);
                 Log.d(TAG, "starting download");
             }
 
             @Override
-            protected void onCancelled() {
+            protected void onCancelled()
+            {
                 mUrlsInProgress.remove(imageUrl);
                 mImageLoaderListener.onError(error);
             }
 
             @Override
-            protected void onProgressUpdate(Integer... values) {
+            protected void onProgressUpdate(Integer... values)
+            {
                 mImageLoaderListener.onProgressChange(values[0]);
             }
 
             @Override
-            protected Bitmap doInBackground(Void... params) {
+            protected Bitmap doInBackground(Void... params)
+            {
                 Bitmap bitmap = null;
                 HttpURLConnection connection = null;
                 InputStream is = null;
                 ByteArrayOutputStream out = null;
-                try {
+                try
+                {
                     connection = (HttpURLConnection) new URL(imageUrl).openConnection();
-                    if (displayProgress) {
+                    if (displayProgress)
+                    {
                         connection.connect();
                         final int length = connection.getContentLength();
-                        if (length <= 0) {
+                        if (length <= 0)
+                        {
                             error = new ImageError("Invalid content length. The URL is probably not pointing to a file")
                                     .setErrorCode(ImageError.ERROR_INVALID_FILE);
                             this.cancel(true);
@@ -119,32 +132,40 @@ public class ImageDownloader {
                         byte bytes[] = new byte[8192];
                         int count;
                         long read = 0;
-                        while ((count = is.read(bytes)) != -1) {
+                        while ((count = is.read(bytes)) != -1)
+                        {
                             read += count;
                             out.write(bytes, 0, count);
                             publishProgress((int) ((read * 100) / length));
                         }
                         bitmap = BitmapFactory.decodeByteArray(out.toByteArray(), 0, out.size());
-                    } else {
+                    } else
+                    {
                         is = connection.getInputStream();
                         bitmap = BitmapFactory.decodeStream(is);
                     }
-                } catch (Throwable e) {
-                    if (!this.isCancelled()) {
+                } catch (Throwable e)
+                {
+                    if (!this.isCancelled())
+                    {
                         error = new ImageError(e).setErrorCode(ImageError.ERROR_GENERAL_EXCEPTION);
                         this.cancel(true);
                     }
-                } finally {
-                    try {
+                } finally
+                {
+                    try
+                    {
                         if (connection != null)
                             connection.disconnect();
-                        if (out != null) {
+                        if (out != null)
+                        {
                             out.flush();
                             out.close();
                         }
                         if (is != null)
                             is.close();
-                    } catch (Exception e) {
+                    } catch (Exception e)
+                    {
                         e.printStackTrace();
                     }
                 }
@@ -152,15 +173,18 @@ public class ImageDownloader {
             }
 
             @Override
-            protected void onPostExecute(Bitmap result) {
-                if (result == null) {
+            protected void onPostExecute(Bitmap result)
+            {
+                if (result == null)
+                {
                     Log.e(TAG, "factory returned a null result");
                     mImageLoaderListener.onError(new ImageError("downloaded file could not be decoded as bitmap")
                             .setErrorCode(ImageError.ERROR_DECODE_FAILED));
-                } else {
+                } else
+                {
                     Log.d(TAG, "download complete, " + result.getByteCount() +
                             " bytes transferred");
-                    mImageLoaderListener.onComplete(result,imageUrl);
+                    mImageLoaderListener.onComplete(result, imageUrl);
                 }
                 mUrlsInProgress.remove(imageUrl);
                 System.gc();
@@ -172,7 +196,8 @@ public class ImageDownloader {
      * Interface definition for callbacks to be invoked when
      * the image save procedure status changes
      */
-    public interface OnBitmapSaveListener {
+    public interface OnBitmapSaveListener
+    {
         /**
          * Invoked to notify that the image has been
          * successfully saved
@@ -206,20 +231,25 @@ public class ImageDownloader {
      */
     public static void writeToDisk(@NonNull final File imageFile, @NonNull final Bitmap image,
                                    @NonNull final OnBitmapSaveListener listener,
-                                   @NonNull final Bitmap.CompressFormat format, boolean shouldOverwrite) {
+                                   @NonNull final Bitmap.CompressFormat format, boolean shouldOverwrite)
+    {
 
-        if (imageFile.isDirectory()) {
+        if (imageFile.isDirectory())
+        {
             listener.onBitmapSaveError(new ImageError("the specified path points to a directory, " +
                     "should be a file").setErrorCode(ImageError.ERROR_IS_DIRECTORY));
             return;
         }
 
-        if (imageFile.exists()) {
-            if (!shouldOverwrite) {
+        if (imageFile.exists())
+        {
+            if (!shouldOverwrite)
+            {
                 listener.onBitmapSaveError(new ImageError("file already exists, " +
                         "write operation cancelled").setErrorCode(ImageError.ERROR_FILE_EXISTS));
                 return;
-            } else if (!imageFile.delete()) {
+            } else if (!imageFile.delete())
+            {
                 listener.onBitmapSaveError(new ImageError("could not delete existing file, " +
                         "most likely the write permission was denied")
                         .setErrorCode(ImageError.ERROR_PERMISSION_DENIED));
@@ -228,42 +258,54 @@ public class ImageDownloader {
         }
 
         File parent = imageFile.getParentFile();
-        if (!parent.exists() && !parent.mkdirs()) {
+        if (!parent.exists() && !parent.mkdirs())
+        {
             listener.onBitmapSaveError(new ImageError("could not create parent directory")
                     .setErrorCode(ImageError.ERROR_PERMISSION_DENIED));
             return;
         }
 
-        try {
-            if (!imageFile.createNewFile()) {
+        try
+        {
+            if (!imageFile.createNewFile())
+            {
                 listener.onBitmapSaveError(new ImageError("could not create file")
                         .setErrorCode(ImageError.ERROR_PERMISSION_DENIED));
                 return;
             }
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             listener.onBitmapSaveError(new ImageError(e).setErrorCode(ImageError.ERROR_GENERAL_EXCEPTION));
             return;
         }
 
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTask<Void, Void, Void>()
+        {
 
             private ImageError error;
 
             @Override
-            protected Void doInBackground(Void... params) {
+            protected Void doInBackground(Void... params)
+            {
                 FileOutputStream fos = null;
-                try {
+                try
+                {
                     fos = new FileOutputStream(imageFile);
                     image.compress(format, 100, fos);
-                } catch (IOException e) {
+                } catch (IOException e)
+                {
                     error = new ImageError(e).setErrorCode(ImageError.ERROR_GENERAL_EXCEPTION);
                     this.cancel(true);
-                } finally {
-                    if (fos != null) {
-                        try {
+                } finally
+                {
+                    if (fos != null)
+                    {
+                        try
+                        {
                             fos.flush();
                             fos.close();
-                        } catch (IOException e) {
+                        } catch (IOException e)
+                        {
                             e.printStackTrace();
                         }
                     }
@@ -272,12 +314,14 @@ public class ImageDownloader {
             }
 
             @Override
-            protected void onCancelled() {
+            protected void onCancelled()
+            {
                 listener.onBitmapSaveError(error);
             }
 
             @Override
-            protected void onPostExecute(Void result) {
+            protected void onPostExecute(Void result)
+            {
                 listener.onBitmapSaved();
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -291,7 +335,8 @@ public class ImageDownloader {
      * @return the Bitmap read from the file or null if the read fails
      * @since 1.1
      */
-    public static Bitmap readFromDisk(@NonNull File imageFile) {
+    public static Bitmap readFromDisk(@NonNull File imageFile)
+    {
         if (!imageFile.exists() || imageFile.isDirectory()) return null;
         return BitmapFactory.decodeFile(imageFile.getAbsolutePath());
     }
@@ -299,30 +344,38 @@ public class ImageDownloader {
     /**
      * Interface definition for callbacks to be invoked
      * after the image read operation finishes
+     *
      * @since 1.1
      */
-    public interface OnImageReadListener {
+    public interface OnImageReadListener
+    {
         void onImageRead(Bitmap bitmap);
+
         void onReadFailed();
     }
 
     /**
      * Reads the given file as Bitmap in the background. The appropriate callback
      * of the provided <i>OnImageReadListener</i> will be triggered upon completion.
+     *
      * @param imageFile the file to read
-     * @param listener the listener to notify the caller when the
-     *                 image read operation finishes
+     * @param listener  the listener to notify the caller when the
+     *                  image read operation finishes
      * @since 1.1
      */
-    public static void readFromDiskAsync(@NonNull File imageFile, @NonNull final OnImageReadListener listener) {
-        new AsyncTask<String, Void, Bitmap>() {
+    public static void readFromDiskAsync(@NonNull File imageFile, @NonNull final OnImageReadListener listener)
+    {
+        new AsyncTask<String, Void, Bitmap>()
+        {
             @Override
-            protected Bitmap doInBackground(String... params) {
+            protected Bitmap doInBackground(String... params)
+            {
                 return BitmapFactory.decodeFile(params[0]);
             }
 
             @Override
-            protected void onPostExecute(Bitmap bitmap) {
+            protected void onPostExecute(Bitmap bitmap)
+            {
                 if (bitmap != null)
                     listener.onImageRead(bitmap);
                 else
@@ -338,7 +391,8 @@ public class ImageDownloader {
      * this class extends {@code Throwable}, you may get the
      * stack trace from an {@code ImageError} object
      */
-    public static final class ImageError extends Throwable {
+    public static final class ImageError extends Throwable
+    {
 
         private int errorCode;
         /**
@@ -368,11 +422,13 @@ public class ImageDownloader {
         public static final int ERROR_IS_DIRECTORY = 4;
 
 
-        public ImageError(@NonNull String message) {
+        public ImageError(@NonNull String message)
+        {
             super(message);
         }
 
-        public ImageError(@NonNull Throwable error) {
+        public ImageError(@NonNull Throwable error)
+        {
             super(error.getMessage(), error.getCause());
             this.setStackTrace(error.getStackTrace());
         }
@@ -381,7 +437,8 @@ public class ImageDownloader {
          * @param code the code for the occurred error
          * @return the same ImageError object
          */
-        public ImageError setErrorCode(int code) {
+        public ImageError setErrorCode(int code)
+        {
             this.errorCode = code;
             return this;
         }
@@ -390,7 +447,8 @@ public class ImageDownloader {
          * @return the error code that was previously set
          * by {@link #setErrorCode(int)}
          */
-        public int getErrorCode() {
+        public int getErrorCode()
+        {
             return errorCode;
         }
     }

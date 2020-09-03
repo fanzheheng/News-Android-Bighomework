@@ -14,7 +14,7 @@ public class EntityDBHelper extends SQLiteOpenHelper
 {
 
     private static final int DATABASE_VERSION=3;
-    private static final String DATABASE_NAME="news.db";
+    private static final String DATABASE_NAME="entity.db";
 
 
     public EntityDBHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version)
@@ -41,7 +41,7 @@ public class EntityDBHelper extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase)
     {
-        String CREATE_TABLE_STUDENT="CREATE TABLE "+ Entity.TABLE+"("
+        String CREATE_TABLE="CREATE TABLE "+ Entity.TABLE+"("
                          +Entity.labelKey+" TEXT PRIMARY KEY,"
                          +Entity.urlKey+" TEXT,"
                          +Entity.enwikiKey+" TEXT,"
@@ -50,9 +50,9 @@ public class EntityDBHelper extends SQLiteOpenHelper
                          +Entity.propertiesKey+" TEXT,"
                          +Entity.parentsKey+" TEXT,"
                          +Entity.childrenKey+" TEXT,"
-                         +Entity.imgKey+" TEXT)";
+                         +Entity.imgURLKey+" TEXT)";
 
-        sqLiteDatabase.execSQL(CREATE_TABLE_STUDENT);
+        sqLiteDatabase.execSQL(CREATE_TABLE);
     }
 
     @Override
