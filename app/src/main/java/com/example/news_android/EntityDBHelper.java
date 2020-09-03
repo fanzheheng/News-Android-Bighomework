@@ -13,8 +13,8 @@ import androidx.annotation.RequiresApi;
 public class EntityDBHelper extends SQLiteOpenHelper
 {
 
-    private static final int DATABASE_VERSION=3;
-    private static final String DATABASE_NAME="entity.db";
+    private static final int DATABASE_VERSION = 3;
+    private static final String DATABASE_NAME = "entity.db";
 
 
     public EntityDBHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version)
@@ -35,22 +35,22 @@ public class EntityDBHelper extends SQLiteOpenHelper
 
     public EntityDBHelper(Context context)
     {
-        super(context,DATABASE_NAME,null,DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase)
     {
-        String CREATE_TABLE="CREATE TABLE "+ Entity.TABLE+"("
-                         +Entity.labelKey+" TEXT PRIMARY KEY,"
-                         +Entity.urlKey+" TEXT,"
-                         +Entity.enwikiKey+" TEXT,"
-                         +Entity.baiduKey+" TEXT,"
-                         +Entity.zhwikiKey+" TEXT,"
-                         +Entity.propertiesKey+" TEXT,"
-                         +Entity.parentsKey+" TEXT,"
-                         +Entity.childrenKey+" TEXT,"
-                         +Entity.imgURLKey+" TEXT)";
+        String CREATE_TABLE = "CREATE TABLE " + Entity.TABLE + "("
+                + Entity.labelKey + " TEXT PRIMARY KEY,"
+                + Entity.urlKey + " TEXT,"
+                + Entity.enwikiKey + " TEXT,"
+                + Entity.baiduKey + " TEXT,"
+                + Entity.zhwikiKey + " TEXT,"
+                + Entity.propertiesKey + " TEXT,"
+                + Entity.parentsKey + " TEXT,"
+                + Entity.childrenKey + " TEXT,"
+                + Entity.imgURLKey + " TEXT)";
 
         sqLiteDatabase.execSQL(CREATE_TABLE);
     }
@@ -58,7 +58,7 @@ public class EntityDBHelper extends SQLiteOpenHelper
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1)
     {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ Entity.TABLE);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Entity.TABLE);
         onCreate(sqLiteDatabase);
     }
 }

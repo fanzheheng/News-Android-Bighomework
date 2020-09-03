@@ -74,31 +74,52 @@ public class JsonGetter extends AsyncTask
 
 }
 
-class CountryDataJsonGetter extends JsonGetter
+class EpidemicDataJsonGetter extends JsonGetter
 {
-    public CountryDataJsonGetter(String url, Context context)
+    public EpidemicDataJsonGetter(String url, Context context)
     {
         super(url, context);
     }
 
-    static JSONObject countryDataJson = null;
+    static JSONObject epidemicDataJson = null;
 
     @Override
     protected void onPostExecute(Object o)
     {
         super.onPostExecute(o);
-
-        countryDataJson = (JSONObject) o;
+        EpidemicRepo repo=new EpidemicRepo(context);
+        epidemicDataJson = (JSONObject) o;
         if (o == null) return;
-        Iterator<String> keys = countryDataJson.keys();
+        Iterator<String> keys = epidemicDataJson.keys();
         while (keys.hasNext())
         {
             String keyName = keys.next();
-            System.out.println(keyName);
+            String[]location=keyName.split("\\|");// COUNTRY|PROVINCE|CITY
             try
             {
-                String content = countryDataJson.getString(keyName);
-                System.out.println(content);
+                EpidemicData epidemicData=new EpidemicData();
+                JSONObject obj=epidemicDataJson.getJSONObject(keyName);
+                epidemicData.setBeginDate(obj.getString(EpidemicData.jsonBeginDateKey));
+                epidemicData.setDistrict(keyName);
+                epidemicData.setCountry(location[0]);
+                if(location.length>=2)
+                {
+                    epidemicData.setProvince(location[1]);
+                    if(location.length>=3)
+                    {
+                        epidemicData.setCity(location[2]);
+                    }
+                }
+                JSONArray data=obj.getJSONArray(EpidemicData.jsonDataKey);
+                for(int i=0;i<data.length();i++)
+                {
+                    JSONArray numArray= (JSONArray) data.get(i);
+                    epidemicData.confirmed.add(numArray.getInt(0));
+                    epidemicData.cured.add(numArray.getInt(2));
+                    epidemicData.dead.add(numArray.getInt(3));
+                }
+                repo.insert(epidemicData);
+
             } catch (JSONException e)
             {
                 e.printStackTrace();

@@ -2,30 +2,20 @@ package com.example.news_android;
 
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Environment;
 import android.util.Log;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.PagerTabStrip;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.news_android.JsonGetter;
 import com.example.news_android.NewsList.NewsClassFragmentPagerAdapter;
 import com.example.news_android.NewsList.NewsListFragment;
-import com.example.news_android.R;
 import com.google.android.material.tabs.TabLayout;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -59,6 +49,17 @@ public class MainActivity extends AppCompatActivity
         System.out.println("_________");
     }
 
+    public void printEpidemicDB()
+    {
+        EpidemicRepo repo=new EpidemicRepo(this);
+        ArrayList<EpidemicData> list = repo.getEpidemicList();
+        for (int i = 0; i < list.size(); i++)
+        {
+            System.out.println(list.get(i).district);
+        }
+        System.out.println("_________");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -73,13 +74,14 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         printImageDB();
-
         printEntityDB();
+        printEpidemicDB();
 
-        //JsonGetter jsonGetter = new NewsEventJsonGetter(newsEventURL);
-        //JsonGetter jsonGetter = new NewsContentJsonGetter(newsContentURL);
-        JsonGetter jsonGetter = new EntityJsonGetter(Utils.entityURL, this);
-        //JsonGetter jsonGetter = new ExpertJsonGetter(expertURL);
+        //JsonGetter jsonGetter = new NewsEventJsonGetter(Utils.newsEventURL,this);
+        //JsonGetter jsonGetter = new NewsContentJsonGetter(Utils.newsContentURL,this);
+        //JsonGetter jsonGetter = new EntityJsonGetter(Utils.entityURL, this);
+        //JsonGetter jsonGetter = new ExpertJsonGetter(Utils.expertURL,this);
+        JsonGetter jsonGetter=new EpidemicDataJsonGetter(Utils.countryURL,this);
         jsonGetter.execute();
 
         //viewPager

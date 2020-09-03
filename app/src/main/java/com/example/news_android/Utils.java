@@ -2,6 +2,7 @@ package com.example.news_android;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -119,6 +120,35 @@ public class Utils
         return str;
     }
 
+    public static String convertIntegerArrayToString(ArrayList<Integer> array)
+    {
+        String str = "";
+        if (array == null) return str;
+        for (int i = 0; i < array.size(); i++)
+        {
+            str = str + array.get(i).toString();
+            // Do not append comma at the end of last element
+            if (i < array.size() - 1)
+            {
+                str = str + strSeparator;
+            }
+        }
+        return str;
+    }
+
+    public static ArrayList<Integer> convertStringToIntegerArray(String str)
+    {
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        if (str == null) return res;
+        String[] arr = str.split(strSeparator);
+
+        for (int i = 0; i < arr.length; i++)
+        {
+            res.add(Integer.parseInt(arr[i]));
+        }
+        return res;
+    }
+
     public static ArrayList<String> convertStringToArray(String str)
     {
         ArrayList<String> res = new ArrayList<String>();
@@ -138,7 +168,6 @@ public class Utils
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
         return stream.toByteArray();
     }
-
     // convert from byte array to bitmap
     public static Bitmap getImageFromBytes(byte[] image)
     {
