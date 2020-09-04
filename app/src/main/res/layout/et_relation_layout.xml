@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:background="@drawable/gray_rect"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_margin="10dp"
+              android:padding="5dp"
+>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+              android:id="@+id/et_rel"
+              android:text="属于"
+              android:textSize="20sp"
+    />
+    <ImageView android:layout_width="0dp" android:layout_height="match_parent"
+               android:layout_weight="1"
+               android:src="@drawable/ic_launcher_background"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+              android:id="@+id/et_target"
+              android:textSize="20sp"
+              android:background="@drawable/et_rel_target_shape"
+              android:padding="5dp"
+              android:text="药物"/>
+
+</LinearLayout>
