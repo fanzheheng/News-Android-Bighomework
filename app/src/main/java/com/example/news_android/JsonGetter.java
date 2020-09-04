@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,10 +27,11 @@ public class JsonGetter extends AsyncTask
 {
     String url;
     Context context;
-    public JsonGetter(String url,Context context)
+
+    public JsonGetter(String url, Context context)
     {
         this.url = url;
-        this.context=context;
+        this.context = context;
     }
 
     @Override
@@ -41,7 +43,7 @@ public class JsonGetter extends AsyncTask
     @Override
     protected JSONObject doInBackground(Object[] objects)
     {
-        JSONObject jsonObject=null;
+        JSONObject jsonObject = null;
         URL targetURL = null;
         try
         {
@@ -73,95 +75,123 @@ public class JsonGetter extends AsyncTask
 
 }
 
-class CountryDataJsonGetter extends JsonGetter
+class EpidemicDataJsonGetter extends JsonGetter
 {
-    public CountryDataJsonGetter(String url,Context context)
+    public EpidemicDataJsonGetter(String url, Context context)
     {
-        super(url,context);
+        super(url, context);
     }
-    static JSONObject countryDataJson=null;
-    @Override
-    protected void onPostExecute(Object o)
-    {
-        super.onPostExecute(o);
 
-        countryDataJson= (JSONObject) o;
-        if(o==null)return;
-        Iterator<String>keys=countryDataJson.keys();
-        while(keys.hasNext())
+    static JSONObject epidemicDataJson = null;
+    @Override
+    protected JSONObject doInBackground(Object[] objects)
+    {
+        epidemicDataJson=super.doInBackground(objects);
+        EpidemicRepo repo=new EpidemicRepo(context);
+        if (epidemicDataJson == null) return null;
+        Iterator<String> keys = epidemicDataJson.keys();
+        while (keys.hasNext())
         {
-            String keyName=keys.next();
-            System.out.println(keyName);
+            String keyName = keys.next();
+            String[]location=keyName.split("\\|");// COUNTRY|PROVINCE|CITY
             try
             {
-                String content=countryDataJson.getString(keyName);
-                System.out.println(content);
+                EpidemicData epidemicData=new EpidemicData();
+                JSONObject obj=epidemicDataJson.getJSONObject(keyName);
+                epidemicData.setBeginDate(obj.getString(EpidemicData.jsonBeginDateKey));
+                epidemicData.setDistrict(keyName);
+                epidemicData.setCountry(location[0]);
+                if(location.length>=2)
+                {
+                    epidemicData.setProvince(location[1]);
+                    if(location.length>=3)
+                    {
+                        epidemicData.setCity(location[2]);
+                    }
+                }
+                JSONArray data=obj.getJSONArray(EpidemicData.jsonDataKey);
+                for(int i=0;i<data.length();i++)
+                {
+                    JSONArray numArray= (JSONArray) data.get(i);
+                    epidemicData.confirmed.add(numArray.getInt(0));
+                    epidemicData.cured.add(numArray.getInt(2));
+                    epidemicData.dead.add(numArray.getInt(3));
+                }
+                repo.insert(epidemicData);
+
             } catch (JSONException e)
             {
                 e.printStackTrace();
             }
         }
+        return epidemicDataJson;
+    }
+
+    @Override
+    protected void onPostExecute(Object o)
+    {
+        super.onPostExecute(o);
     }
 }
 
 class NewsEventJsonGetter extends JsonGetter
 {
-    static int page=1;
-    static String type="all";
-    static int size=20;
+    static int page = 1;
+    static String type = "all";
+    static int size = 20;
 
     public static void updatePage(int page)
     {
-        NewsEventJsonGetter.page=page;
+        NewsEventJsonGetter.page = page;
     }
+
     public static void updateType(String type)
     {
-        NewsEventJsonGetter.type=type;
+        NewsEventJsonGetter.type = type;
     }
+
     public static void updateSize(int size)
     {
-        NewsEventJsonGetter.size=size;
+        NewsEventJsonGetter.size = size;
     }
 
-    public NewsEventJsonGetter(String url,Context context)
+    public NewsEventJsonGetter(String url, Context context)
     {
-        super(url+"?type="+type+"&page="+page+"&size="+size,context);
+        super(url + "?type=" + type + "&page=" + page + "&size=" + size, context);
     }
-    static JSONObject newsEventJson=null;
-    static JSONArray newsEventJsonArray=null;
+
+    static JSONObject newsEventJson = null;
+    static JSONArray newsEventJsonArray = null;
+
     @Override
-    protected void onPostExecute(Object o)
+    protected JSONObject doInBackground(Object[] objects)
     {
-        super.onPostExecute(o);
-        newsEventJson= (JSONObject) o;
-
-        page+=1;//increment the page number for future use;
-
-        NewsRepo newsRepo=new NewsRepo(context);
+        newsEventJson = super.doInBackground(objects);
+        page += 1;//increment the page number for future use;
+        NewsRepo newsRepo = new NewsRepo(context);
         try
         {
-            newsEventJsonArray=newsEventJson.getJSONArray("data");
+            newsEventJsonArray = newsEventJson.getJSONArray("data");
         } catch (JSONException e)
         {
             e.printStackTrace();
         }
-        if(newsEventJsonArray!=null)
+        if (newsEventJsonArray != null)
         {
-            for(int i=0;i<newsEventJsonArray.length();i++)
+            for (int i = 0; i < newsEventJsonArray.length(); i++)
             {
                 try
                 {
-                    News news=new News();
-                    JSONObject newsObj= (JSONObject) newsEventJsonArray.get(i);
+                    News news = new News();
+                    JSONObject newsObj = (JSONObject) newsEventJsonArray.get(i);
                     news.set_id(newsObj.getString(News._idKey));
                     news.setType(newsObj.getString(News.typeKey));
                     news.setTitle(newsObj.getString(News.titleKey));
                     news.setLang(newsObj.getString(News.langKey));
                     news.setCategory(newsObj.getString(News.categoryKey));
                     news.setTime(newsObj.getString(News.timeKey));
-
-                    String newsContentURL="https://covid-dashboard.aminer.cn/api/event/"+news._id;
-                    NewsContentJsonGetter newsContentJsonGetter=new NewsContentJsonGetter(newsContentURL,context,news);
+                    String newsContentURL = "https://covid-dashboard.aminer.cn/api/event/" + news._id;
+                    NewsContentJsonGetter newsContentJsonGetter = new NewsContentJsonGetter(newsContentURL, context, news);
                     newsContentJsonGetter.execute();//get more details
                 } catch (JSONException e)
                 {
@@ -170,79 +200,84 @@ class NewsEventJsonGetter extends JsonGetter
             }
 
         }
-//        if(page<5)
-//        {
-//            JsonGetter jsonGetter=new NewsEventJsonGetter(Utils.newsEventURL,context);
-//            jsonGetter.execute();
-//        }
+        return newsEventJson;
     }
-}
-
-class NewsContentJsonGetter extends JsonGetter
-{
-    public NewsContentJsonGetter(String url,Context context,News news)
-    {
-        super(url,context);
-        this.news=news;
-    }
-
-    News news;
-    static JSONObject newsContentJson=null;
 
     @Override
     protected void onPostExecute(Object o)
     {
         super.onPostExecute(o);
-        JSONObject topObject= (JSONObject) o;
-        NewsRepo newsRepo=new NewsRepo(context);
+    }
+}
+
+class NewsContentJsonGetter extends JsonGetter
+{
+    public NewsContentJsonGetter(String url, Context context, News news)
+    {
+        super(url, context);
+        this.news = news;
+    }
+
+    News news;
+    static JSONObject newsContentJson = null;
+
+    @Override
+    protected JSONObject doInBackground(Object[] objects)
+    {
+        JSONObject topObject= super.doInBackground(objects);
+        NewsRepo newsRepo = new NewsRepo(context);
 
         try
         {
-            newsContentJson=topObject.getJSONObject("data");
+            newsContentJson = topObject.getJSONObject("data");
             news.setContent(newsContentJson.getString(News.contentKey));
             news.setDate(newsContentJson.getString(News.dateKey));
-            JSONArray relatedEventArray=newsContentJson.getJSONArray(News.relatedEventsKey);
-            JSONArray entities=newsContentJson.getJSONArray(News.entitiesKey);
-            for(int i=0;i<relatedEventArray.length();i++)
+            JSONArray relatedEventArray = newsContentJson.getJSONArray(News.relatedEventsKey);
+            JSONArray entities = newsContentJson.getJSONArray(News.entitiesKey);
+            for (int i = 0; i < relatedEventArray.length(); i++)
             {
-                JSONObject obj= (JSONObject) relatedEventArray.get(i);
+                JSONObject obj = (JSONObject) relatedEventArray.get(i);
                 news.relatedEvents.add(obj.getString("id"));
             }
-            for(int i=0;i<entities.length();i++)
+            for (int i = 0; i < entities.length(); i++)
             {
-                JSONObject obj= (JSONObject) entities.get(i);
+                JSONObject obj = (JSONObject) entities.get(i);
                 news.entities.add(obj.getString("label"));
             }
         } catch (JSONException e)
         {
             e.printStackTrace();
         }
-        News potentialExisting=newsRepo.getNewsById(news._id);//check if this news is already stored
-        if(potentialExisting==null)
+        News potentialExisting = newsRepo.getNewsById(news._id);//check if this news is already stored
+        if (potentialExisting == null)
             newsRepo.insert(news);
+        return newsContentJson;
+    }
+
+    @Override
+    protected void onPostExecute(Object o)
+    {
+        super.onPostExecute(o);
     }
 }
 
 class EntityJsonGetter extends JsonGetter
 {
-    public EntityJsonGetter(String url,Context context)
+    public EntityJsonGetter(String url, Context context)
     {
-        super(url,context);
+        super(url, context);
     }
-    static JSONObject entityJson=null;
-    static JSONArray entityJsonArray=null;
+
+    static JSONObject entityJson = null;
+    static JSONArray entityJsonArray = null;
+
     @Override
-    protected void onPostExecute(Object o)
+    protected JSONObject doInBackground(Object[] objects)
     {
-        super.onPostExecute(o);
-        entityJson= (JSONObject) o;
-
-
-        File sdcard = Environment.getExternalStorageDirectory() ;
-
-        final File folder = new File(sdcard.getAbsoluteFile(), Utils.imgDirectory);//the dot makes this directory hidden to the user
-        folder.mkdir();
-        final ImageDownloader imgDownloader=new ImageDownloader(new ImageDownloader.OnImageLoaderListener()
+        entityJson =super.doInBackground(objects);
+        final ImageRepo imageRepo = new ImageRepo(context);
+        EntityRepo entityRepo=new EntityRepo(context);
+        final ImageDownloader imgDownloader = new ImageDownloader(new ImageDownloader.OnImageLoaderListener()
         {
             @Override
             public void onError(ImageDownloader.ImageError error)
@@ -257,111 +292,195 @@ class EntityJsonGetter extends JsonGetter
             }
 
             @Override
-            public void onComplete(Bitmap result,String imgUrl)
+            public void onComplete(Bitmap result, final String imgUrl)
             {
-                File file = new File(folder.getAbsoluteFile(), imgUrl + ".jpg") ;
-                ImageDownloader.writeToDisk(file,result,null,Bitmap.CompressFormat.JPEG,false);
+                imageRepo.insert(imgUrl, result);
             }
         });
         try
         {
-            entityJsonArray= entityJson.getJSONArray("data");
+            entityJsonArray = entityJson.getJSONArray("data");
         } catch (JSONException e)
         {
             e.printStackTrace();
         }
-        if(entityJsonArray!=null)
+        if (entityJsonArray != null)
         {
-            for(int i=0;i<entityJsonArray.length();i++)
+            for (int i = 0; i < entityJsonArray.length(); i++)
             {
                 try
                 {
-                    JSONObject obj= (JSONObject) entityJsonArray.get(i);
-                    Entity entity=new Entity();
-                    entity.setBaidu(obj.getString(Entity.baiduKey));
+                    JSONObject obj = (JSONObject) entityJsonArray.get(i);
+                    JSONObject abstractInfo = obj.getJSONObject(Entity.abstractInfoKey);
+                    Entity entity = new Entity();
+                    entity.setBaidu(abstractInfo.getString(Entity.baiduKey));
+                    entity.setLabel(obj.getString(Entity.labelKey));
                     entity.setUrl(obj.getString(Entity.urlKey));
-                    JSONObject abstractInfo=obj.getJSONObject(Entity.abstractInfoKey);
                     entity.setBaidu(abstractInfo.getString(Entity.baiduKey));
                     entity.setEnwiki(abstractInfo.getString(Entity.enwikiKey));
                     entity.setZhwiki(abstractInfo.getString(Entity.zhwikiKey));
-                    JSONObject COVID=abstractInfo.getJSONObject(Entity.COVIDKey);
-                    JSONObject properties=abstractInfo.getJSONObject(Entity.propertiesKey);
-                    Iterator<String>propKeys=properties.keys();
-                    while(propKeys.hasNext())
+                    JSONObject COVID = abstractInfo.getJSONObject(Entity.COVIDKey);
+                    JSONObject properties = COVID.getJSONObject(Entity.propertiesKey);
+                    Iterator<String> propKeys = properties.keys();
+                    while (propKeys.hasNext())
                     {
-                        String keyName=propKeys.next();
-                        String value=properties.getString(keyName);
-                        entity.properties.put(keyName,value);
+                        String keyName = propKeys.next();
+                        String value = properties.getString(keyName);
+                        entity.properties.put(keyName, value);
                     }
-                    JSONArray relations=COVID.getJSONArray(Entity.relationsKey);
-                    for(int j=0;j<relations.length();j++)
+                    JSONArray relations = COVID.getJSONArray(Entity.relationsKey);
+                    for (int j = 0; j < relations.length(); j++)
                     {
-                        JSONObject rel= (JSONObject) relations.get(j);
-                        boolean forward=rel.getBoolean(Entity.forwardKey);
-                        String relation=rel.getString("relation");
-                        String url=rel.getString("url");
-                        String label=rel.getString("label");
-                        String res=relation+ Utils.strSeparator+url+Utils.strSeparator+label;
-                        if(forward)
+                        JSONObject rel = (JSONObject) relations.get(j);
+                        boolean forward = rel.getBoolean(Entity.forwardKey);
+                        String relation = rel.getString("relation");
+                        String url = rel.getString("url");
+                        String label = rel.getString("label");
+                        String res = relation + Utils.strSeparator + url + Utils.strSeparator + label;
+                        if (forward)
                         {
                             entity.parents.add(res);
-                        }
-                        else
+                        } else
                         {
                             entity.children.add(res);
                         }
                     }
 
-                    String imgUrl=obj.getString(Entity.imgKey);
-                    entity.setImg(imgUrl);
-                    File potentialExisting = new File(folder.getAbsoluteFile(), imgUrl + ".jpg") ;
-                    if(imgUrl!=null&&!potentialExisting.exists())
-                        imgDownloader.download(imgUrl,true);
-//                    System.out.println(entityJsonArray.get(i));
+                    String imgUrl = obj.getString(Entity.imgURLKey);
+                    entity.setImgURL(imgUrl);
+                    if(imgUrl!=null&&imageRepo.getImageByURL(imgUrl)==null)
+                        imgDownloader.download(imgUrl, true);
+                    entityRepo.insert(entity);
                 } catch (JSONException e)
                 {
                     e.printStackTrace();
                 }
             }
         }
+        return entityJson;
+    }
+
+    @Override
+    protected void onPostExecute(Object o)
+    {
+        super.onPostExecute(o);
     }
 }
 
 
 class ExpertJsonGetter extends JsonGetter
 {
-    public ExpertJsonGetter(String url,Context context)
+    public ExpertJsonGetter(String url, Context context)
     {
-        super(url,context);
+        super(url, context);
     }
-    static JSONObject expertJson=null;
-    static JSONArray expertJsonArray=null;
-    @Override
-    protected void onPostExecute(Object o)
-    {
-        super.onPostExecute(o);
-        expertJson= (JSONObject) o;
 
+    static JSONObject expertJson = null;
+    static JSONArray expertJsonArray = null;
+
+    @Override
+    protected JSONObject doInBackground(Object[] objects)
+    {
+        expertJson = super.doInBackground(objects);
+        if(expertJson==null)return null;
+        ExpertRepo repo=new ExpertRepo(context);
+        final ImageRepo imageRepo = new ImageRepo(context);
+        ImageDownloader imageDownloader=new ImageDownloader(new ImageDownloader.OnImageLoaderListener()
+        {
+            @Override
+            public void onError(ImageDownloader.ImageError error)
+            {
+
+            }
+
+            @Override
+            public void onProgressChange(int percent)
+            {
+
+            }
+
+            @Override
+            public void onComplete(Bitmap result, String imgUrl)
+            {
+                imageRepo.insert(imgUrl, result);
+            }
+        });
         try
         {
-            expertJsonArray= expertJson.getJSONArray("data");
+            expertJsonArray = expertJson.getJSONArray("data");
         } catch (JSONException e)
         {
             e.printStackTrace();
         }
-        if(expertJsonArray!=null)
+        if (expertJsonArray != null)
         {
-            for(int i=0;i<expertJsonArray.length();i++)
+            for (int i = 0; i < expertJsonArray.length(); i++)
             {
                 try
                 {
                     System.out.println(expertJsonArray.get(i));
+                    Expert expert=new Expert();
+                    JSONObject obj= (JSONObject) expertJsonArray.get(i);
+                    expert.setAvatar(obj.getString(Expert.avatarKey));
+                    expert.setId(obj.getString(Expert.idKey));
+                    JSONObject indices=obj.getJSONObject(Expert.jsonIndicesKey);
+                    expert.setActivity((float) indices.getDouble(Expert.activityKey));
+                    expert.setCitations(indices.getInt(Expert.citationsKey));
+                    expert.setDiversity((float) indices.getDouble(Expert.diversityKey));
+                    expert.setGindex((float) indices.getDouble(Expert.gindexKey));
+                    expert.setHindex((float) indices.getDouble(Expert.hindexKey));
+                    expert.setNewStar((float) indices.getDouble(Expert.newStarKey));
+                    expert.setRisingStar((float) indices.getDouble(Expert.risingStarKey));
+                    expert.setSociability((float) indices.getDouble(Expert.sociabilityKey));
+                    expert.setName(obj.getString(Expert.nameKey));
+                    expert.setNameZh(obj.getString(Expert.nameZhKey));
+                    JSONObject profile=obj.getJSONObject(Expert.jsonProfileKey);
+
+                    Iterator<String> profileKeys=profile.keys();
+                    while(profileKeys.hasNext())
+                    {
+                        String key=profileKeys.next();
+                        if(key.equals(Expert.affiliationKey))
+                        {
+                            expert.setAffiliation(profile.getString(key));
+                        }
+                        else if(key.equals(Expert.affiliationZhKey))
+                        {
+                            expert.setAffiliationZh(profile.getString(key));
+                        }
+                        else if(key.equals(Expert.bioKey))
+                        {
+                            expert.setBio(profile.getString(key));
+                        }
+                        else if(key.equals(Expert.eduKey))
+                        {
+                            expert.setEdu(profile.getString(key));
+                        }
+                        else if(key.equals(Expert.positionKey))
+                        {
+                            expert.setPosition(profile.getString(key));
+                        }
+                        else if(key.equals(Expert.workKey))
+                        {
+                            expert.setWork(profile.getString(key));
+                        }
+                    }
+                    if(imageRepo.getImageByURL(expert.avatar)==null)
+                        imageDownloader.download(expert.avatar,true);
+                    repo.insert(expert);
                 } catch (JSONException e)
                 {
                     e.printStackTrace();
                 }
             }
         }
+        return expertJson;
+    }
+
+    @Override
+    protected void onPostExecute(Object o)
+    {
+        super.onPostExecute(o);
     }
 }
 

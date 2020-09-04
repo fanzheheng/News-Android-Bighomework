@@ -17,8 +17,8 @@ public class Entity
     public static final String propertiesKey="properties";
     public static final String relationsKey="relations";
     public static final String parentsKey="parents";
-    public static final String childrenKey="parents";
-    public static final String imgKey="img";
+    public static final String childrenKey="children";
+    public static final String imgURLKey="img";
     public static final String forwardKey="forward";
 
     public void setLabel(String label)
@@ -46,9 +46,9 @@ public class Entity
         this.zhwiki = zhwiki;
     }
 
-    public void setImg(String img)
+    public void setImgURL(String img)
     {
-        this.img = img;
+        this.imgURL = img;
     }
 
     public void setProperties(HashMap<String, String> properties)
@@ -69,10 +69,10 @@ public class Entity
     public String enwiki;
     public String baidu;
     public String zhwiki;
-    public HashMap<String,String>properties;
+    public HashMap<String,String>properties=new HashMap<String, String>();
     public ArrayList<String> parents=new ArrayList<String>();   //"relation"+"__,__"+"url"+"__,__"+"label"
     public ArrayList<String> children=new ArrayList<String>();  //
-    public String img;//image file name (identical to image url)
+    public String imgURL;
     public String label;
     public String url;
 
