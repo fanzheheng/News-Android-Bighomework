@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -29,5 +30,11 @@ public class NewsClassFragmentPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return mFragmentList.get(position).getClassName();
+    }
+
+
+    @Override
+    public int getItemPosition(@NonNull @NotNull Object object) {
+        return POSITION_NONE;
     }
 }

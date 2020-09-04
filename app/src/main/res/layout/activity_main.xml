@@ -1,33 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
 
-    <fragment android:layout_width="match_parent" android:layout_height="55dp"
-              android:id="@+id/class_bar_fragment"
-              android:name="com.example.news_android.NewsList.SearchFragment"
-    />
-    <LinearLayout android:layout_width="match_parent"
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+                  android:layout_width="match_parent"
                   android:layout_height="wrap_content"
+                  android:background="@android:color/holo_red_light"
                   android:orientation="horizontal"
-                  >
+                  android:id="@+id/search_bar_layout"
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/class_tab_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:tabMode="scrollable" />
-
-        <Button android:layout_width="50dp" android:layout_height="wrap_content"
-                android:text="@string/add_signal"/>
+                  tools:context=".NewsList.SearchFragment">
+        <EditText android:layout_width="0dp" android:layout_height="match_parent"
+                  android:id="@+id/search_bar_edit"
+                  android:inputType="text"
+                  android:layout_weight="1"
+                  android:maxLines="1"
+                  android:background="@drawable/search_shape"
+                  android:hint="@string/search"
+                  android:padding="10dp"
+                  android:drawableStart="@drawable/ic_launcher_round"
+                  android:drawablePadding="10dp"
+                  android:layout_marginTop="5dp"
+                  android:layout_marginBottom="5dp"
+                  android:layout_marginStart="10dp"
+                  android:layout_marginEnd="5dp"
+                  android:freezesText="true"
+                  android:autofillHints=""/>
+        <Button android:layout_width="60dp" android:layout_height="match_parent"
+                android:text="@string/search"
+                android:textSize="20sp"
+                android:textColor="#FFFFFF"
+                android:background="@android:color/holo_red_light"
+                android:padding="0dp"
+        />
     </LinearLayout>
+    <fragment android:layout_width="match_parent" android:layout_height="0dp"
+              android:layout_weight="1"
+              android:id="@+id/news_class_manager"
+              android:name="com.example.news_android.NewsList.NewsClassManagerFragment"
+    />
 
-
-    <androidx.viewpager.widget.ViewPager android:layout_width="match_parent" android:layout_height="0dp"
-                                         android:layout_weight="1"
-                                         android:id="@+id/viewPager"/>
 </LinearLayout>
