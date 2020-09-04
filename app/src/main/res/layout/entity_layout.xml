@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:divider="@drawable/gray_divider"
+        android:showDividers="middle"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:id="@+id/et_label"
+                  android:text="病毒"
+                  android:layout_marginBottom="10dp"
+                  android:textSize="30sp"
+                  app:layout_constraintTop_toTopOf="parent"
+                  app:layout_constraintLeft_toLeftOf="parent"
+        />
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                  android:id="@+id/et_desc"
+                  android:textSize="20sp"
+                  android:padding="5dp"
+                  app:layout_constraintTop_toBottomOf="@id/et_label"
+                  app:layout_constraintLeft_toLeftOf="parent"
+                  app:layout_constraintRight_toLeftOf="@id/et_image"
+                  android:text="胰蛋白酶Trypsin (Parenzyme) 为蛋白酶的一种，EC 3.4.4.4，是从牛、羊、猪的胰脏提取的一种丝氨酸蛋白水解酶。在脊椎动物中，作为消化酶而起作用。在胰脏是胰蛋白酶的前体胰蛋白酶原被合成后，作为胰液的成分而分泌，受肠激酶，或胰蛋白酶的限制分解成为活化胰蛋白酶，是肽链内切酶，它能把多肽链中赖氨酸和精氨酸残基中的羧基侧切断。它不仅起消化酶的作用，而且还能限制分解糜蛋白酶原、羧肽酶原、磷脂酶原等其它酶的前体，起活化作用。是特异性最强的蛋白酶，在决定蛋白质的氨基酸排列中，它成为不可缺少的工具。"
+        />
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                   android:padding="5dp"
+                   android:layout_marginTop="30dp"
+                   android:id="@+id/et_image"
+                   app:layout_constraintRight_toRightOf="parent"
+                   app:layout_constraintTop_toTopOf="parent"
+                   android:src="@drawable/ic_launcher_background"
+        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:id="@+id/et_rels"/>
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:id="@+id/et_properties"/>
+</LinearLayout>

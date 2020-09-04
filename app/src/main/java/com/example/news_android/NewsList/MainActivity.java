@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.entity_layout);
         String countryURL = "https://covid-dashboard.aminer.cn/api/dist/epidemic.json";
         String newsEventURL="https://covid-dashboard.aminer.cn/api/dist/events.json";
         String newsContentURL="https://covid-dashboard.aminer.cn/api/event/5f05f3f69fced0a24b2f84ee";//this one is just for test
