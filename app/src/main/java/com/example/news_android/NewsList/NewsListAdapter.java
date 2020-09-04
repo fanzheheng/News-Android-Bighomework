@@ -1,5 +1,6 @@
 package com.example.news_android.NewsList;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsTi
     public void onBindViewHolder(@NonNull NewsTitleViewHolder holder, int position) {
         holder.textView.setText(titles[position]);
         if(holder.visited) {
-            holder.textView.setTextColor(android.graphics.Color.RED);
+            holder.textView.setTextColor(Color.rgb(180, 180, 180)); //gray
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +52,4 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsTi
             textView = itemView.findViewById(R.id.news_title);
         }
     }
-
-
 }

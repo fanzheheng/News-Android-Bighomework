@@ -34,6 +34,8 @@ public class NewsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        System.out.println(className + "CreateView!!");
         View view = inflater.inflate(R.layout.fragment_news_list, container, false);
 
         //init refreshLayout
@@ -58,7 +60,7 @@ public class NewsListFragment extends Fragment {
         //newsListView init
         newsListView = view.findViewById(R.id.news_list_view);
 
-        String[] titles = new String[]{"event", "paper", "news", "class1", "football", "computer", "tsinghua"};
+        String[] titles = new String[]{className, "paper", "news", "class1", "football", "computer", "tsinghua"};
         NewsListAdapter newsListAdapter = new NewsListAdapter(titles);
         newsListView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         newsListView.setAdapter(newsListAdapter);
@@ -66,5 +68,10 @@ public class NewsListFragment extends Fragment {
         newsListView.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL));
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 }
