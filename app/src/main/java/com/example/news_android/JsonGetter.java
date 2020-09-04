@@ -3,8 +3,11 @@ package com.example.news_android;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.view.View;
+
+import androidx.annotation.RequiresApi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
+@RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
 public class JsonGetter extends AsyncTask
 {
     String url;

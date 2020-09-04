@@ -13,6 +13,8 @@ import android.os.Bundle;
 
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.news_android.NewsList.EpidemicDataFragment;
+import com.example.news_android.NewsList.EpidemicListAdapter;
 import com.example.news_android.NewsList.NewsClassFragmentPagerAdapter;
 import com.example.news_android.NewsList.NewsListFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -104,6 +106,8 @@ public class MainActivity extends AppCompatActivity
         {
             mFragmensts.add(NewsListFragment.newInstance(className));
         }
+        mFragmensts.add(EpidemicDataFragment.newInstance("Epidemic Data"));
+
         mViewPager.setAdapter(new NewsClassFragmentPagerAdapter(getSupportFragmentManager(), mFragmensts));
 
         Intent intent=new Intent(this,ExpertDetailActivity.class);

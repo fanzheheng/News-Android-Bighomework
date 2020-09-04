@@ -100,7 +100,7 @@ public class EpidemicRepo
         return epidemicList;
     }
 
-    public ArrayList<EpidemicData> getEpidemicByCountry(String country)
+    public EpidemicData getEpidemicByCountry(String country)
     {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String selectQuery = "SELECT " +
@@ -113,15 +113,14 @@ public class EpidemicRepo
                 EpidemicData.provinceKey + "," +
                 EpidemicData.deadKey + " FROM " + EpidemicData.TABLE +
                 " WHERE " +
-                EpidemicData.countryKey + "=?";
+                EpidemicData.countryKey + "=? AND "+EpidemicData.provinceKey+"=?";
 
-        ArrayList<EpidemicData> epidemicList = new ArrayList<EpidemicData>();
-        Cursor cursor = db.rawQuery(selectQuery, new String[]{country});
+        EpidemicData epidemic=new EpidemicData();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{country,""});
         if (cursor.moveToFirst())
         {
             do
             {
-                EpidemicData epidemic = new EpidemicData();
                 epidemic.setBeginDate(cursor.getString(cursor.getColumnIndex(EpidemicData.beginDateKey)));
                 epidemic.setDistrict(cursor.getString(cursor.getColumnIndex(EpidemicData.districtKey)));
                 epidemic.setConfirmed(Utils.convertStringToIntegerArray(cursor.getString(cursor.getColumnIndex(EpidemicData.confirmedKey))));
@@ -130,15 +129,14 @@ public class EpidemicRepo
                 epidemic.setCountry(cursor.getString(cursor.getColumnIndex(EpidemicData.countryKey)));
                 epidemic.setProvince(cursor.getString(cursor.getColumnIndex(EpidemicData.provinceKey)));
                 epidemic.setCity(cursor.getString(cursor.getColumnIndex(EpidemicData.cityKey)));
-                epidemicList.add(epidemic);
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
-        return epidemicList;
+        return epidemic;
     }
 
-    public ArrayList<EpidemicData> getEpidemicByProvince(String province)
+    public EpidemicData getEpidemicByProvince(String province)
     {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String selectQuery = "SELECT " +
@@ -151,15 +149,14 @@ public class EpidemicRepo
                 EpidemicData.provinceKey + "," +
                 EpidemicData.deadKey + " FROM " + EpidemicData.TABLE +
                 " WHERE " +
-                EpidemicData.provinceKey + "=?";
+                EpidemicData.provinceKey + "=? AND "+EpidemicData.cityKey+"=?";
 
-        ArrayList<EpidemicData> epidemicList = new ArrayList<EpidemicData>();
-        Cursor cursor = db.rawQuery(selectQuery, new String[]{province});
+        EpidemicData epidemic = new EpidemicData();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{province,""});
         if (cursor.moveToFirst())
         {
             do
             {
-                EpidemicData epidemic = new EpidemicData();
                 epidemic.setBeginDate(cursor.getString(cursor.getColumnIndex(EpidemicData.beginDateKey)));
                 epidemic.setDistrict(cursor.getString(cursor.getColumnIndex(EpidemicData.districtKey)));
                 epidemic.setConfirmed(Utils.convertStringToIntegerArray(cursor.getString(cursor.getColumnIndex(EpidemicData.confirmedKey))));
@@ -168,15 +165,14 @@ public class EpidemicRepo
                 epidemic.setCountry(cursor.getString(cursor.getColumnIndex(EpidemicData.countryKey)));
                 epidemic.setProvince(cursor.getString(cursor.getColumnIndex(EpidemicData.provinceKey)));
                 epidemic.setCity(cursor.getString(cursor.getColumnIndex(EpidemicData.cityKey)));
-                epidemicList.add(epidemic);
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
-        return epidemicList;
+        return epidemic;
     }
 
-    public ArrayList<EpidemicData> getEpidemicByCity(String city)
+    public EpidemicData getEpidemicByCity(String city)
     {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String selectQuery = "SELECT " +
@@ -191,13 +187,12 @@ public class EpidemicRepo
                 " WHERE " +
                 EpidemicData.cityKey + "=?";
 
-        ArrayList<EpidemicData> epidemicList = new ArrayList<EpidemicData>();
+       EpidemicData epidemic = new EpidemicData();
         Cursor cursor = db.rawQuery(selectQuery, new String[]{city});
         if (cursor.moveToFirst())
         {
             do
             {
-                EpidemicData epidemic = new EpidemicData();
                 epidemic.setBeginDate(cursor.getString(cursor.getColumnIndex(EpidemicData.beginDateKey)));
                 epidemic.setDistrict(cursor.getString(cursor.getColumnIndex(EpidemicData.districtKey)));
                 epidemic.setConfirmed(Utils.convertStringToIntegerArray(cursor.getString(cursor.getColumnIndex(EpidemicData.confirmedKey))));
@@ -206,12 +201,11 @@ public class EpidemicRepo
                 epidemic.setCountry(cursor.getString(cursor.getColumnIndex(EpidemicData.countryKey)));
                 epidemic.setProvince(cursor.getString(cursor.getColumnIndex(EpidemicData.provinceKey)));
                 epidemic.setCity(cursor.getString(cursor.getColumnIndex(EpidemicData.cityKey)));
-                epidemicList.add(epidemic);
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
-        return epidemicList;
+        return epidemic;
     }
 
     public EpidemicData getEpidemicByDistrict(String district)
