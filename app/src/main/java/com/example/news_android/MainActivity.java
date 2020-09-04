@@ -60,6 +60,16 @@ public class MainActivity extends AppCompatActivity
         System.out.println("_________");
     }
 
+    public void printExpertDB()
+    {
+        ExpertRepo repo=new ExpertRepo(this);
+        ArrayList<Expert> list = repo.getExpertList();
+        for (int i = 0; i < list.size(); i++)
+        {
+            System.out.println(list.get(i).nameZh);
+        }
+        System.out.println("_________");
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -76,12 +86,12 @@ public class MainActivity extends AppCompatActivity
         printImageDB();
         printEntityDB();
         printEpidemicDB();
-
+        printExpertDB();
         //JsonGetter jsonGetter = new NewsEventJsonGetter(Utils.newsEventURL,this);
         //JsonGetter jsonGetter = new NewsContentJsonGetter(Utils.newsContentURL,this);
         //JsonGetter jsonGetter = new EntityJsonGetter(Utils.entityURL, this);
-        //JsonGetter jsonGetter = new ExpertJsonGetter(Utils.expertURL,this);
-        JsonGetter jsonGetter=new EpidemicDataJsonGetter(Utils.countryURL,this);
+        JsonGetter jsonGetter = new ExpertJsonGetter(Utils.expertURL,this);
+        //JsonGetter jsonGetter=new EpidemicDataJsonGetter(Utils.countryURL,this);
         jsonGetter.execute();
 
         //viewPager
@@ -94,7 +104,6 @@ public class MainActivity extends AppCompatActivity
             mFragmensts.add(NewsListFragment.newInstance(className));
         }
         mViewPager.setAdapter(new NewsClassFragmentPagerAdapter(getSupportFragmentManager(), mFragmensts));
-
     }
 
     public boolean requestPermission(String[] permissions)
@@ -128,6 +137,8 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
     }
+
+
 
 }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,14 +83,12 @@ class EpidemicDataJsonGetter extends JsonGetter
     }
 
     static JSONObject epidemicDataJson = null;
-
     @Override
-    protected void onPostExecute(Object o)
+    protected JSONObject doInBackground(Object[] objects)
     {
-        super.onPostExecute(o);
+        epidemicDataJson=super.doInBackground(objects);
         EpidemicRepo repo=new EpidemicRepo(context);
-        epidemicDataJson = (JSONObject) o;
-        if (o == null) return;
+        if (epidemicDataJson == null) return null;
         Iterator<String> keys = epidemicDataJson.keys();
         while (keys.hasNext())
         {
@@ -125,6 +124,13 @@ class EpidemicDataJsonGetter extends JsonGetter
                 e.printStackTrace();
             }
         }
+        return epidemicDataJson;
+    }
+
+    @Override
+    protected void onPostExecute(Object o)
+    {
+        super.onPostExecute(o);
     }
 }
 
@@ -158,13 +164,10 @@ class NewsEventJsonGetter extends JsonGetter
     static JSONArray newsEventJsonArray = null;
 
     @Override
-    protected void onPostExecute(Object o)
+    protected JSONObject doInBackground(Object[] objects)
     {
-        super.onPostExecute(o);
-        newsEventJson = (JSONObject) o;
-
+        newsEventJson = super.doInBackground(objects);
         page += 1;//increment the page number for future use;
-
         NewsRepo newsRepo = new NewsRepo(context);
         try
         {
@@ -187,7 +190,6 @@ class NewsEventJsonGetter extends JsonGetter
                     news.setLang(newsObj.getString(News.langKey));
                     news.setCategory(newsObj.getString(News.categoryKey));
                     news.setTime(newsObj.getString(News.timeKey));
-
                     String newsContentURL = "https://covid-dashboard.aminer.cn/api/event/" + news._id;
                     NewsContentJsonGetter newsContentJsonGetter = new NewsContentJsonGetter(newsContentURL, context, news);
                     newsContentJsonGetter.execute();//get more details
@@ -198,7 +200,13 @@ class NewsEventJsonGetter extends JsonGetter
             }
 
         }
+        return newsEventJson;
+    }
 
+    @Override
+    protected void onPostExecute(Object o)
+    {
+        super.onPostExecute(o);
     }
 }
 
@@ -214,10 +222,9 @@ class NewsContentJsonGetter extends JsonGetter
     static JSONObject newsContentJson = null;
 
     @Override
-    protected void onPostExecute(Object o)
+    protected JSONObject doInBackground(Object[] objects)
     {
-        super.onPostExecute(o);
-        JSONObject topObject = (JSONObject) o;
+        JSONObject topObject= super.doInBackground(objects);
         NewsRepo newsRepo = new NewsRepo(context);
 
         try
@@ -244,6 +251,13 @@ class NewsContentJsonGetter extends JsonGetter
         News potentialExisting = newsRepo.getNewsById(news._id);//check if this news is already stored
         if (potentialExisting == null)
             newsRepo.insert(news);
+        return newsContentJson;
+    }
+
+    @Override
+    protected void onPostExecute(Object o)
+    {
+        super.onPostExecute(o);
     }
 }
 
@@ -258,10 +272,9 @@ class EntityJsonGetter extends JsonGetter
     static JSONArray entityJsonArray = null;
 
     @Override
-    protected void onPostExecute(Object o)
+    protected JSONObject doInBackground(Object[] objects)
     {
-        super.onPostExecute(o);
-        entityJson = (JSONObject) o;
+        entityJson =super.doInBackground(objects);
         final ImageRepo imageRepo = new ImageRepo(context);
         EntityRepo entityRepo=new EntityRepo(context);
         final ImageDownloader imgDownloader = new ImageDownloader(new ImageDownloader.OnImageLoaderListener()
@@ -344,6 +357,13 @@ class EntityJsonGetter extends JsonGetter
                 }
             }
         }
+        return entityJson;
+    }
+
+    @Override
+    protected void onPostExecute(Object o)
+    {
+        super.onPostExecute(o);
     }
 }
 
@@ -359,11 +379,32 @@ class ExpertJsonGetter extends JsonGetter
     static JSONArray expertJsonArray = null;
 
     @Override
-    protected void onPostExecute(Object o)
+    protected JSONObject doInBackground(Object[] objects)
     {
-        super.onPostExecute(o);
-        expertJson = (JSONObject) o;
+        expertJson = super.doInBackground(objects);
+        if(expertJson==null)return null;
+        ExpertRepo repo=new ExpertRepo(context);
+        final ImageRepo imageRepo = new ImageRepo(context);
+        ImageDownloader imageDownloader=new ImageDownloader(new ImageDownloader.OnImageLoaderListener()
+        {
+            @Override
+            public void onError(ImageDownloader.ImageError error)
+            {
 
+            }
+
+            @Override
+            public void onProgressChange(int percent)
+            {
+
+            }
+
+            @Override
+            public void onComplete(Bitmap result, String imgUrl)
+            {
+                imageRepo.insert(imgUrl, result);
+            }
+        });
         try
         {
             expertJsonArray = expertJson.getJSONArray("data");
@@ -378,12 +419,68 @@ class ExpertJsonGetter extends JsonGetter
                 try
                 {
                     System.out.println(expertJsonArray.get(i));
+                    Expert expert=new Expert();
+                    JSONObject obj= (JSONObject) expertJsonArray.get(i);
+                    expert.setAvatar(obj.getString(Expert.avatarKey));
+                    expert.setId(obj.getString(Expert.idKey));
+                    JSONObject indices=obj.getJSONObject(Expert.jsonIndicesKey);
+                    expert.setActivity((float) indices.getDouble(Expert.activityKey));
+                    expert.setCitations(indices.getInt(Expert.citationsKey));
+                    expert.setDiversity((float) indices.getDouble(Expert.diversityKey));
+                    expert.setGindex((float) indices.getDouble(Expert.gindexKey));
+                    expert.setHindex((float) indices.getDouble(Expert.hindexKey));
+                    expert.setNewStar((float) indices.getDouble(Expert.newStarKey));
+                    expert.setRisingStar((float) indices.getDouble(Expert.risingStarKey));
+                    expert.setSociability((float) indices.getDouble(Expert.sociabilityKey));
+                    expert.setName(obj.getString(Expert.nameKey));
+                    expert.setNameZh(obj.getString(Expert.nameZhKey));
+                    JSONObject profile=obj.getJSONObject(Expert.jsonProfileKey);
+
+                    Iterator<String> profileKeys=profile.keys();
+                    while(profileKeys.hasNext())
+                    {
+                        String key=profileKeys.next();
+                        if(key==Expert.affiliationKey)
+                        {
+                            expert.setAffiliation(profile.getString(key));
+                        }
+                        else if(key==Expert.affiliationZhKey)
+                        {
+                            expert.setAffiliationZh(profile.getString(key));
+                        }
+                        else if(key==Expert.bioKey)
+                        {
+                            expert.setBio(profile.getString(key));
+                        }
+                        else if(key==Expert.eduKey)
+                        {
+                            expert.setEdu(profile.getString(key));
+                        }
+                        else if(key==Expert.positionKey)
+                        {
+                            expert.setPosition(profile.getString(key));
+                        }
+                        else if(key==Expert.workKey)
+                        {
+                            expert.setWork(profile.getString(key));
+                        }
+                    }
+//                    if(imageRepo.getImageByURL(expert.avatar)==null)
+                    imageDownloader.download(expert.avatar,true);
+                    repo.insert(expert);
                 } catch (JSONException e)
                 {
                     e.printStackTrace();
                 }
             }
         }
+        return expertJson;
+    }
+
+    @Override
+    protected void onPostExecute(Object o)
+    {
+        super.onPostExecute(o);
     }
 }
 

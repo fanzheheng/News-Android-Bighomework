@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class ImageRepo
@@ -26,6 +27,11 @@ public class ImageRepo
     {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        img.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+
         values.put(Image.imgURLKey, url);
         values.put(Image.imgContentKey, Utils.getBytesFromBitmap(img));
         if(getImageByURL(url)==null)
@@ -99,7 +105,6 @@ public class ImageRepo
             return null;
         }
         cursor.close();
-        db.close();
         return res;
     }
 }
