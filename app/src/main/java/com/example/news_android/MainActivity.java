@@ -2,6 +2,7 @@ package com.example.news_android;
 
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity
         //JsonGetter jsonGetter = new EntityJsonGetter(Utils.entityURL, this);
         JsonGetter jsonGetter = new ExpertJsonGetter(Utils.expertURL,this);
         //JsonGetter jsonGetter=new EpidemicDataJsonGetter(Utils.countryURL,this);
-        jsonGetter.execute();
+        //jsonGetter.execute();
 
         //viewPager
         mViewPager = findViewById(R.id.viewPager);
@@ -104,6 +105,10 @@ public class MainActivity extends AppCompatActivity
             mFragmensts.add(NewsListFragment.newInstance(className));
         }
         mViewPager.setAdapter(new NewsClassFragmentPagerAdapter(getSupportFragmentManager(), mFragmensts));
+
+        Intent intent=new Intent(this,ExpertDetailActivity.class);
+        intent.putExtra(Expert.idKey,"53f4495cdabfaeb22f4cc34d");
+        startActivity(intent);
     }
 
     public boolean requestPermission(String[] permissions)

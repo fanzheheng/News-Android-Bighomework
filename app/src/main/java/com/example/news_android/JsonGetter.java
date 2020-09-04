@@ -440,27 +440,27 @@ class ExpertJsonGetter extends JsonGetter
                     while(profileKeys.hasNext())
                     {
                         String key=profileKeys.next();
-                        if(key==Expert.affiliationKey)
+                        if(key.equals(Expert.affiliationKey))
                         {
                             expert.setAffiliation(profile.getString(key));
                         }
-                        else if(key==Expert.affiliationZhKey)
+                        else if(key.equals(Expert.affiliationZhKey))
                         {
                             expert.setAffiliationZh(profile.getString(key));
                         }
-                        else if(key==Expert.bioKey)
+                        else if(key.equals(Expert.bioKey))
                         {
                             expert.setBio(profile.getString(key));
                         }
-                        else if(key==Expert.eduKey)
+                        else if(key.equals(Expert.eduKey))
                         {
                             expert.setEdu(profile.getString(key));
                         }
-                        else if(key==Expert.positionKey)
+                        else if(key.equals(Expert.positionKey))
                         {
                             expert.setPosition(profile.getString(key));
                         }
-                        else if(key==Expert.workKey)
+                        else if(key.equals(Expert.workKey))
                         {
                             expert.setWork(profile.getString(key));
                         }
