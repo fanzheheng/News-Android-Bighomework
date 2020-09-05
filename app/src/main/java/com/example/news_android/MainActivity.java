@@ -27,6 +27,7 @@ import com.example.news_android.NewsList.ExpertFragment;
 import com.example.news_android.NewsList.NewsClassFragmentPagerAdapter;
 import com.example.news_android.NewsList.NewsListFragment;
 import com.google.android.material.tabs.TabLayout;
+import com.example.news_android.DataBase.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
