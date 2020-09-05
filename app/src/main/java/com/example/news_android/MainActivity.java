@@ -20,6 +20,8 @@ import com.example.news_android.DataBase.EpidemicRepo;
 import com.example.news_android.DataBase.Expert;
 import com.example.news_android.DataBase.ExpertRepo;
 import com.example.news_android.DataBase.ImageRepo;
+import com.example.news_android.DataBase.News;
+import com.example.news_android.DataBase.NewsRepo;
 import com.example.news_android.NewsList.EpidemicDataFragment;
 import com.example.news_android.NewsList.ExpertFragment;
 import com.example.news_android.NewsList.NewsClassFragmentPagerAdapter;
@@ -83,6 +85,17 @@ public class MainActivity extends AppCompatActivity
         }
         System.out.println("_________");
     }
+
+    public void CheckNewsDB(String searchInput)
+    {
+        NewsRepo repo=new NewsRepo(this);
+       ArrayList<News>newsList=repo.getNewsBySearchInput(searchInput);
+       for(int i=0;i<newsList.size();i++)
+       {
+           System.out.println(newsList.get(i).title);
+       }
+        System.out.println("_________");
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -100,12 +113,15 @@ public class MainActivity extends AppCompatActivity
         printEntityDB();
         printEpidemicDB();
         printExpertDB();
-        //JsonGetter jsonGetter = new NewsEventJsonGetter(Utils.newsEventURL,this);
+
+        CheckNewsDB("试验");
+
+        JsonGetter jsonGetter = new NewsEventJsonGetter(Utils.newsEventURL,this);
         //JsonGetter jsonGetter = new NewsContentJsonGetter(Utils.newsContentURL,this);
         //JsonGetter jsonGetter = new EntityJsonGetter(Utils.entityURL, this);
         //JsonGetter jsonGetter = new ExpertJsonGetter(Utils.expertURL,this);
         //JsonGetter jsonGetter=new EpidemicDataJsonGetter(Utils.countryURL,this);
-        //jsonGetter.execute();
+        jsonGetter.execute();
 
         //viewPager
         mViewPager = findViewById(R.id.viewPager);

@@ -275,13 +275,13 @@ class NewsContentJsonGetter extends JsonGetter
             newsContentJson = topObject.getJSONObject("data");
             news.setContent(newsContentJson.getString(News.contentKey));
             news.setDate(newsContentJson.getString(News.dateKey));
-            JSONArray relatedEventArray = newsContentJson.getJSONArray(News.relatedEventsKey);
+            //JSONArray relatedEventArray = newsContentJson.getJSONArray(News.relatedEventsKey);
             JSONArray entities = newsContentJson.getJSONArray(News.entitiesKey);
-            for (int i = 0; i < relatedEventArray.length(); i++)
-            {
-                JSONObject obj = (JSONObject) relatedEventArray.get(i);
-                news.relatedEvents.add(obj.getString("id"));
-            }
+//            for (int i = 0; i < relatedEventArray.length(); i++)
+//            {
+//                JSONObject obj = (JSONObject) relatedEventArray.get(i);
+//                news.relatedEvents.add(obj.getString("id"));
+//            }
             for (int i = 0; i < entities.length(); i++)
             {
                 JSONObject obj = (JSONObject) entities.get(i);
