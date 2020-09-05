@@ -1,5 +1,6 @@
 package com.example.news_android;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -167,6 +168,7 @@ class NewsEventJsonGetter extends JsonGetter
     static JSONObject newsEventJson = null;
     static JSONArray newsEventJsonArray = null;
 
+    @SuppressLint("WrongThread")
     @Override
     protected JSONObject doInBackground(Object[] objects)
     {

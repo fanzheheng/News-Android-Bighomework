@@ -141,7 +141,7 @@ public class News
     }
 
     public  String content;
-    public  String date;
+    public  String date="";
     public  String source;
     public ArrayList<String> entities=new ArrayList<String>();//label of related entities
     public ArrayList<String> relatedEvents=new ArrayList<String>();//id of related events

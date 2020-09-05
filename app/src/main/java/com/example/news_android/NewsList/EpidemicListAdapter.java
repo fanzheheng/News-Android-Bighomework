@@ -60,13 +60,10 @@ public class EpidemicListAdapter extends RecyclerView.Adapter<EpidemicListAdapte
         }
 
 
-        ArrayList<PointValue>deadValues= new ArrayList<PointValue>();//points on the polyline
-        ArrayList<PointValue>curedValues= new ArrayList<PointValue>();//points on the polyline
-        ArrayList<PointValue>confirmedValues= new ArrayList<PointValue>();//points on the polyline
-//        values.add(new PointValue(0, 2));
-//        values.add(new PointValue(1, 4));
-//        values.add(new PointValue(2, 3));
-//        values.add(new PointValue(3, 4));
+        ArrayList<PointValue>deadValues= new ArrayList<PointValue>();//points on the dead polyline
+        ArrayList<PointValue>curedValues= new ArrayList<PointValue>();//points on the cured polyline
+        ArrayList<PointValue>confirmedValues= new ArrayList<PointValue>();//points on the confirmed polyline
+
         if(epidemicData!=null)
         {
             String[]dateStr=epidemicData.beginDate.split("-");
@@ -84,12 +81,6 @@ public class EpidemicListAdapter extends RecyclerView.Adapter<EpidemicListAdapte
                     axisValue.setLabel(calendar.get(Calendar.YEAR)+"-"+calendar.get(Calendar.MONTH)+"-"+calendar.get(Calendar.DAY_OF_MONTH));
                     axisValueList.add(axisValue);
                 }
-                if(i==epidemicData.dead.size()/2)
-                {
-                    dead.setLabel("死亡数");
-                    cured.setLabel("治愈数");
-                    confirmed.setLabel("确诊数");
-                }
                 deadValues.add(dead);
                 curedValues.add(cured);
                 confirmedValues.add(confirmed);
@@ -102,16 +93,13 @@ public class EpidemicListAdapter extends RecyclerView.Adapter<EpidemicListAdapte
 
             deadLine.setCubic(false);
             deadLine.setHasPoints(false);
-            deadLine.setStrokeWidth(2);
-            deadLine.setHasLabels(true);
+            deadLine.setStrokeWidth(3);
             curedLine.setCubic(false);
             curedLine.setHasPoints(false);
-            curedLine.setStrokeWidth(2);
-            curedLine.setHasLabels(true);
+            curedLine.setStrokeWidth(3);
             confirmedLine.setCubic(false);
             confirmedLine.setHasPoints(false);
-            confirmedLine.setStrokeWidth(2);
-            confirmedLine.setHasLabels(true);
+            confirmedLine.setStrokeWidth(3);
             ArrayList<Line> lines = new ArrayList<Line>();
             lines.add(deadLine);
             lines.add(curedLine);
@@ -122,7 +110,7 @@ public class EpidemicListAdapter extends RecyclerView.Adapter<EpidemicListAdapte
             axisX.setValues(axisValueList);
             axisX.setHasLines(false).setTextColor(Color.BLACK).setTextSize(12).setName(districts[position]);;
             Axis axisY = new Axis();//y axis
-            axisY.setTextColor(Color.BLACK).setTextSize(12).setName("人数");
+            axisY.setTextColor(Color.BLACK).setTextSize(10);
             data.setAxisXBottom(axisX);
             data.setAxisYLeft(axisY);
             data.setLines(lines);
