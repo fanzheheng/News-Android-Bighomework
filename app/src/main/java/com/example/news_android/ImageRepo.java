@@ -124,9 +124,12 @@ public class ImageRepo
             } while (cursor.moveToNext());
         } else
         {
+            cursor.close();
+            db.close();
             return null;
         }
         cursor.close();
+        db.close();
         return res;
     }
 }

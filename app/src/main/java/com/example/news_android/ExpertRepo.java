@@ -198,6 +198,8 @@ public class ExpertRepo
         }
         else
         {
+            cursor.close();
+            db.close();
             return null;
         }
         cursor.close();

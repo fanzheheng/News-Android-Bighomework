@@ -11,10 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.news_android.EpidemicRepo;
 import com.example.news_android.R;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,8 +73,20 @@ public class EpidemicDataFragment extends NewsListFragment
         //newsListView init
         newsListView = view.findViewById(R.id.news_list_view);
 
-        String districts[]={"China","United States of America","Brazil"};
+        String districts[]={};
+        EpidemicRepo repo=new EpidemicRepo(this.getContext());
+
+        ArrayList<String>provinces=repo.getAllChineseProvinceName();
+        ArrayList<String>countries=repo.getAllCountryName();
+        for(int i=0;i<provinces.size();i++)
+        {
+            provinces.set(i,"China|"+provinces.get(i));
+        }
+        provinces.addAll(countries);
+
+        districts=provinces.toArray(new String[0]);
         EpidemicListAdapter epidemicAdapter=new EpidemicListAdapter(districts);
+
         newsListView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         newsListView.setAdapter(epidemicAdapter);
         //add divider

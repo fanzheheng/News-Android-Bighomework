@@ -239,6 +239,8 @@ public class EpidemicRepo
             } while (cursor.moveToNext());
         } else
         {
+            cursor.close();
+            db.close();
             return null;
         }
         cursor.close();
@@ -246,4 +248,46 @@ public class EpidemicRepo
         return epidemic;
     }
 
+    public ArrayList<String>getAllCountryName()
+    {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String selectQuery = "SELECT " +
+                EpidemicData.countryKey +" FROM " + EpidemicData.TABLE +
+                " WHERE " +
+                EpidemicData.provinceKey + "=?";
+        ArrayList<String>res=new ArrayList<String>();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{""});
+        if(cursor.moveToFirst())
+        {
+            do
+            {
+                String country=cursor.getString(cursor.getColumnIndex(EpidemicData.countryKey));
+                res.add(country);
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return res;
+    }
+    public ArrayList<String>getAllChineseProvinceName()
+    {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String selectQuery = "SELECT " +
+                EpidemicData.provinceKey +" FROM " + EpidemicData.TABLE +
+                " WHERE " +
+                EpidemicData.countryKey + "=? AND "+EpidemicData.cityKey+"=?";
+        ArrayList<String>res=new ArrayList<String>();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{"China",""});
+        if(cursor.moveToFirst())
+        {
+            do
+            {
+                String province=cursor.getString(cursor.getColumnIndex(EpidemicData.provinceKey));
+                res.add(province);
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return res;
+    }
 }

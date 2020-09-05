@@ -30,10 +30,14 @@ import lecho.lib.hellocharts.view.LineChartView;
 public class EpidemicListAdapter extends RecyclerView.Adapter<EpidemicListAdapter.EpidemicViewHolder>
 {
     String[] districts;
-    
+
     public EpidemicListAdapter(String[] districts)
     {
         this.districts = districts;
+    }
+
+    public EpidemicListAdapter()
+    {
     }
 
     @NonNull

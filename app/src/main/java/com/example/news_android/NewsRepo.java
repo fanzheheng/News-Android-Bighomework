@@ -124,7 +124,6 @@ public class NewsRepo
                 News.relatedEventsKey + " FROM " + News.TABLE +
                 " WHERE " +
                 News._idKey + "=?";
-        int iCount = 0;
         News news = new News();
         Cursor cursor = db.rawQuery(selectQuery, new String[]{ id });
         if (cursor.moveToFirst())
@@ -146,6 +145,8 @@ public class NewsRepo
         }
         else
         {
+            cursor.close();
+            db.close();
             return null;
         }
         cursor.close();

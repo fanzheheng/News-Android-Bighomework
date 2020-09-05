@@ -114,7 +114,6 @@ public class EntityRepo
                 Entity.propertiesKey+" FROM "+Entity.TABLE+
                 " WHERE " +
                 Entity.labelKey + "=?";
-        int iCount = 0;
         Cursor cursor = db.rawQuery(selectQuery, new String[]{ label });
         Entity entity=new Entity();
         if (cursor.moveToFirst())
@@ -134,6 +133,8 @@ public class EntityRepo
         }
         else
         {
+            cursor.close();
+            db.close();
             return null;
         }
         cursor.close();
