@@ -1,28 +1,37 @@
 package com.example.news_android;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.view.View;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import com.example.news_android.DataBase.Entity;
+import com.example.news_android.DataBase.EntityRepo;
+import com.example.news_android.DataBase.EpidemicData;
+import com.example.news_android.DataBase.EpidemicRepo;
+import com.example.news_android.DataBase.Expert;
+import com.example.news_android.DataBase.ExpertRepo;
+import com.example.news_android.DataBase.ImageDownloader;
+import com.example.news_android.DataBase.ImageRepo;
+import com.example.news_android.DataBase.News;
+import com.example.news_android.DataBase.NewsRepo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UTFDataFormatException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
 
+@RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
 public class JsonGetter extends AsyncTask
 {
     String url;
@@ -163,6 +172,7 @@ class NewsEventJsonGetter extends JsonGetter
     static JSONObject newsEventJson = null;
     static JSONArray newsEventJsonArray = null;
 
+    @SuppressLint("WrongThread")
     @Override
     protected JSONObject doInBackground(Object[] objects)
     {
@@ -434,8 +444,9 @@ class ExpertJsonGetter extends JsonGetter
                     expert.setSociability((float) indices.getDouble(Expert.sociabilityKey));
                     expert.setName(obj.getString(Expert.nameKey));
                     expert.setNameZh(obj.getString(Expert.nameZhKey));
-                    JSONObject profile=obj.getJSONObject(Expert.jsonProfileKey);
+                    expert.setPassedAway(obj.getBoolean(Expert.isPassedAwayKey));
 
+                    JSONObject profile=obj.getJSONObject(Expert.jsonProfileKey);
                     Iterator<String> profileKeys=profile.keys();
                     while(profileKeys.hasNext())
                     {

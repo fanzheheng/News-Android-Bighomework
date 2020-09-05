@@ -1,10 +1,12 @@
-package com.example.news_android;
+package com.example.news_android.DataBase;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+
+import com.example.news_android.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -124,9 +126,12 @@ public class ImageRepo
             } while (cursor.moveToNext());
         } else
         {
+            cursor.close();
+            db.close();
             return null;
         }
         cursor.close();
+        db.close();
         return res;
     }
 }

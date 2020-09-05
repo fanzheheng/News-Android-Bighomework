@@ -1,9 +1,11 @@
-package com.example.news_android;
+package com.example.news_android.DataBase;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.example.news_android.Utils;
 
 import java.util.ArrayList;
 
@@ -19,7 +21,7 @@ public class EntityRepo
         SQLiteDatabase db=dbHelper.getWritableDatabase();
         ContentValues values=new ContentValues();
         values.put(Entity.baiduKey,entity.baidu);
-        values.put(Entity.childrenKey,Utils.convertArrayToString(entity.children));
+        values.put(Entity.childrenKey, Utils.convertArrayToString(entity.children));
         values.put(Entity.enwikiKey,entity.enwiki);
         values.put(Entity.imgURLKey,entity.imgURL);
         values.put(Entity.labelKey,entity.label);
@@ -114,7 +116,6 @@ public class EntityRepo
                 Entity.propertiesKey+" FROM "+Entity.TABLE+
                 " WHERE " +
                 Entity.labelKey + "=?";
-        int iCount = 0;
         Cursor cursor = db.rawQuery(selectQuery, new String[]{ label });
         Entity entity=new Entity();
         if (cursor.moveToFirst())
@@ -134,6 +135,8 @@ public class EntityRepo
         }
         else
         {
+            cursor.close();
+            db.close();
             return null;
         }
         cursor.close();
