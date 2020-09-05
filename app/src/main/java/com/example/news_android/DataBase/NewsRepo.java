@@ -1,12 +1,13 @@
-package com.example.news_android;
+package com.example.news_android.DataBase;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.news_android.Utils;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class NewsRepo
 {
@@ -22,7 +23,7 @@ public class NewsRepo
         values.put(News.categoryKey,news.category);
         values.put(News.contentKey,news.content);
         values.put(News.dateKey,news.date);
-        values.put(News.entitiesKey,Utils.convertArrayToString(news.entities));
+        values.put(News.entitiesKey, Utils.convertArrayToString(news.entities));
         values.put(News._idKey,news._id);
         values.put(News.langKey,news.lang);
         values.put(News.sourceKey,news.source);

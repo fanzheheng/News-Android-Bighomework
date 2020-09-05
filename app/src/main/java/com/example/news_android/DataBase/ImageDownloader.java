@@ -1,4 +1,4 @@
-package com.example.news_android;
+package com.example.news_android.DataBase;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;

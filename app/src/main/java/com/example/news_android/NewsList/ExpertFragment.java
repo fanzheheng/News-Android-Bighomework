@@ -1,17 +1,18 @@
 package com.example.news_android.NewsList;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.news_android.DataBase.EpidemicRepo;
+import com.example.news_android.DataBase.Expert;
+import com.example.news_android.DataBase.ExpertRepo;
 import com.example.news_android.R;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
@@ -21,20 +22,20 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link EpidemicDataFragment#newInstance} factory method to
+ * Use the {@link ExpertFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EpidemicDataFragment extends NewsListFragment
+public class ExpertFragment extends NewsListFragment
 {
 
-    protected EpidemicDataFragment(String className)
+    protected ExpertFragment(String className)
     {
         super(className);
     }
 
-    public static EpidemicDataFragment newInstance(String className)
+    public static ExpertFragment newInstance(String className)
     {
-        EpidemicDataFragment fragment = new EpidemicDataFragment(className);
+        ExpertFragment fragment = new ExpertFragment(className);
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -71,23 +72,17 @@ public class EpidemicDataFragment extends NewsListFragment
         });
         //newsListView init
         newsListView = view.findViewById(R.id.news_list_view);
+        String[]ids={};
 
-        String districts[]={};
-        EpidemicRepo repo=new EpidemicRepo(this.getContext());
+        ExpertRepo repo=new ExpertRepo(getContext());
 
-        ArrayList<String>provinces=repo.getAllChineseProvinceName();
-        ArrayList<String>countries=repo.getAllCountryName();
-        for(int i=0;i<provinces.size();i++)
-        {
-            provinces.set(i,"China|"+provinces.get(i));
-        }
-        provinces.addAll(countries);
+        ArrayList<String>idList=repo.getAllExpertId();//now we get all expert id (dead or alive)
+        ids=idList.toArray(new String[0]);
 
-        districts=provinces.toArray(new String[0]);
-        EpidemicListAdapter epidemicAdapter=new EpidemicListAdapter(districts);
+        ExpertListAdapter expertListAdapter=new ExpertListAdapter(ids);
 
         newsListView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        newsListView.setAdapter(epidemicAdapter);
+        newsListView.setAdapter(expertListAdapter);
         //add divider
         newsListView.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL));
         return view;

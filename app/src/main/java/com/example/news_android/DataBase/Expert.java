@@ -1,4 +1,4 @@
-package com.example.news_android;
+package com.example.news_android.DataBase;
 
 public class Expert
 {

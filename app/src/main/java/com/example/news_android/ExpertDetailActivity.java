@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.news_android.DataBase.Expert;
+import com.example.news_android.DataBase.ExpertRepo;
+import com.example.news_android.DataBase.ImageRepo;
+
 public class ExpertDetailActivity extends AppCompatActivity
 {
 

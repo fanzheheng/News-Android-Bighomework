@@ -1,24 +1,19 @@
 package com.example.news_android.NewsList;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.news_android.EpidemicData;
-import com.example.news_android.EpidemicRepo;
-import com.example.news_android.NewsTextPage.NewsTextActivity;
+import com.example.news_android.DataBase.EpidemicData;
+import com.example.news_android.DataBase.EpidemicRepo;
 import com.example.news_android.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
@@ -62,7 +57,6 @@ public class EpidemicListAdapter extends RecyclerView.Adapter<EpidemicListAdapte
         {
             epidemicData=repo.getEpidemicByProvince(location[1]);
         }
-
 
         ArrayList<PointValue>deadValues= new ArrayList<PointValue>();//points on the dead polyline
         ArrayList<PointValue>curedValues= new ArrayList<PointValue>();//points on the cured polyline

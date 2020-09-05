@@ -13,8 +13,15 @@ import android.os.Bundle;
 
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.news_android.DataBase.Entity;
+import com.example.news_android.DataBase.EntityRepo;
+import com.example.news_android.DataBase.EpidemicData;
+import com.example.news_android.DataBase.EpidemicRepo;
+import com.example.news_android.DataBase.Expert;
+import com.example.news_android.DataBase.ExpertRepo;
+import com.example.news_android.DataBase.ImageRepo;
 import com.example.news_android.NewsList.EpidemicDataFragment;
-import com.example.news_android.NewsList.EpidemicListAdapter;
+import com.example.news_android.NewsList.ExpertFragment;
 import com.example.news_android.NewsList.NewsClassFragmentPagerAdapter;
 import com.example.news_android.NewsList.NewsListFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -95,7 +102,7 @@ public class MainActivity extends AppCompatActivity
         //JsonGetter jsonGetter = new EntityJsonGetter(Utils.entityURL, this);
         JsonGetter jsonGetter = new ExpertJsonGetter(Utils.expertURL,this);
         //JsonGetter jsonGetter=new EpidemicDataJsonGetter(Utils.countryURL,this);
-        //jsonGetter.execute();
+        jsonGetter.execute();
 
         //viewPager
         mViewPager = findViewById(R.id.viewPager);
@@ -107,12 +114,13 @@ public class MainActivity extends AppCompatActivity
             mFragmensts.add(NewsListFragment.newInstance(className));
         }
         mFragmensts.add(EpidemicDataFragment.newInstance("Epidemic Data"));
+        mFragmensts.add(ExpertFragment.newInstance("Expert List"));
 
         mViewPager.setAdapter(new NewsClassFragmentPagerAdapter(getSupportFragmentManager(), mFragmensts));
 
-        Intent intent=new Intent(this,ExpertDetailActivity.class);
-        intent.putExtra(Expert.idKey,"53f4495cdabfaeb22f4cc34d");
-        startActivity(intent);
+//        Intent intent=new Intent(this,ExpertDetailActivity.class);
+//        intent.putExtra(Expert.idKey,"53f4495cdabfaeb22f4cc34d");
+//        startActivity(intent);
     }
 
     public boolean requestPermission(String[] permissions)

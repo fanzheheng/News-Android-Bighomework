@@ -1,4 +1,4 @@
-package com.example.news_android;
+package com.example.news_android.DataBase;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -205,6 +205,60 @@ public class ExpertRepo
         cursor.close();
         db.close();
         return expert;
+    }
+
+    public ArrayList<String>getAllExpertId()
+    {
+        SQLiteDatabase db=dbHelper.getWritableDatabase();
+        String selectQuery="SELECT "+
+                Expert.idKey+" FROM "+Expert.TABLE;
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{});
+        ArrayList<String>res=new ArrayList<String>();
+        if(cursor.moveToFirst())
+        {
+            do
+            {
+                res.add(cursor.getString(cursor.getColumnIndex(Expert.idKey)));
+            }while(cursor.moveToNext());
+        }
+        return res;
+    }
+
+    public ArrayList<String>getAliveExpertId()
+    {
+        SQLiteDatabase db=dbHelper.getWritableDatabase();
+        String selectQuery="SELECT "+
+                Expert.idKey+" FROM "+Expert.TABLE
+                +" WHERE "+Expert.isPassedAwayKey+"=?";
+
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{"0"});
+        ArrayList<String>res=new ArrayList<String>();
+        if(cursor.moveToFirst())
+        {
+            do
+            {
+                res.add(cursor.getString(cursor.getColumnIndex(Expert.idKey)));
+            }while(cursor.moveToNext());
+        }
+        return res;
+    }
+    public ArrayList<String>getDeadExpertId()
+    {
+        SQLiteDatabase db=dbHelper.getWritableDatabase();
+        String selectQuery="SELECT "+
+                Expert.idKey+" FROM "+Expert.TABLE
+                +" WHERE "+Expert.isPassedAwayKey+"=?";
+
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{"1"});
+        ArrayList<String>res=new ArrayList<String>();
+        if(cursor.moveToFirst())
+        {
+            do
+            {
+                res.add(cursor.getString(cursor.getColumnIndex(Expert.idKey)));
+            }while(cursor.moveToNext());
+        }
+        return res;
     }
 
 }
