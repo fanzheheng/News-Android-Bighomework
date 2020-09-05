@@ -114,6 +114,7 @@ class EpidemicDataJsonGetter extends JsonGetter
     protected JSONObject doInBackground(Object[] objects)
     {
         epidemicDataJson=super.doInBackground(objects);
+        if(epidemicDataJson==null)return null;
         EpidemicRepo repo=new EpidemicRepo(context);
         if (epidemicDataJson == null) return null;
         Iterator<String> keys = epidemicDataJson.keys();
@@ -202,6 +203,7 @@ class NewsEventJsonGetter extends JsonGetter
     protected JSONObject doInBackground(Object[] objects)
     {
         newsEventJson = super.doInBackground(objects);
+        if(newsEventJson==null)return null;
         page += 1;//increment the page number for future use;
         NewsRepo newsRepo = new NewsRepo(context);
         try
@@ -265,6 +267,7 @@ class NewsContentJsonGetter extends JsonGetter
     protected JSONObject doInBackground(Object[] objects)
     {
         JSONObject topObject= super.doInBackground(objects);
+        if(topObject==null)return null;
         NewsRepo newsRepo = new NewsRepo(context);
 
         try
@@ -318,6 +321,7 @@ class EntityJsonGetter extends JsonGetter
     protected JSONObject doInBackground(Object[] objects)
     {
         entityJson =super.doInBackground(objects);
+        if(entityJson==null)return null;
         final ImageRepo imageRepo = new ImageRepo(context);
         EntityRepo entityRepo=new EntityRepo(context);
         final ImageDownloader imgDownloader = new ImageDownloader(new ImageDownloader.OnImageLoaderListener()
