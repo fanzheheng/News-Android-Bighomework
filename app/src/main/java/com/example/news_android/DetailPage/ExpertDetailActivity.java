@@ -1,4 +1,4 @@
-package com.example.news_android;
+package com.example.news_android.DetailPage;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.news_android.DataBase.Expert;
 import com.example.news_android.DataBase.ExpertRepo;
 import com.example.news_android.DataBase.ImageRepo;
+import com.example.news_android.R;
 
 public class ExpertDetailActivity extends AppCompatActivity
 {

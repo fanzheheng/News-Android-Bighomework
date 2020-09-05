@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.news_android.NewsTextPage.NewsTextActivity;
+import com.example.news_android.DetailPage.NewsTextActivity;
 import com.example.news_android.R;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsTitleViewHolder> {

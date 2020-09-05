@@ -2,7 +2,6 @@ package com.example.news_android.NewsList;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +15,8 @@ import com.example.news_android.DataBase.Expert;
 import com.example.news_android.DataBase.ExpertRepo;
 import com.example.news_android.DataBase.ImageDownloader;
 import com.example.news_android.DataBase.ImageRepo;
-import com.example.news_android.ExpertDetailActivity;
+import com.example.news_android.DetailPage.ExpertDetailActivity;
 import com.example.news_android.R;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-
-import lecho.lib.hellocharts.model.Axis;
-import lecho.lib.hellocharts.model.AxisValue;
-import lecho.lib.hellocharts.model.Line;
-import lecho.lib.hellocharts.model.LineChartData;
-import lecho.lib.hellocharts.model.PointValue;
-import lecho.lib.hellocharts.view.LineChartView;
 
 public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.ExpertViewHolder>
 {
