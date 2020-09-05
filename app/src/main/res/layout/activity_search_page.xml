@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="@color/search_bar_red"
+                  android:orientation="horizontal"
+
+                  tools:context=".NewsList.SearchFragment">
+        <EditText android:layout_width="0dp" android:layout_height="match_parent"
+                  android:id="@+id/search_bar_edit"
+                  android:inputType="text"
+                  android:layout_weight="1"
+                  android:maxLines="1"
+                  android:background="@drawable/search_shape"
+                  android:hint="@string/search"
+                  android:padding="10dp"
+                  android:drawableStart="@drawable/ic_launcher_round"
+                  android:drawablePadding="10dp"
+                  android:layout_marginTop="5dp"
+                  android:layout_marginBottom="5dp"
+                  android:layout_marginStart="10dp"
+                  android:layout_marginEnd="5dp"
+                  android:freezesText="true"
+                  android:autofillHints=""/>
+        <Button android:layout_width="60dp" android:layout_height="match_parent"
+                android:id="@+id/search_button"
+                android:text="@string/search"
+                android:textSize="20sp"
+                android:textColor="#FFFFFF"
+                android:background="@color/search_bar_red"
+                android:padding="0dp"
+        />
+    </LinearLayout>
+        <RadioGroup android:layout_width="match_parent" android:layout_height="30dp"
+                    android:orientation="horizontal"
+                    android:id="@+id/search_type_radios"
+                    android:background="@color/search_bar_red"
+        >
+            <RadioButton android:layout_width="0dp" android:layout_height="match_parent"
+                         android:id="@+id/news_radio"
+                         android:layout_weight="1"
+                         android:gravity="center"
+                         android:button="@null"
+                         android:text="News"
+                         android:background="@drawable/search_type_selector"
+            />
+            <RadioButton android:layout_width="0dp" android:layout_height="match_parent"
+                         android:id="@+id/entity_radio"
+                         android:layout_weight="1"
+                         android:text="Entities"
+                         android:gravity="center"
+                         android:checked="true"
+                         android:button="@null"
+                         android:background="@drawable/search_type_selector"/>
+        </RadioGroup>
+        <androidx.recyclerview.widget.RecyclerView android:layout_width="match_parent" android:layout_height="0dp"
+                                                   android:id="@+id/search_result_list"
+                                                   android:layout_weight="1"/>
+</LinearLayout>

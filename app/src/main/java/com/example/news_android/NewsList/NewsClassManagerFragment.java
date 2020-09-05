@@ -36,6 +36,8 @@ public class NewsClassManagerFragment extends Fragment {
         mTablayout = view.findViewById(R.id.class_tab_layout);
         mTablayout.setupWithViewPager(mViewPager);
 
+        //init fragments
+        //TODO
         for(String className : classNamesArray) {
             mFragmensts.add(NewsListFragment.newInstance(className));
             classNames.add(className);
@@ -58,6 +60,7 @@ public class NewsClassManagerFragment extends Fragment {
         });
         return view;
     }
+
     private void initClassChooseWindow(LayoutInflater inflater) {
         View view = inflater.inflate(R.layout.classchooser_layout, null);
         //first

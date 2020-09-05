@@ -14,10 +14,10 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".NewsTextPage.NewsTextActivity">
-        </activity>
-        <activity android:name=".ExpertDetailActivity"></activity>
-        <activity android:name=".NewsList.MainActivity">
+        <activity android:name=".NewsTextPage.NewsTextActivity"/>
+        <activity android:name=".ExpertDetailActivity"/>
+        <activity android:name=".SearchPage.SearchPageActivity"/>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER"/>
