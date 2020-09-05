@@ -1,4 +1,4 @@
-package com.example.news_android.NewsTextPage;
+package com.example.news_android.DetailPage;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;

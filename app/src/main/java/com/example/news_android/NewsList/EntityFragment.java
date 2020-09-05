@@ -68,12 +68,22 @@ public class EntityFragment extends NewsListFragment
             entities[0]=new ArrayList<Entity>();
         }
         final EntityListAdapter entityListAdapter=new EntityListAdapter(entities[0]);
+        final JsonGetterFinishListener listener=new JsonGetterFinishListener()
+        {
+            @Override
+            public void OnFinish()
+            {
+                entities[0] =repo.getEntityBySearchInput(searchInput);
+                entityListAdapter.notifyDataSetChanged();
+            }
+        };
         RefreshLayout refreshLayout = view.findViewById(R.id.refreshLayout);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 //refresh news
                 System.out.println("refresh");
+                Utils.UpdateEntityDatabase(getContext(),searchInput,listener);
                 entities[0] =repo.getEntityBySearchInput(searchInput);
                 entityListAdapter.notifyDataSetChanged();
                 refreshLayout.finishRefresh(100);
@@ -90,15 +100,7 @@ public class EntityFragment extends NewsListFragment
         //newsListView init
         newsListView = view.findViewById(R.id.news_list_view);
 
-        JsonGetterFinishListener listener=new JsonGetterFinishListener()
-        {
-            @Override
-            public void OnFinish()
-            {
-                entities[0] =repo.getEntityBySearchInput(searchInput);
-                entityListAdapter.notifyDataSetChanged();
-            }
-        };
+
 
         Utils.UpdateEntityDatabase(getContext(),searchInput,listener);
         newsListView.setLayoutManager(new LinearLayoutManager(this.getContext()));

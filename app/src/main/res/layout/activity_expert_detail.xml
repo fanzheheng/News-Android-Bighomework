@@ -1,146 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ExpertDetailActivity">
+    android:orientation="vertical"
+    tools:context=".DetailPage.ExpertDetailActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp">
+            android:layout_height="150dp"
+            android:orientation="horizontal">
 
-            <LinearLayout
+        <ImageView
+                android:id="@+id/iv_expert_avatar"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:padding="10dp"
+                tools:layout_editor_absoluteX="60dp"
+                tools:layout_editor_absoluteY="69dp"
+                tools:srcCompat="@tools:sample/avatars" />
+
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/iv_expert_avatar"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:padding="10dp"
-                    tools:layout_editor_absoluteX="60dp"
-                    tools:layout_editor_absoluteY="69dp"
-                    tools:srcCompat="@tools:sample/avatars" />
+            <TextView
+                    android:id="@+id/tv_expert_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="123dp"
+                    android:layout_weight="1"
+                    android:padding="5dp"
+                    android:text="TextView"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
-                <LinearLayout
+            <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_weight="1"
+                    android:background="#FFFFFF">
+
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/tv_expert_name"
+                            android:id="@+id/tv_expert_activity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#FFFFFF"
+                            android:padding="5dp"
+                            android:text="gIndex: 18dp"
+                            android:textSize="14sp" />
+
+                    <TextView
+                            android:id="@+id/tv_expert_citations"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="TextView"
+                            android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="123dp"
-                        android:layout_weight="1"
-                        android:padding="5dp"
-                        android:text="TextView"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:layout_height="match_parent">
 
-                    <TableLayout
+                    <TextView
+                            android:id="@+id/tv_expert_diversity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#FFFFFF"
+                            android:padding="5dp"
+                            android:text="gIndex: 18dp"
+                            android:textSize="14sp" />
+
+                    <TextView
+                            android:id="@+id/tv_expert_gindex"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#FFFFFF"
+                            android:padding="5dp"
+                            android:text="gIndex: 18dp"
+                            android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="#FFFFFF">
+                        android:layout_height="match_parent">
 
-                        <TableRow
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                    <TextView
+                            android:id="@+id/tv_expert_hindex"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#FFFFFF"
+                            android:padding="5dp"
+                            android:text="gIndex: 18dp"
+                            android:textSize="14sp" />
 
-                            <TextView
-                                android:id="@+id/tv_expert_activity"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="#FFFFFF"
-                                android:padding="5dp"
-                                android:text="gIndex: 18dp"
-                                android:textSize="14sp" />
+                    <TextView
+                            android:id="@+id/tv_expert_sociability"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#FFFFFF"
+                            android:padding="5dp"
+                            android:text="gIndex: 18dp"
+                            android:textSize="14sp" />
+                </TableRow>
 
-                            <TextView
-                                android:id="@+id/tv_expert_citations"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:padding="5dp"
-                                android:text="TextView"
-                                android:textSize="14sp" />
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+            </TableLayout>
 
-                        </TableRow>
+        </LinearLayout>
 
-                        <TableRow
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+    </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/tv_expert_diversity"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="#FFFFFF"
-                                android:padding="5dp"
-                                android:text="gIndex: 18dp"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/tv_expert_gindex"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="#FFFFFF"
-                                android:padding="5dp"
-                                android:text="gIndex: 18dp"
-                                android:textSize="14sp" />
-                        </TableRow>
-
-                        <TableRow
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <TextView
-                                android:id="@+id/tv_expert_hindex"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="#FFFFFF"
-                                android:padding="5dp"
-                                android:text="gIndex: 18dp"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/tv_expert_sociability"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="#FFFFFF"
-                                android:padding="5dp"
-                                android:text="gIndex: 18dp"
-                                android:textSize="14sp" />
-                        </TableRow>
-
-                        <TableRow
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-                    </TableLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </FrameLayout>
-
-        <ScrollView
+    <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="10dp">
 
-                <TextView
+            <TextView
                     android:id="@+id/tv_expert_position_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -149,14 +138,14 @@
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
-                <TextView
+            <TextView
                     android:id="@+id/tv_expert_position"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     android:textSize="18sp" />
 
-                <TextView
+            <TextView
                     android:id="@+id/tv_expert_affiliation_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -165,14 +154,14 @@
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
-                <TextView
+            <TextView
                     android:id="@+id/tv_expert_affiliation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     android:textSize="18sp" />
 
-                <TextView
+            <TextView
                     android:id="@+id/tv_expert_edu_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -181,14 +170,14 @@
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
-                <TextView
+            <TextView
                     android:id="@+id/tv_expert_edu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     android:textSize="18sp" />
 
-                <TextView
+            <TextView
                     android:id="@+id/tv_expert_bio_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -197,15 +186,13 @@
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
-                <TextView
+            <TextView
                     android:id="@+id/tv_expert_bio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     android:textSize="18sp" />
-            </LinearLayout>
-        </ScrollView>
-
-    </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

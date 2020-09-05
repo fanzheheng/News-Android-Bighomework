@@ -59,10 +59,7 @@ public class Utils
         if (map == null) return str;
 
         Set<String> keys = map.keySet();
-        Iterator<String> it = keys.iterator();
-        while (it.hasNext())
-        {
-            String k = it.next();
+        for (String k : keys) {
             str += k;
             str += strSeparator;
             str += map.get(k);
@@ -194,10 +191,12 @@ public class Utils
         EntityJsonGetter jsonGetter=new EntityJsonGetter(entityURL+"?entity="+label,context,listener);
         jsonGetter.execute();
     }
-    public static void UpdateExpertDatabase(Context context,JsonGetter.JsonGetterFinishListener listener)
+
+    public static JsonGetter UpdateExpertDatabase(Context context,JsonGetter.JsonGetterFinishListener listener)
     {
         ExpertJsonGetter jsonGetter=new ExpertJsonGetter(expertURL,context,listener);
         jsonGetter.execute();
+        return jsonGetter;
     }
     public static void UpdateEpidemicDatabase(Context context,JsonGetter.JsonGetterFinishListener listener)
     {

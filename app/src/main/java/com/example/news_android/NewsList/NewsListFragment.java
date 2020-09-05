@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.news_android.JsonGetter;
 import com.example.news_android.R;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
@@ -17,6 +18,8 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 public class NewsListFragment extends Fragment {
     final String className;
     RecyclerView newsListView;
+    protected JsonGetter jsonGetter;
+
     protected NewsListFragment(String className) {
         this.className = className;
     }

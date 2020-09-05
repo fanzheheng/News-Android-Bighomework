@@ -37,6 +37,11 @@ public class JsonGetter extends AsyncTask
     String url;
     Context context;
     JsonGetterFinishListener finishListener=null;
+    Boolean result = true;
+
+    public Boolean getResult() {
+        return result;
+    }
 
     public interface  JsonGetterFinishListener
     {
@@ -83,15 +88,9 @@ public class JsonGetter extends AsyncTask
             String builder = buffer.toString();
             jsonObject = new JSONObject(builder);
 
-        } catch (MalformedURLException e)
+        } catch (Exception e)
         {
-            e.printStackTrace();
-        } catch (JSONException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e)
-        {
-            e.printStackTrace();
+            result = false;
         }
         System.out.println(jsonObject);
         return jsonObject;

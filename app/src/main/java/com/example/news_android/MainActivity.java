@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
 
+import android.view.View;
+import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -20,12 +22,8 @@ import com.example.news_android.DataBase.EpidemicRepo;
 import com.example.news_android.DataBase.Expert;
 import com.example.news_android.DataBase.ExpertRepo;
 import com.example.news_android.DataBase.ImageRepo;
-import com.example.news_android.NewsList.EpidemicDataFragment;
-import com.example.news_android.NewsList.ExpertFragment;
-import com.example.news_android.NewsList.NewsClassFragmentPagerAdapter;
-import com.example.news_android.NewsList.NewsListFragment;
+import com.example.news_android.SearchPage.SearchPageActivity;
 import com.google.android.material.tabs.TabLayout;
-import com.example.news_android.DataBase.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -34,16 +32,12 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
-    private ViewPager mViewPager;
-    private TabLayout mTablayout;
-
     public void printImageDB()
     {
         ImageRepo repo = new ImageRepo(this);
         ArrayList<String> urlList = repo.getImageURLList();
-        for (int i = 0; i < urlList.size(); i++)
-        {
-            System.out.println(urlList.get(i));
+        for (String s : urlList) {
+            System.out.println(s);
         }
         System.out.println("_________");
     }
@@ -53,9 +47,8 @@ public class MainActivity extends AppCompatActivity
         EntityRepo repo = new EntityRepo(this);
         repo.clearTable();
         ArrayList<Entity> list = repo.getEntityList();
-        for (int i = 0; i < list.size(); i++)
-        {
-            System.out.println(list.get(i).label);
+        for (Entity entity : list) {
+            System.out.println(entity.label);
         }
         System.out.println("_________");
     }
@@ -65,9 +58,8 @@ public class MainActivity extends AppCompatActivity
         EpidemicRepo repo=new EpidemicRepo(this);
         repo.clearTable();
         ArrayList<EpidemicData> list = repo.getEpidemicList();
-        for (int i = 0; i < list.size(); i++)
-        {
-            System.out.println(list.get(i).district);
+        for (EpidemicData epidemicData : list) {
+            System.out.println(epidemicData.district);
         }
         System.out.println("_________");
     }
@@ -78,9 +70,8 @@ public class MainActivity extends AppCompatActivity
         ExpertRepo repo=new ExpertRepo(this);
         repo.clearTable();
         ArrayList<Expert> list = repo.getExpertList();
-        for (int i = 0; i < list.size(); i++)
-        {
-            System.out.println(list.get(i).nameZh);
+        for (Expert expert : list) {
+            System.out.println(expert.nameZh);
         }
         System.out.println("_________");
     }
@@ -101,64 +92,40 @@ public class MainActivity extends AppCompatActivity
         printEntityDB();
         printEpidemicDB();
         printExpertDB();
-        //JsonGetter jsonGetter = new NewsEventJsonGetter(Utils.newsEventURL,this);
-        //JsonGetter jsonGetter = new NewsContentJsonGetter(Utils.newsContentURL,this);
-        //JsonGetter jsonGetter = new EntityJsonGetter(Utils.entityURL, this);
-        //JsonGetter jsonGetter = new ExpertJsonGetter(Utils.expertURL,this);
-        //JsonGetter jsonGetter=new EpidemicDataJsonGetter(Utils.countryURL,this);
-        //jsonGetter.execute();
 
-        //viewPager
-        mViewPager = findViewById(R.id.viewPager);
-        mTablayout = findViewById(R.id.class_tab_layout);
-        mTablayout.setupWithViewPager(mViewPager);
-
-
-
-        //String[] classNames = new String[]{"event"};
-//        for (String className : classNames)
-//        {
-//            mFragmensts.add(NewsListFragment.newInstance(className));
-//        }
-//        mFragmensts.add(EpidemicDataFragment.newInstance("Epidemic Data"));
-//        mFragmensts.add(ExpertFragment.newInstance("Expert List"));
-
-        //mViewPager.setAdapter(new NewsClassFragmentPagerAdapter(getSupportFragmentManager(), mFragmensts));
+        Button searchButton = findViewById(R.id.search_open_button);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SearchPageActivity.class);
+                startActivity(intent);
+            }
+        });
 
 //        Intent intent=new Intent(this,ExpertDetailActivity.class);
 //        intent.putExtra(Expert.idKey,"53f4495cdabfaeb22f4cc34d");
 //        startActivity(intent);
     }
 
-    public boolean requestPermission(String[] permissions)
+    public void requestPermission(String[] permissions)
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
             // 检查权限是否获取（android6.0及以上系统可能默认关闭权限，且没提示）
             PackageManager pm = getPackageManager();
             List<String> list = new LinkedList<>();
-            for (int i = 0; i < permissions.length; i++)
-            {
-                if (pm.checkPermission(permissions[i], getPackageName()) == PackageManager.PERMISSION_DENIED)
-                {
-                    Log.e("lzh", permissions[i] + ": PERMISSION_DENIED");
-                    list.add(permissions[i]);
-                } else
-                {
-                    Log.e("lzh", permissions[i] + ": good");
+            for (String permission : permissions) {
+                if (pm.checkPermission(permission, getPackageName()) == PackageManager.PERMISSION_DENIED) {
+                    Log.e("lzh", permission + ": PERMISSION_DENIED");
+                    list.add(permission);
+                } else {
+                    Log.e("lzh", permission + ": good");
                 }
             }
             if (list.size() != 0)
             {
                 requestPermissions(list.toArray(new String[list.size()]), 100);
-                return false;
-            } else
-            {
-                return true;
             }
-        } else
-        {
-            return true;
         }
     }
 

@@ -10,8 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.news_android.DataBase.EpidemicRepo;
-import com.example.news_android.DataBase.Expert;
 import com.example.news_android.DataBase.ExpertRepo;
 import com.example.news_android.JsonGetter;
 import com.example.news_android.R;
@@ -49,6 +47,8 @@ public class ExpertFragment extends NewsListFragment
         super.onCreate(savedInstanceState);
     }
 
+    RefreshLayout refreshLayout;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -62,13 +62,14 @@ public class ExpertFragment extends NewsListFragment
         ids[0] = idList[0].toArray(new String[0]);
         final ExpertListAdapter expertListAdapter=new ExpertListAdapter(ids[0]);
 
-        RefreshLayout refreshLayout = view.findViewById(R.id.refreshLayout);
+        refreshLayout = view.findViewById(R.id.refreshLayout);
+
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+            public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
                 //refresh news
                 System.out.println("refresh");
-                JsonGetter.JsonGetterFinishListener listener=new JsonGetter.JsonGetterFinishListener()
+                JsonGetter.JsonGetterFinishListener refreshFinishListener = new JsonGetter.JsonGetterFinishListener()
                 {
                     @Override
                     public void OnFinish()
@@ -77,10 +78,10 @@ public class ExpertFragment extends NewsListFragment
                         ids[0] =idList.toArray(new String[0]);
                         expertListAdapter.setIds(ids[0]);
                         expertListAdapter.notifyDataSetChanged();
+                        refreshLayout.finishRefresh(2000, jsonGetter.getResult(), !jsonGetter.getResult());
                     }
                 };
-                Utils.UpdateExpertDatabase(getContext(),listener);
-                refreshLayout.finishRefresh(100);
+                jsonGetter = Utils.UpdateExpertDatabase(getContext(),refreshFinishListener);
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
