@@ -20,6 +20,7 @@ public class Entity
     public static final String childrenKey="children";
     public static final String imgURLKey="img";
     public static final String forwardKey="forward";
+    
 
     public void setLabel(String label)
     {

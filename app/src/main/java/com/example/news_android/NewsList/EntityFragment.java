@@ -75,6 +75,7 @@ public class EntityFragment extends NewsListFragment
                 //refresh news
                 System.out.println("refresh");
                 entities[0] =repo.getEntityBySearchInput(searchInput);
+                entityListAdapter.setEntities(entities[0]);
                 entityListAdapter.notifyDataSetChanged();
                 refreshLayout.finishRefresh(100);
             }
@@ -96,6 +97,7 @@ public class EntityFragment extends NewsListFragment
             public void OnFinish()
             {
                 entities[0] =repo.getEntityBySearchInput(searchInput);
+                entityListAdapter.setEntities(entities[0]);
                 entityListAdapter.notifyDataSetChanged();
             }
         };

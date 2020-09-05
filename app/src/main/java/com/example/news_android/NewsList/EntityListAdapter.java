@@ -33,6 +33,11 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.En
         this.entities=entities;
     }
 
+    public void setEntities(ArrayList<Entity> entities)
+    {
+        this.entities = entities;
+    }
+
     @NonNull
     @Override
     public EntityViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
