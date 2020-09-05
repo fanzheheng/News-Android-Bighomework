@@ -58,9 +58,9 @@ public class ImageRepo
 
         values.put(Image.imgURLKey, url);
         values.put(Image.imgContentKey, Utils.getBytesFromBitmap(img));
-        if(getImageByURL(url)==null)
-            db.insert(Image.TABLE, null, values);
+        db.insert(Image.TABLE, null, values);
         db.close();
+
     }
 
     public void clearTable()
@@ -127,10 +127,8 @@ public class ImageRepo
         } else
         {
             cursor.close();
-            db.close();
             return null;
         }
-        cursor.close();
         db.close();
         return res;
     }

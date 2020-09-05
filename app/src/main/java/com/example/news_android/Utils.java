@@ -2,6 +2,7 @@ package com.example.news_android;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -18,12 +19,12 @@ import java.util.Set;
 
 public class Utils
 {
-    public static String countryURL = "https://covid-dashboard.aminer.cn/api/dist/epidemic.json";
+    public static String epidemicURL = "https://covid-dashboard.aminer.cn/api/dist/epidemic.json";
 
     public static String newsEventURL = "https://covid-dashboard.aminer.cn/api/events/list";
 
     public static String newsContentURL = "https://covid-dashboard.aminer.cn/api/event/5f05f3f69fced0a24b2f84ee";//this one is just for test
-    public static String entityURL = "https://innovaapi.aminer.cn/covid/api/v1/pneumonia/entityquery?entity=病毒";//this one is just for test
+    public static String entityURL = "https://innovaapi.aminer.cn/covid/api/v1/pneumonia/entityquery";
     public static String expertURL = "https://innovaapi.aminer.cn/predictor/api/v1/valhalla/highlight/get_ncov_expers_list?v=2";
 
     public static String strSeparator = "__,__";
@@ -172,6 +173,36 @@ public class Utils
     public static Bitmap getImageFromBytes(byte[] image)
     {
         return BitmapFactory.decodeByteArray(image, 0, image.length);
+    }
+
+    public static void UpdateNewsDatabase(Context context,JsonGetter.JsonGetterFinishListener listener,boolean readNewest)
+    {
+        NewsEventJsonGetter jsonGetter=new NewsEventJsonGetter(newsEventURL,context,listener);
+        int tmpPage=NewsEventJsonGetter.page;
+        if(readNewest)
+        {
+            NewsEventJsonGetter.updatePage(1);
+        }
+        jsonGetter.execute();
+        if(readNewest)
+        {
+            NewsEventJsonGetter.updatePage(tmpPage);
+        }
+    }
+    public static void UpdateEntityDatabase(Context context,String label, JsonGetter.JsonGetterFinishListener listener)
+    {
+        EntityJsonGetter jsonGetter=new EntityJsonGetter(entityURL+"?entity="+label,context,listener);
+        jsonGetter.execute();
+    }
+    public static void UpdateExpertDatabase(Context context,JsonGetter.JsonGetterFinishListener listener)
+    {
+        ExpertJsonGetter jsonGetter=new ExpertJsonGetter(expertURL,context,listener);
+        jsonGetter.execute();
+    }
+    public static void UpdateEpidemicDatabase(Context context,JsonGetter.JsonGetterFinishListener listener)
+    {
+        EpidemicDataJsonGetter jsonGetter=new EpidemicDataJsonGetter(epidemicURL,context,listener);
+        jsonGetter.execute();
     }
 
 }

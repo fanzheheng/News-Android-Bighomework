@@ -1,5 +1,4 @@
 package com.example.news_android.NewsList;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;

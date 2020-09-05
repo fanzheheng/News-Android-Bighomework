@@ -26,6 +26,11 @@ public class EpidemicListAdapter extends RecyclerView.Adapter<EpidemicListAdapte
 {
     String[] districts;
 
+    public void setDistricts(String[] districts)
+    {
+        this.districts = districts;
+    }
+
     public EpidemicListAdapter(String[] districts)
     {
         this.districts = districts;

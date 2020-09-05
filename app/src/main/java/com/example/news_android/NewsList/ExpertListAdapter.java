@@ -33,6 +33,11 @@ public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.Ex
 {
     String[] ids;
 
+    public void setIds(String[] ids)
+    {
+        this.ids = ids;
+    }
+
     public ExpertListAdapter(String[] ids)
     {
         this.ids=ids;

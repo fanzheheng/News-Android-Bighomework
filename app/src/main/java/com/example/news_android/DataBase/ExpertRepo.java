@@ -37,11 +37,8 @@ public class ExpertRepo
         values.put(Expert.eduKey,expert.edu);
         values.put(Expert.positionKey,expert.position);
         values.put(Expert.workKey,expert.work);
-
-        if(getExpertById(expert.id)==null)
-            db.insert(Expert.TABLE,null,values);
-        else
-            update(expert);
+        db.insert(Expert.TABLE,null,values);
+        update(expert);
         db.close();
     }
 

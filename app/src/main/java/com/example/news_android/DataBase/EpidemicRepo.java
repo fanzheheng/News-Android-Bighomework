@@ -30,10 +30,8 @@ public class EpidemicRepo
         values.put(EpidemicData.countryKey, epidemic.country);
         values.put(EpidemicData.provinceKey, epidemic.province);
         values.put(EpidemicData.cityKey, epidemic.city);
-        if (getEpidemicByDistrict(epidemic.district) == null)
-            db.insert(EpidemicData.TABLE, null, values);
-        else
-            update(epidemic);
+        db.insert(EpidemicData.TABLE, null, values);
+        update(epidemic);
         db.close();
     }
 
@@ -277,9 +275,9 @@ public class EpidemicRepo
         String selectQuery = "SELECT " +
                 EpidemicData.provinceKey +" FROM " + EpidemicData.TABLE +
                 " WHERE " +
-                EpidemicData.countryKey + "=? AND "+EpidemicData.cityKey+"=?";
+                EpidemicData.countryKey + "=? AND "+EpidemicData.cityKey+"=? AND "+EpidemicData.provinceKey+" !=?" ;
         ArrayList<String>res=new ArrayList<String>();
-        Cursor cursor = db.rawQuery(selectQuery, new String[]{"China",""});
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{"China","",""});
         if(cursor.moveToFirst())
         {
             do

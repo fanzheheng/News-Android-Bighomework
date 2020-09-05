@@ -44,8 +44,13 @@ public class NewsClassManagerFragment extends Fragment {
         //now we add expert and epidemic lists
         String expertClassName="Expert List";
         String epidemicClassName="Epidemic Data";
+        String entityClassName="Entity List";
         mFragmensts.add(new ExpertFragment(expertClassName));
         mFragmensts.add(new EpidemicDataFragment(epidemicClassName));
+        mFragmensts.add(new EntityFragment(entityClassName,"病毒"));
+        classNames.add(entityClassName);
+        classNames.add(expertClassName);
+        classNames.add(epidemicClassName);
 
         mViewPager.setAdapter(new NewsClassFragmentPagerAdapter(getChildFragmentManager(), mFragmensts));
 

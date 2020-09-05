@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity
     public void printEntityDB()
     {
         EntityRepo repo = new EntityRepo(this);
+        repo.clearTable();
         ArrayList<Entity> list = repo.getEntityList();
         for (int i = 0; i < list.size(); i++)
         {
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity
     public void printEpidemicDB()
     {
         EpidemicRepo repo=new EpidemicRepo(this);
+        repo.clearTable();
         ArrayList<EpidemicData> list = repo.getEpidemicList();
         for (int i = 0; i < list.size(); i++)
         {
@@ -71,7 +73,9 @@ public class MainActivity extends AppCompatActivity
 
     public void printExpertDB()
     {
+
         ExpertRepo repo=new ExpertRepo(this);
+        repo.clearTable();
         ArrayList<Expert> list = repo.getExpertList();
         for (int i = 0; i < list.size(); i++)
         {
@@ -99,9 +103,9 @@ public class MainActivity extends AppCompatActivity
         //JsonGetter jsonGetter = new NewsEventJsonGetter(Utils.newsEventURL,this);
         //JsonGetter jsonGetter = new NewsContentJsonGetter(Utils.newsContentURL,this);
         //JsonGetter jsonGetter = new EntityJsonGetter(Utils.entityURL, this);
-        JsonGetter jsonGetter = new ExpertJsonGetter(Utils.expertURL,this);
+        //JsonGetter jsonGetter = new ExpertJsonGetter(Utils.expertURL,this);
         //JsonGetter jsonGetter=new EpidemicDataJsonGetter(Utils.countryURL,this);
-        jsonGetter.execute();
+        //jsonGetter.execute();
 
         //viewPager
         mViewPager = findViewById(R.id.viewPager);

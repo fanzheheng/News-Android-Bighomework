@@ -29,8 +29,7 @@ public class EntityRepo
         values.put(Entity.parentsKey,Utils.convertArrayToString(entity.parents));
         values.put(Entity.propertiesKey,Utils.convertHashMapToString(entity.properties));
         values.put(Entity.zhwikiKey,entity.zhwiki);
-        if(getEntityByLabel(entity.label)==null)
-            db.insert(Entity.TABLE,null,values);
+        db.insert(Entity.TABLE,null,values);
         db.close();
     }
 
@@ -144,4 +143,48 @@ public class EntityRepo
         return entity;
     }
 
+    public ArrayList<Entity>getEntityBySearchInput(String searchInput)
+    {
+        SQLiteDatabase db=dbHelper.getWritableDatabase();
+        String selectQuery="SELECT "+
+                Entity.baiduKey+","+
+                Entity.childrenKey+","+
+                Entity.imgURLKey+","+
+                Entity.labelKey+","+
+                Entity.parentsKey+","+
+                Entity.enwikiKey+","+
+                Entity.zhwikiKey+","+
+                Entity.urlKey+","+
+                Entity.propertiesKey+" FROM "+Entity.TABLE+
+                " WHERE " +
+                Entity.labelKey + " LIKE "+"'%"+searchInput+"%'";
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{});
+        ArrayList<Entity>res=new ArrayList<Entity>();
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                Entity entity=new Entity();
+                entity.setBaidu(cursor.getString(cursor.getColumnIndex(Entity.baiduKey)));
+                entity.setChildren(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(Entity.childrenKey))));
+                entity.setEnwiki(cursor.getString(cursor.getColumnIndex(Entity.enwikiKey)));
+                entity.setImgURL(cursor.getString(cursor.getColumnIndex(Entity.imgURLKey)));
+                entity.setLabel(cursor.getString(cursor.getColumnIndex(Entity.labelKey)));
+                entity.setParents(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(Entity.parentsKey))));
+                entity.setProperties(Utils.convertStringToHashMap(cursor.getString(cursor.getColumnIndex(Entity.propertiesKey))));
+                entity.setUrl(cursor.getString(cursor.getColumnIndex(Entity.urlKey)));
+                entity.setZhwiki(cursor.getString(cursor.getColumnIndex(Entity.zhwikiKey)));
+                res.add(entity);
+            } while (cursor.moveToNext());
+        }
+        else
+        {
+            cursor.close();
+            db.close();
+            return null;
+        }
+        cursor.close();
+        db.close();
+        return res;
+    }
 }

@@ -1,17 +1,19 @@
 package com.example.news_android.NewsList;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.example.news_android.DataBase.EpidemicRepo;
+import com.example.news_android.DataBase.Entity;
+import com.example.news_android.DataBase.EntityRepo;
+import com.example.news_android.DataBase.ExpertRepo;
 import com.example.news_android.JsonGetter;
 import com.example.news_android.R;
 import com.example.news_android.Utils;
@@ -20,23 +22,26 @@ import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
+import com.example.news_android.JsonGetter.*;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link EpidemicDataFragment#newInstance} factory method to
+ * Use the {@link EntityFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EpidemicDataFragment extends NewsListFragment
+public class EntityFragment extends NewsListFragment
 {
 
-    protected EpidemicDataFragment(String className)
+    String searchInput;
+    protected EntityFragment(String className,String searchInput)
     {
         super(className);
+        this.searchInput=searchInput;
     }
 
-    public static EpidemicDataFragment newInstance(String className)
+    public static EntityFragment newInstance(String className,String searchInput)
     {
-        EpidemicDataFragment fragment = new EpidemicDataFragment(className);
+        EntityFragment fragment = new EntityFragment(className,searchInput);
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -54,45 +59,23 @@ public class EpidemicDataFragment extends NewsListFragment
     {
         System.out.println(className + "CreateView!!");
         View view = inflater.inflate(R.layout.fragment_news_list, container, false);
+        final ArrayList<Entity>[] entities = new ArrayList[]{new ArrayList<Entity>()};
 
-        final String[][] districts = {{}};
-        final EpidemicRepo repo=new EpidemicRepo(this.getContext());
-
-        ArrayList<String>provinces=repo.getAllChineseProvinceName();
-        ArrayList<String>countries=repo.getAllCountryName();
-        for(int i=0;i<provinces.size();i++)
+        final EntityRepo repo=new EntityRepo(getContext());
+        entities[0] =repo.getEntityBySearchInput(searchInput);
+        if(entities[0]==null)
         {
-            provinces.set(i,"China|"+provinces.get(i));
+            entities[0]=new ArrayList<Entity>();
         }
-        provinces.addAll(countries);
-        districts[0] =provinces.toArray(new String[0]);
-        final EpidemicListAdapter epidemicAdapter=new EpidemicListAdapter(districts[0]);
-
+        final EntityListAdapter entityListAdapter=new EntityListAdapter(entities[0]);
         RefreshLayout refreshLayout = view.findViewById(R.id.refreshLayout);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 //refresh news
                 System.out.println("refresh");
-
-                JsonGetter.JsonGetterFinishListener listener=new JsonGetter.JsonGetterFinishListener()
-                {
-                    @Override
-                    public void OnFinish()
-                    {
-                        ArrayList<String>provinces=repo.getAllChineseProvinceName();
-                        ArrayList<String>countries=repo.getAllCountryName();
-                        for(int i=0;i<provinces.size();i++)
-                        {
-                            provinces.set(i,"China|"+provinces.get(i));
-                        }
-                        provinces.addAll(countries);
-                        districts[0] =provinces.toArray(new String[0]);
-                        epidemicAdapter.setDistricts(districts[0]);
-                        epidemicAdapter.notifyDataSetChanged();
-                    }
-                };
-                Utils.UpdateEpidemicDatabase(getContext(),listener);
+                entities[0] =repo.getEntityBySearchInput(searchInput);
+                entityListAdapter.notifyDataSetChanged();
                 refreshLayout.finishRefresh(100);
             }
         });
@@ -107,10 +90,19 @@ public class EpidemicDataFragment extends NewsListFragment
         //newsListView init
         newsListView = view.findViewById(R.id.news_list_view);
 
+        JsonGetterFinishListener listener=new JsonGetterFinishListener()
+        {
+            @Override
+            public void OnFinish()
+            {
+                entities[0] =repo.getEntityBySearchInput(searchInput);
+                entityListAdapter.notifyDataSetChanged();
+            }
+        };
 
-
+        Utils.UpdateEntityDatabase(getContext(),searchInput,listener);
         newsListView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        newsListView.setAdapter(epidemicAdapter);
+        newsListView.setAdapter(entityListAdapter);
         //add divider
         newsListView.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL));
         return view;

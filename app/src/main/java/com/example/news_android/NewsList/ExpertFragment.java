@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.news_android.DataBase.EpidemicRepo;
 import com.example.news_android.DataBase.Expert;
 import com.example.news_android.DataBase.ExpertRepo;
+import com.example.news_android.JsonGetter;
 import com.example.news_android.R;
+import com.example.news_android.Utils;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
@@ -53,12 +55,31 @@ public class ExpertFragment extends NewsListFragment
     {
         System.out.println(className + "CreateView!!");
         View view = inflater.inflate(R.layout.fragment_news_list, container, false);
+
+        final String[][] ids = {{}};
+        final ExpertRepo repo=new ExpertRepo(getContext());
+        final ArrayList<String>[] idList = new ArrayList[]{repo.getAllExpertId()};//now we get all expert id (dead or alive)
+        ids[0] = idList[0].toArray(new String[0]);
+        final ExpertListAdapter expertListAdapter=new ExpertListAdapter(ids[0]);
+
         RefreshLayout refreshLayout = view.findViewById(R.id.refreshLayout);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 //refresh news
                 System.out.println("refresh");
+                JsonGetter.JsonGetterFinishListener listener=new JsonGetter.JsonGetterFinishListener()
+                {
+                    @Override
+                    public void OnFinish()
+                    {
+                        ArrayList<String>idList=repo.getAllExpertId();//now we get all expert id (dead or alive)
+                        ids[0] =idList.toArray(new String[0]);
+                        expertListAdapter.setIds(ids[0]);
+                        expertListAdapter.notifyDataSetChanged();
+                    }
+                };
+                Utils.UpdateExpertDatabase(getContext(),listener);
                 refreshLayout.finishRefresh(100);
             }
         });
@@ -72,14 +93,7 @@ public class ExpertFragment extends NewsListFragment
         });
         //newsListView init
         newsListView = view.findViewById(R.id.news_list_view);
-        String[]ids={};
 
-        ExpertRepo repo=new ExpertRepo(getContext());
-
-        ArrayList<String>idList=repo.getAllExpertId();//now we get all expert id (dead or alive)
-        ids=idList.toArray(new String[0]);
-
-        ExpertListAdapter expertListAdapter=new ExpertListAdapter(ids);
 
         newsListView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         newsListView.setAdapter(expertListAdapter);

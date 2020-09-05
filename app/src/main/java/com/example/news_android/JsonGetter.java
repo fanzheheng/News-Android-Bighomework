@@ -36,17 +36,32 @@ public class JsonGetter extends AsyncTask
 {
     String url;
     Context context;
+    JsonGetterFinishListener finishListener=null;
+
+    public interface  JsonGetterFinishListener
+    {
+        void OnFinish();
+    }
 
     public JsonGetter(String url, Context context)
     {
         this.url = url;
         this.context = context;
+        this.finishListener=null;
+    }
+    public JsonGetter(String url, Context context,JsonGetterFinishListener listener)
+    {
+        this.url = url;
+        this.context = context;
+        this.finishListener=listener;
     }
 
     @Override
     protected void onPostExecute(Object o)
     {
         super.onPostExecute(o);
+        if(finishListener!=null)
+            finishListener.OnFinish();
     }
 
     @Override
@@ -90,7 +105,10 @@ class EpidemicDataJsonGetter extends JsonGetter
     {
         super(url, context);
     }
-
+    public EpidemicDataJsonGetter(String url, Context context,JsonGetterFinishListener listener)
+    {
+        super(url, context,listener);
+    }
     static JSONObject epidemicDataJson = null;
     @Override
     protected JSONObject doInBackground(Object[] objects)
@@ -126,7 +144,10 @@ class EpidemicDataJsonGetter extends JsonGetter
                     epidemicData.cured.add(numArray.getInt(2));
                     epidemicData.dead.add(numArray.getInt(3));
                 }
-                repo.insert(epidemicData);
+                if(repo.getEpidemicByDistrict(epidemicData.district)==null)
+                    repo.insert(epidemicData);
+                else
+                    repo.update(epidemicData);
 
             } catch (JSONException e)
             {
@@ -167,6 +188,10 @@ class NewsEventJsonGetter extends JsonGetter
     public NewsEventJsonGetter(String url, Context context)
     {
         super(url + "?type=" + type + "&page=" + page + "&size=" + size, context);
+    }
+    public NewsEventJsonGetter(String url, Context context,JsonGetterFinishListener listener)
+    {
+        super(url + "?type=" + type + "&page=" + page + "&size=" + size, context,listener);
     }
 
     static JSONObject newsEventJson = null;
@@ -228,6 +253,11 @@ class NewsContentJsonGetter extends JsonGetter
         this.news = news;
     }
 
+    public NewsContentJsonGetter(String url, Context context,JsonGetterFinishListener listener)
+    {
+        super(url, context,listener);
+    }
+
     News news;
     static JSONObject newsContentJson = null;
 
@@ -277,7 +307,10 @@ class EntityJsonGetter extends JsonGetter
     {
         super(url, context);
     }
-
+    public EntityJsonGetter(String url, Context context,JsonGetterFinishListener listener)
+    {
+        super(url, context,listener);
+    }
     static JSONObject entityJson = null;
     static JSONArray entityJsonArray = null;
 
@@ -360,7 +393,10 @@ class EntityJsonGetter extends JsonGetter
                     entity.setImgURL(imgUrl);
                     if(imgUrl!=null&&imageRepo.getImageByURL(imgUrl)==null)
                         imgDownloader.download(imgUrl, true);
-                    entityRepo.insert(entity);
+                    if(entityRepo.getEntityByLabel(entity.label)==null)
+                        entityRepo.insert(entity);
+                    else
+                        entityRepo.update(entity);
                 } catch (JSONException e)
                 {
                     e.printStackTrace();
@@ -384,7 +420,10 @@ class ExpertJsonGetter extends JsonGetter
     {
         super(url, context);
     }
-
+    public ExpertJsonGetter(String url, Context context,JsonGetterFinishListener listener)
+    {
+        super(url, context,listener);
+    }
     static JSONObject expertJson = null;
     static JSONArray expertJsonArray = null;
 
@@ -478,7 +517,8 @@ class ExpertJsonGetter extends JsonGetter
                     }
                     if(imageRepo.getImageByURL(expert.avatar)==null)
                         imageDownloader.download(expert.avatar,true);
-                    repo.insert(expert);
+                    if(repo.getExpertById(expert.id)==null)
+                        repo.insert(expert);
                 } catch (JSONException e)
                 {
                     e.printStackTrace();

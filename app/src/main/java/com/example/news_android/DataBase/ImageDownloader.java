@@ -25,7 +25,6 @@ import java.util.Set;
  */
 public class ImageDownloader
 {
-
     private OnImageLoaderListener mImageLoaderListener;
     private Set<String> mUrlsInProgress = new HashSet<>();
     private final String TAG = this.getClass().getSimpleName();
