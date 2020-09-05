@@ -2,7 +2,6 @@ package com.example.news_android;
 
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
@@ -22,8 +21,8 @@ import com.example.news_android.DataBase.EpidemicRepo;
 import com.example.news_android.DataBase.Expert;
 import com.example.news_android.DataBase.ExpertRepo;
 import com.example.news_android.DataBase.ImageRepo;
-import com.example.news_android.SearchPage.SearchPageActivity;
 import com.google.android.material.tabs.TabLayout;
+import com.example.news_android.SearchPage.SearchPageActivity;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
