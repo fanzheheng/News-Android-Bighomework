@@ -25,7 +25,7 @@ public class NewsClassManagerFragment extends Fragment {
     private List<NewsListFragment> mFragmensts = new ArrayList<>();
     private ViewPager mViewPager;
     private TabLayout mTablayout;
-    String[] classNamesArray = new String[]{"event", "paper", "news", "class1", "football", "computer", "tsinghua"};
+    String[] classNamesArray = new String[]{"AA"};
     List<String> classNames = new ArrayList<>();
     private PopupWindow classChooseWindow;
     @Override
@@ -40,6 +40,13 @@ public class NewsClassManagerFragment extends Fragment {
             mFragmensts.add(NewsListFragment.newInstance(className));
             classNames.add(className);
         }
+
+        //now we add expert and epidemic lists
+        String expertClassName="Expert List";
+        String epidemicClassName="Epidemic Data";
+        mFragmensts.add(new ExpertFragment(expertClassName));
+        mFragmensts.add(new EpidemicDataFragment(epidemicClassName));
+
         mViewPager.setAdapter(new NewsClassFragmentPagerAdapter(getChildFragmentManager(), mFragmensts));
 
         //Choose class
@@ -94,7 +101,6 @@ public class NewsClassManagerFragment extends Fragment {
                 System.out.println("Start");
             }
         });
-
     }
 
     private void setAlpha(float f) {

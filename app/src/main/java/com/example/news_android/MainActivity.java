@@ -33,7 +33,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
-    private List<NewsListFragment> mFragmensts = new ArrayList<>();
     private ViewPager mViewPager;
     private TabLayout mTablayout;
 
@@ -108,15 +107,18 @@ public class MainActivity extends AppCompatActivity
         mViewPager = findViewById(R.id.viewPager);
         mTablayout = findViewById(R.id.class_tab_layout);
         mTablayout.setupWithViewPager(mViewPager);
-        String[] classNames = new String[]{"event", "paper", "news", "class1", "football", "computer", "tsinghua"};
-        for (String className : classNames)
-        {
-            mFragmensts.add(NewsListFragment.newInstance(className));
-        }
-        mFragmensts.add(EpidemicDataFragment.newInstance("Epidemic Data"));
-        mFragmensts.add(ExpertFragment.newInstance("Expert List"));
 
-        mViewPager.setAdapter(new NewsClassFragmentPagerAdapter(getSupportFragmentManager(), mFragmensts));
+
+
+        //String[] classNames = new String[]{"event"};
+//        for (String className : classNames)
+//        {
+//            mFragmensts.add(NewsListFragment.newInstance(className));
+//        }
+//        mFragmensts.add(EpidemicDataFragment.newInstance("Epidemic Data"));
+//        mFragmensts.add(ExpertFragment.newInstance("Expert List"));
+
+        //mViewPager.setAdapter(new NewsClassFragmentPagerAdapter(getSupportFragmentManager(), mFragmensts));
 
 //        Intent intent=new Intent(this,ExpertDetailActivity.class);
 //        intent.putExtra(Expert.idKey,"53f4495cdabfaeb22f4cc34d");
