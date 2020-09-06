@@ -274,6 +274,7 @@ class NewsContentJsonGetter extends JsonGetter
             newsContentJson = topObject.getJSONObject("data");
             news.setContent(newsContentJson.getString(News.contentKey));
             news.setDate(newsContentJson.getString(News.dateKey));
+            news.setSource(newsContentJson.getString(News.sourceKey));
             //JSONArray relatedEventArray = newsContentJson.getJSONArray(News.relatedEventsKey);
             JSONArray entities = newsContentJson.getJSONArray(News.entitiesKey);
 //            for (int i = 0; i < relatedEventArray.length(); i++)
@@ -293,6 +294,9 @@ class NewsContentJsonGetter extends JsonGetter
         News potentialExisting = newsRepo.getNewsById(news._id);//check if this news is already stored
         if (potentialExisting == null)
             newsRepo.insert(news);
+        else {
+            newsRepo.update(news);
+        }
         return newsContentJson;
     }
 

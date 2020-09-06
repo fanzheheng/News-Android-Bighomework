@@ -5,48 +5,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp"
     tools:context=".DetailPage.NewsDetailActivity">
-
+    <com.example.news_android.DetailPage.TopView
+            android:id="@+id/news_top_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+    >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/tv_news_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Text"
                 android:textColor="#2E2E2E"
-                android:textSize="28sp"
+                android:textSize="35sp"
                 android:textStyle="bold" />
 
+            <TextView
+                    android:id="@+id/tv_news_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:textSize="18sp"
+                    android:gravity="end" />
             <TextView
                 android:id="@+id/tv_news_source"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:gravity="end"
+                android:textSize="18sp"
+                android:paddingHorizontal="40dp" />
 
             <TextView
-                android:id="@+id/tv_news_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/tv_news_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="#2B2B2B"
-                android:textSize="18sp" />
-
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:id="@+id/tv_news_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#2B2B2B"
+                    android:textSize="24sp"/>
             <TextView
                 android:id="@+id/tv_news_entities_title"
                 android:layout_width="match_parent"
@@ -54,12 +59,13 @@
                 android:layout_margin="1dp"
                 android:text="相关实体"
                 android:textColor="#2C2C2C"
-                android:textSize="18sp"
+                android:textSize="30sp"
                 android:textStyle="bold" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+            android:layout_marginBottom="20dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -72,8 +78,6 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
             </HorizontalScrollView>
-
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

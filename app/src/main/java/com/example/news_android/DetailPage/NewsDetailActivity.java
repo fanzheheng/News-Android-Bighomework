@@ -1,5 +1,6 @@
 package com.example.news_android.DetailPage;
 
+import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.news_android.DataBase.Expert;
@@ -24,6 +25,7 @@ public class NewsDetailActivity extends AppCompatActivity
 
     TextView tvTitle,tvContent,tvSource,tvTime;
     TableRow tbvEntities;
+    TopView topView;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -34,7 +36,9 @@ public class NewsDetailActivity extends AppCompatActivity
         tvTitle=findViewById(R.id.tv_news_title);
         tvSource=findViewById(R.id.tv_news_source);
         tbvEntities=findViewById(R.id.tbv_news_entites);
+        topView = findViewById(R.id.news_top_view);
 
+        topView.setDefaultBackButtonListener(this);
 
         Bundle bundle = getIntent().getExtras();
         String id = bundle.getString(News._idKey);
@@ -44,7 +48,11 @@ public class NewsDetailActivity extends AppCompatActivity
         {
             tvTitle.setText(news.title);
             tvTime.setText(news.time);
-            tvSource.setText(news.source);
+            if(news.source != null) {
+                tvSource.setText(news.source);
+            } else {
+                tvSource.setVisibility(View.GONE);
+            }
             tvContent.setText(news.content);
             ArrayList<String>entities=news.entities;
             if(entities.size()==0)
@@ -57,17 +65,15 @@ public class NewsDetailActivity extends AppCompatActivity
             {
                 TextView tv=new TextView(this);
                 tv.setText(entities.get(i));
-                tv.setPadding(3,3,3,3);
-                tv.setBackgroundColor(Color.GRAY);
+                tv.setBackgroundResource(R.drawable.gray_rect);
                 tv.setTextColor(Color.BLACK);
+                tv.setPadding(40 ,20, 40, 20);
+                tv.setTextSize(25);
                 TableRow.LayoutParams layoutParams=new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(5,5,5,5);
+                layoutParams.setMargins(20,20,20,20);
                 tv.setLayoutParams(layoutParams);
                 tbvEntities.addView(tv);
             }
-//            TextView tv=new TextView(this);
-//            tv.setText("FFFF ");
-//            tbvEntities.addView(tv);
 
 
 

@@ -17,6 +17,7 @@ public class ExpertDetailActivity extends AppCompatActivity
 
     TextView tvName,tvActivity,tvCitations,tvGIndex,tvHIndex,tvDiversity,tvSociability,tvPosition,tvAffiliation,tvEdu,tvBio;
     ImageView ivAvatar;
+    TopView topView;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -35,6 +36,9 @@ public class ExpertDetailActivity extends AppCompatActivity
         tvEdu=findViewById(R.id.tv_expert_edu);
         tvBio=findViewById(R.id.tv_expert_bio);
         ivAvatar=findViewById(R.id.iv_expert_avatar);
+        topView = findViewById(R.id.expert_top_view);
+
+        topView.setDefaultBackButtonListener(this);
 
         Bundle bundle = getIntent().getExtras();
         String id = bundle.getString(Expert.idKey);

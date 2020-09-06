@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.news_android.DataBase.*;
 import com.example.news_android.R;
-import com.example.news_android.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,17 +22,21 @@ public class EntityDetailActivity extends AppCompatActivity {
     TextView etLabel, etDesc;
     ImageView etImage;
     RecyclerView etProperties, etRelations;
+    TopView topView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_entity);
+        setContentView(R.layout.activity_entity_detail);
 
         etLabel = findViewById(R.id.et_label);
         etDesc = findViewById(R.id.et_desc);
         etImage = findViewById(R.id.et_image);
         etProperties = findViewById(R.id.et_properties);
         etRelations = findViewById(R.id.et_rels);
+        topView = findViewById(R.id.entity_top_view);
+
+        topView.setDefaultBackButtonListener(this);
 
         Bundle bundle = getIntent().getExtras();
         String label = bundle.getString(Entity.labelKey);

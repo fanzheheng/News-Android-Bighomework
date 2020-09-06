@@ -88,6 +88,7 @@ public class SearchPageActivity extends AppCompatActivity {
     private void searchNews(String searchText) {
         NewsRepo newsRepo = new NewsRepo(this);
         ArrayList<News> searchResult = newsRepo.getNewsBySearchInput(searchText);
+
         adapter=new NewsListAdapter(searchResult);
         updateSearchResult();
         return;
