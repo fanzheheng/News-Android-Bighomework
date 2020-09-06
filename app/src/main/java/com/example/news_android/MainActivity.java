@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
         Intent intent=new Intent(this, NewsDetailActivity.class);
-        intent.putExtra(News._idKey,"5f5456159fced0a24b80ef60");
+        intent.putExtra(News._idKey,"5f546b289fced0a24b86f0ca");
         startActivity(intent);
 //        Intent intent=new Intent(this,ExpertDetailActivity.class);
 //        intent.putExtra(Expert.idKey,"53f4495cdabfaeb22f4cc34d");
