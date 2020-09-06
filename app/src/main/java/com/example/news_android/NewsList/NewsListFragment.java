@@ -9,11 +9,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.news_android.DataBase.News;
 import com.example.news_android.JsonGetter;
 import com.example.news_android.R;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+
+import java.util.ArrayList;
 
 public class NewsListFragment extends Fragment {
     final String className;
@@ -63,10 +66,8 @@ public class NewsListFragment extends Fragment {
         //newsListView init
         newsListView = view.findViewById(R.id.news_list_view);
 
-        String[] titles = new String[]{className, "paper", "news", "class1", "football", "computer", "tsinghua"};
-        NewsListAdapter newsListAdapter = new NewsListAdapter(titles);
         newsListView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        newsListView.setAdapter(newsListAdapter);
+        newsListView.setAdapter(new NewsListAdapter(new ArrayList<News>()));
         //add divider
         newsListView.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL));
 

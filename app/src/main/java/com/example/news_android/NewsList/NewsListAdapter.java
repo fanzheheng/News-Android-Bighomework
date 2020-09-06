@@ -8,26 +8,32 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.news_android.DataBase.News;
 import com.example.news_android.DetailPage.NewsTextActivity;
 import com.example.news_android.R;
 
+import java.util.ArrayList;
+
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsTitleViewHolder> {
-    String[] titles;
+    ArrayList<News> newsArrayList;
     //TODO
-    public NewsListAdapter(String[] titles) {
-        this.titles = titles;
+    public NewsListAdapter(ArrayList<News> newsArrayList) {
+        this.newsArrayList = newsArrayList;
     }
 
     @NonNull
     @Override
     public NewsTitleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_title, parent, false);
-        return new NewsTitleViewHolder(view, true);
+        return new NewsTitleViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final NewsTitleViewHolder holder, int position) {
-        holder.textView.setText(titles[position]);
+        final News news = newsArrayList.get(position);
+        //set whether news have been visited
+        holder.setVisited(news.date.equals(""));
+        holder.textView.setText(news.title);
         if(holder.visited) {
             holder.textView.setTextColor(Color.rgb(180, 180, 180)); //gray
         }
@@ -36,23 +42,28 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsTi
             public void onClick(View v) {
                 //Open News Detail
                 Context context = holder.itemView.getContext();
-                context.startActivity(new Intent(context, NewsTextActivity.class));
+                Intent intent = new Intent(context, NewsTextActivity.class);
+                intent.putExtra(News._idKey, news._id);
+                context.startActivity(intent);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return titles.length;
+        return newsArrayList.size();
     }
 
     static class NewsTitleViewHolder extends RecyclerView.ViewHolder {
-        Boolean visited;        //Whether news has been read
+        Boolean visited = false;        //Whether news has been read
         TextView textView;
 
-        public NewsTitleViewHolder(@NonNull View itemView, boolean visited) {
-            super(itemView);
+        public void setVisited(Boolean visited) {
             this.visited = visited;
+        }
+
+        public NewsTitleViewHolder(@NonNull View itemView) {
+            super(itemView);
             textView = itemView.findViewById(R.id.news_title);
         }
     }

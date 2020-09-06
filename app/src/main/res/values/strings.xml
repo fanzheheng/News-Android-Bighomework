@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">News-Android</string>
 
+    <string name="cancel">取消</string>
     <string name="search">搜索</string>
     <string name="add_signal">+</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="my_classes">我的分类</string>
+    <string name="added_class_hint">当前已无可查看分类</string>
+    <string name="available_classes">待添加分类</string>
+    <string name="available_classes_hint">分类已全部添加</string>
 </resources>

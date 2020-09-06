@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.news_android.NewsList.NewsListFragment;
 import com.example.news_android.R;
@@ -14,9 +15,24 @@ import java.util.List;
 public class ClassGridAdapter extends RecyclerView.Adapter<ClassGridAdapter.NewsClassViewHolder> {
     List<NewsListFragment> classes;
     ClassGridAdapter anotherAdapter;
+    OnClassChangeListener onClassChangeListener;
     public ClassGridAdapter(List<NewsListFragment> classes) {
-        this.classes = classes;
+        new ClassGridAdapter(classes, null);
     }
+    public ClassGridAdapter(List<NewsListFragment> classes, OnClassChangeListener onClassChangeListener) {
+        this.classes = classes;
+        if(onClassChangeListener != null) {
+            this.onClassChangeListener = onClassChangeListener;
+            onClassChangeListener.onClassChange(classes.size());
+        } else {
+            this.onClassChangeListener = new OnClassChangeListener() { @Override public void onClassChange(int classNum) {}};
+        }
+    }
+
+    public void setOnClassChangeListener(OnClassChangeListener onClassChangeListener) {
+        this.onClassChangeListener = onClassChangeListener;
+    }
+
     @NonNull
     @Override
     public NewsClassViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,14 +58,20 @@ public class ClassGridAdapter extends RecyclerView.Adapter<ClassGridAdapter.News
     }
 
     private void addData(NewsListFragment className) {
+        if(classes.size() == 0) {
+            onClassChangeListener.onClassChange(1);
+        }
         classes.add(className);
-        //add animation
         notifyItemInserted(classes.size() - 1);
+        //add animation
     }
 
     private NewsListFragment removeData(int position) {
         NewsListFragment s = classes.remove(position);
         //删除动画
+        if(classes.size() == 0) {
+            onClassChangeListener.onClassChange(0);
+        }
         notifyItemRemoved(position);
         notifyDataSetChanged();
         return s;
@@ -66,5 +88,7 @@ public class ClassGridAdapter extends RecyclerView.Adapter<ClassGridAdapter.News
             textView = itemView.findViewById(R.id.class_name_textview);
         }
     }
-
+    public interface OnClassChangeListener {
+        public void onClassChange(int classNum);
+    }
 }

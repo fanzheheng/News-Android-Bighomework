@@ -122,15 +122,13 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SearchPageActivity.class);
-                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this, searchBar, "search_bar").toBundle());
+                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this, searchBar, "search_bar").toBundle();
+                startActivity(intent, bundle);
             }
         });
         Intent intent=new Intent(this, NewsDetailActivity.class);
         intent.putExtra(News._idKey,"5f5456159fced0a24b80ef60");
-        startActivity(intent);
-//        Intent intent=new Intent(this,ExpertDetailActivity.class);
-//        intent.putExtra(Expert.idKey,"53f4495cdabfaeb22f4cc34d");
-//        startActivity(intent);
+        //startActivity(intent);
     }
 
     public void requestPermission(String[] permissions)

@@ -7,10 +7,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
 
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +30,8 @@ public class NewsClassManagerFragment extends Fragment {
     String[] classNamesArray = new String[]{"AA"};
     List<String> classNames = new ArrayList<>();
     private PopupWindow classChooseWindow;
+    private RecyclerView addedClassNameView, availableClassNameView;
+    private TextView addedClassHint, availableClassHint;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,21 +79,48 @@ public class NewsClassManagerFragment extends Fragment {
 
     private void initClassChooseWindow(LayoutInflater inflater) {
         View view = inflater.inflate(R.layout.classchooser_layout, null);
+        addedClassNameView = view.findViewById(R.id.added_classes_list);
+        availableClassNameView = view.findViewById(R.id.available_classes_list);
+        addedClassHint = view.findViewById(R.id.added_classes_hint);
+        availableClassHint = view.findViewById(R.id.available_classes_hint);
+
         //first
-        RecyclerView addedClassNameView = view.findViewById(R.id.added_classes_list);
-        ClassGridAdapter addedAdapter = new ClassGridAdapter(mFragmensts);
+        addedClassNameView.setItemAnimator(new DefaultItemAnimator());
+        ClassGridAdapter addedAdapter = new ClassGridAdapter(mFragmensts, new ClassGridAdapter.OnClassChangeListener() {
+            @Override
+            public void onClassChange(int classNum) {
+                if(classNum == 0) {
+                    addedClassNameView.setVisibility(View.GONE);
+                    addedClassHint.setVisibility(View.VISIBLE);
+                } else {
+                    addedClassNameView.setVisibility(View.VISIBLE);
+                    addedClassHint.setVisibility(View.GONE);
+                }
+            }
+        });
         addedClassNameView.setAdapter(addedAdapter);
-        addedClassNameView.setLayoutManager(new GridLayoutManager(getContext(), 4){
+        addedClassNameView.setLayoutManager(new GridLayoutManager(getContext(), 3){
             @Override
             public boolean canScrollVertically() {
                 return false;
             }
         });
         //second
-        RecyclerView availableClassNameView = view.findViewById(R.id.available_classes_list);
-        ClassGridAdapter availableAdapter = new ClassGridAdapter(new ArrayList<NewsListFragment>());
+        availableClassNameView.setItemAnimator(new DefaultItemAnimator());
+        ClassGridAdapter availableAdapter = new ClassGridAdapter(new ArrayList<NewsListFragment>(), new ClassGridAdapter.OnClassChangeListener(){
+            @Override
+            public void onClassChange(int classNum) {
+                if(classNum == 0) {
+                    availableClassNameView.setVisibility(View.GONE);
+                    availableClassHint.setVisibility(View.VISIBLE);
+                } else {
+                    availableClassNameView.setVisibility(View.VISIBLE);
+                    availableClassHint.setVisibility(View.GONE);
+                }
+            }
+        });
         availableClassNameView.setAdapter(availableAdapter);
-        availableClassNameView.setLayoutManager(new GridLayoutManager(getContext(), 4){
+        availableClassNameView.setLayoutManager(new GridLayoutManager(getContext(), 3){
             @Override
             public boolean canScrollVertically() {
                 return false;
