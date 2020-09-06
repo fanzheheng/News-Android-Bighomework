@@ -18,7 +18,6 @@
         <activity android:name=".DetailPage.EntityDetailActivity" />
         <activity android:name=".DetailPage.ExpertDetailActivity" />
         <activity android:name=".SearchPage.SearchPageActivity"/>
-        <activity android:name=".DetailPage.NewsTextActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

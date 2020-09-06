@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.news_android.DataBase.News;
-import com.example.news_android.DetailPage.NewsTextActivity;
+import com.example.news_android.DetailPage.NewsDetailActivity;
 import com.example.news_android.R;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsTi
             public void onClick(View v) {
                 //Open News Detail
                 Context context = holder.itemView.getContext();
-                Intent intent = new Intent(context, NewsTextActivity.class);
+                Intent intent = new Intent(context, NewsDetailActivity.class);
                 intent.putExtra(News._idKey, news._id);
                 context.startActivity(intent);
             }
