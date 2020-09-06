@@ -135,7 +135,7 @@ public class NewsRepo
                 news.setCategory(cursor.getString(cursor.getColumnIndex(News.categoryKey)));
                 news.setContent(cursor.getString(cursor.getColumnIndex(News.contentKey)));
                 news.setDate(cursor.getString(cursor.getColumnIndex(News.dateKey)));
-                news.setEntities(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(News.dateKey))));
+                news.setEntities(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(News.entitiesKey))));
                 news.setLang(cursor.getString(cursor.getColumnIndex(News.langKey)));
                 news.setSource(cursor.getString(cursor.getColumnIndex(News.sourceKey)));
                 news.setTime(cursor.getString(cursor.getColumnIndex(News.timeKey)));

@@ -2,6 +2,7 @@ package com.example.news_android;
 
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
@@ -21,6 +22,9 @@ import com.example.news_android.DataBase.EpidemicRepo;
 import com.example.news_android.DataBase.Expert;
 import com.example.news_android.DataBase.ExpertRepo;
 import com.example.news_android.DataBase.ImageRepo;
+import com.example.news_android.DataBase.News;
+import com.example.news_android.DataBase.NewsRepo;
+import com.example.news_android.DetailPage.NewsDetailActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.example.news_android.SearchPage.SearchPageActivity;
 
@@ -74,6 +78,18 @@ public class MainActivity extends AppCompatActivity
         }
         System.out.println("_________");
     }
+
+
+    public void printNewsDB()
+    {
+
+        NewsRepo repo=new NewsRepo(this);
+        ArrayList<News> list = repo.getNewsList();
+        for (News news:list) {
+            System.out.println(news._id);
+        }
+        System.out.println("_________");
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -91,6 +107,10 @@ public class MainActivity extends AppCompatActivity
         printEntityDB();
         printEpidemicDB();
         printExpertDB();
+        printNewsDB();
+
+        JsonGetter jsonGetter=new NewsEventJsonGetter(Utils.newsEventURL,this);
+        jsonGetter.execute();
 
         Button searchButton = findViewById(R.id.search_open_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +120,9 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-
+        Intent intent=new Intent(this, NewsDetailActivity.class);
+        intent.putExtra(News._idKey,"5f5456159fced0a24b80ef60");
+        startActivity(intent);
 //        Intent intent=new Intent(this,ExpertDetailActivity.class);
 //        intent.putExtra(Expert.idKey,"53f4495cdabfaeb22f4cc34d");
 //        startActivity(intent);
