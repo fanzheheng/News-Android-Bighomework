@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.PopupWindow;
 
 import android.widget.RelativeLayout;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -63,10 +63,10 @@ public class NewsClassManagerFragment extends Fragment {
         classChooseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RelativeLayout relativeLayout = getActivity().findViewById(R.id.search_bar_layout);
+                ConstraintLayout constraintLayout = getActivity().findViewById(R.id.search_bar_layout);
                 InputMethodManager imm =(InputMethodManager)getContext().getSystemService(
                         Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(relativeLayout.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(constraintLayout.getWindowToken(), 0);
                 setAlpha(0.618f);
                 classChooseWindow.showAsDropDown(mTablayout, 0, -mTablayout.getHeight(), Gravity.NO_GRAVITY);
             }

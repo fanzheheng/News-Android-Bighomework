@@ -2,6 +2,7 @@ package com.example.news_android;
 
 
 import android.Manifest;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -9,6 +10,7 @@ import android.util.Log;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -79,6 +81,9 @@ public class MainActivity extends AppCompatActivity
         System.out.println("_________");
     }
 
+    TextView searchBar;
+
+
 
     public void printNewsDB()
     {
@@ -112,12 +117,12 @@ public class MainActivity extends AppCompatActivity
         JsonGetter jsonGetter=new NewsEventJsonGetter(Utils.newsEventURL,this);
         jsonGetter.execute();
 
-        Button searchButton = findViewById(R.id.search_open_button);
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        searchBar = findViewById(R.id.search_bar_text);
+        searchBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SearchPageActivity.class);
-                startActivity(intent);
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this, searchBar, "search_bar").toBundle());
             }
         });
         Intent intent=new Intent(this, NewsDetailActivity.class);
