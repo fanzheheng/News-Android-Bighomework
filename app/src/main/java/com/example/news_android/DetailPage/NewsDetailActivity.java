@@ -45,7 +45,7 @@ public class NewsDetailActivity extends AppCompatActivity
             tvTitle.setText(news.title);
             tvTime.setText(news.time);
             tvSource.setText(news.source);
-            tvContent.setText(news.source);
+            tvContent.setText(news.content);
             ArrayList<String>entities=news.entities;
             if(entities.size()==0)
             {
