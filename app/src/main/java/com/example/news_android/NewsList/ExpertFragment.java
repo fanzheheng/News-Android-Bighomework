@@ -94,8 +94,6 @@ public class ExpertFragment extends NewsListFragment
         });
         //newsListView init
         newsListView = view.findViewById(R.id.news_list_view);
-
-
         newsListView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         newsListView.setAdapter(expertListAdapter);
         //add divider

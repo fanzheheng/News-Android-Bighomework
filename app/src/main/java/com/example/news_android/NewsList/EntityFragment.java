@@ -100,8 +100,6 @@ public class EntityFragment extends NewsListFragment
         //newsListView init
         newsListView = view.findViewById(R.id.news_list_view);
 
-
-
         Utils.UpdateEntityDatabase(getContext(),searchInput,listener);
         newsListView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         newsListView.setAdapter(entityListAdapter);
