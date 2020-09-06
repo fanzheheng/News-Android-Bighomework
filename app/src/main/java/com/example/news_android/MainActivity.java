@@ -6,8 +6,6 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.transition.Fade;
-import android.transition.Slide;
 import android.util.Log;
 
 import android.view.View;
@@ -17,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.news_android.DataBase.Entity;
 import com.example.news_android.DataBase.EntityRepo;
@@ -25,6 +24,10 @@ import com.example.news_android.DataBase.EpidemicRepo;
 import com.example.news_android.DataBase.Expert;
 import com.example.news_android.DataBase.ExpertRepo;
 import com.example.news_android.DataBase.ImageRepo;
+import com.example.news_android.DataBase.News;
+import com.example.news_android.DataBase.NewsRepo;
+import com.example.news_android.DetailPage.NewsDetailActivity;
+import com.google.android.material.tabs.TabLayout;
 import com.example.news_android.SearchPage.SearchPageActivity;
 
 import java.util.ArrayList;
@@ -80,6 +83,18 @@ public class MainActivity extends AppCompatActivity
 
     TextView searchBar;
 
+
+
+    public void printNewsDB()
+    {
+
+        NewsRepo repo=new NewsRepo(this);
+        ArrayList<News> list = repo.getNewsList();
+        for (News news:list) {
+            System.out.println(news._id);
+        }
+        System.out.println("_________");
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -97,6 +112,10 @@ public class MainActivity extends AppCompatActivity
         printEntityDB();
         printEpidemicDB();
         printExpertDB();
+        printNewsDB();
+
+        JsonGetter jsonGetter=new NewsEventJsonGetter(Utils.newsEventURL,this);
+        jsonGetter.execute();
 
         searchBar = findViewById(R.id.search_bar_text);
         searchBar.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +125,12 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this, searchBar, "search_bar").toBundle());
             }
         });
+        Intent intent=new Intent(this, NewsDetailActivity.class);
+        intent.putExtra(News._idKey,"5f5456159fced0a24b80ef60");
+        startActivity(intent);
+//        Intent intent=new Intent(this,ExpertDetailActivity.class);
+//        intent.putExtra(Expert.idKey,"53f4495cdabfaeb22f4cc34d");
+//        startActivity(intent);
     }
 
     public void requestPermission(String[] permissions)

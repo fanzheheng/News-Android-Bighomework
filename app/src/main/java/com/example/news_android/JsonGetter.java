@@ -518,7 +518,7 @@ class ExpertJsonGetter extends JsonGetter
                             expert.setWork(profile.getString(key));
                         }
                     }
-                    if(imageRepo.getImageByURL(expert.avatar)==null)
+                    if(expert.avatar!=""&&imageRepo.getImageByURL(expert.avatar)==null)
                         imageDownloader.download(expert.avatar,true);
                     if(repo.getExpertById(expert.id)==null)
                         repo.insert(expert);
