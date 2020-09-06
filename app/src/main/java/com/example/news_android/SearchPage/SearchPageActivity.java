@@ -58,7 +58,7 @@ public class SearchPageActivity extends AppCompatActivity {
                     int searchTypeId = radioGroup.getCheckedRadioButtonId();
                     if(searchTypeId == R.id.news_radio) {
                         //search news
-                        adapter = searchNews(editText.getText().toString());
+                        searchNews(editText.getText().toString());
                     } else if (searchTypeId == R.id.entity_radio) {
                         //search entities
                         searchEntities(editText.getText().toString());
@@ -85,11 +85,12 @@ public class SearchPageActivity extends AppCompatActivity {
         });
     }
 
-    private NewsListAdapter searchNews(String searchText) {
+    private void searchNews(String searchText) {
         NewsRepo newsRepo = new NewsRepo(this);
         ArrayList<News> searchResult = newsRepo.getNewsBySearchInput(searchText);
+        adapter=new NewsListAdapter(searchResult);
         updateSearchResult();
-        return new NewsListAdapter(searchResult);
+        return;
     }
 
     private void searchEntities(final String searchText) {
