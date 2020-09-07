@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity
 
     public void printNewsDB()
     {
-
         NewsRepo repo=new NewsRepo(this);
         ArrayList<News> list = repo.getNewsList();
         for (News news:list) {
@@ -119,8 +118,12 @@ public class MainActivity extends AppCompatActivity
         printExpertDB();
         printNewsDB();
 
+
+
         JsonGetter jsonGetter=new NewsEventJsonGetter(Utils.newsEventURL,this);
         jsonGetter.execute();
+
+        printNewsDB();
 
         searchBar = findViewById(R.id.search_bar_text);
         searchBar.setOnClickListener(new View.OnClickListener() {
@@ -131,8 +134,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
         Intent intent=new Intent(this, NewsDetailActivity.class);
-        intent.putExtra(News._idKey,"5f5456159fced0a24b80ef60");
-        //startActivity(intent);
+        intent.putExtra(News._idKey,"5f560a119fced0a24b39257c");
+        startActivity(intent);
 
 
 

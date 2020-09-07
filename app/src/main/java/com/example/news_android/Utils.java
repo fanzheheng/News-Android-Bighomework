@@ -10,6 +10,8 @@ import android.graphics.BitmapFactory;
 
 import androidx.core.app.ActivityCompat;
 
+import com.example.news_android.DataBase.News;
+
 import java.io.ByteArrayOutputStream;
 import java.security.Key;
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ public class Utils
 
     public static String newsEventURL = "https://covid-dashboard.aminer.cn/api/events/list";
 
-    public static String newsContentURL = "https://covid-dashboard.aminer.cn/api/event/5f05f3f69fced0a24b2f84ee";//this one is just for test
+    public static String newsContentURL = "https://covid-dashboard.aminer.cn/api/event/";//this one is just for test
     public static String entityURL = "https://innovaapi.aminer.cn/covid/api/v1/pneumonia/entityquery";
     public static String expertURL = "https://innovaapi.aminer.cn/predictor/api/v1/valhalla/highlight/get_ncov_expers_list?v=2";
 
@@ -186,6 +188,13 @@ public class Utils
             NewsEventJsonGetter.updatePage(tmpPage);
         }
     }
+
+    public static void UpdateNewsContentDatabase(Context context, JsonGetter.JsonGetterFinishListener listener, News news)
+    {
+        NewsContentJsonGetter jsonGetter=new NewsContentJsonGetter(newsContentURL+news._id,context,news,listener);
+        jsonGetter.execute();
+    }
+
     public static void UpdateEntityDatabase(Context context,String label, JsonGetter.JsonGetterFinishListener listener)
     {
         EntityJsonGetter jsonGetter=new EntityJsonGetter(entityURL+"?entity="+label,context,listener);

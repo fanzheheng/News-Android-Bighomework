@@ -227,8 +227,17 @@ class NewsEventJsonGetter extends JsonGetter
                     news.setCategory(newsObj.getString(News.categoryKey));
                     news.setTime(newsObj.getString(News.timeKey));
                     String newsContentURL = "https://covid-dashboard.aminer.cn/api/event/" + news._id;
-                    NewsContentJsonGetter newsContentJsonGetter = new NewsContentJsonGetter(newsContentURL, context, news);
-                    newsContentJsonGetter.execute();//get more details
+
+                    News potentialExisting = newsRepo.getNewsById(news._id);//check if this news is already stored
+                    if (potentialExisting == null)
+                        newsRepo.insert(news);
+                    else {
+                        newsRepo.update(news);
+                    }
+
+                    // now we use lazy method instead of getting news content along with list
+//                    NewsContentJsonGetter newsContentJsonGetter = new NewsContentJsonGetter(newsContentURL, context, news);
+//                    newsContentJsonGetter.execute();//get more details
                 } catch (JSONException e)
                 {
                     e.printStackTrace();
@@ -254,9 +263,10 @@ class NewsContentJsonGetter extends JsonGetter
         this.news = news;
     }
 
-    public NewsContentJsonGetter(String url, Context context,JsonGetterFinishListener listener)
+    public NewsContentJsonGetter(String url, Context context,News news,JsonGetterFinishListener listener)
     {
         super(url, context,listener);
+        this.news=news;
     }
 
     News news;
