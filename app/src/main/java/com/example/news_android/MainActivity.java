@@ -26,6 +26,7 @@ import com.example.news_android.DataBase.ExpertRepo;
 import com.example.news_android.DataBase.ImageRepo;
 import com.example.news_android.DataBase.News;
 import com.example.news_android.DataBase.NewsRepo;
+import com.example.news_android.DetailPage.EntityDetailActivity;
 import com.example.news_android.DetailPage.NewsDetailActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.example.news_android.SearchPage.SearchPageActivity;

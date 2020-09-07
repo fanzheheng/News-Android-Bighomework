@@ -5,7 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".DetailPage.ExpertDetailActivity">
-
+    <com.example.news_android.DetailPage.TopView
+            android:id="@+id/expert_top_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="150dp"
@@ -31,6 +34,7 @@
                     android:layout_height="123dp"
                     android:layout_weight="1"
                     android:padding="5dp"
+                    android:gravity="center_vertical"
                     android:text="TextView"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -142,6 +146,7 @@
                     android:id="@+id/tv_expert_position"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
                     android:text="TextView"
                     android:textSize="18sp" />
 
@@ -158,6 +163,7 @@
                     android:id="@+id/tv_expert_affiliation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
                     android:text="TextView"
                     android:textSize="18sp" />
 
@@ -175,6 +181,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
+                    android:paddingHorizontal="20dp"
                     android:textSize="18sp" />
 
             <TextView
@@ -191,6 +198,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
+                    android:paddingHorizontal="20dp"
                     android:textSize="18sp" />
         </LinearLayout>
     </ScrollView>

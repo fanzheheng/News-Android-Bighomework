@@ -137,7 +137,6 @@ public class NewsClassManagerFragment extends Fragment {
             public void onDismiss() {
                 setAlpha(1.0f);
                 mViewPager.getAdapter().notifyDataSetChanged();
-                System.out.println("Start");
             }
         });
     }

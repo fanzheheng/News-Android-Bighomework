@@ -54,7 +54,12 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.En
     public void onBindViewHolder(@NonNull final EntityViewHolder holder, final int position)
     {
        Entity entity=entities.get(position);
-       holder.tvInfo.setText(entity.baidu+entity.zhwiki+entity.enwiki);
+       String info = entity.baidu+entity.zhwiki+entity.enwiki;
+        if(info.equals("")) {
+           holder.tvInfo.setVisibility(View.GONE);
+       } else {
+           holder.tvInfo.setText(info);
+       }
        holder.tvTitle.setText(entity.label);
        holder.itemView.setOnClickListener(new View.OnClickListener() {
            @Override
