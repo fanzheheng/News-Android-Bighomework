@@ -170,6 +170,7 @@ class NewsEventJsonGetter extends JsonGetter
     static String type = "all";
     static int size = 20;
 
+
     public static void updatePage(int page)
     {
         NewsEventJsonGetter.page = page;
@@ -194,6 +195,17 @@ class NewsEventJsonGetter extends JsonGetter
         super(url + "?type=" + type + "&page=" + page + "&size=" + size, context,listener);
     }
 
+
+    public NewsEventJsonGetter(String url, Context context,int curPage,String curType,int curSize)
+    {
+        super(url + "?type=" + curType + "&page=" + curPage + "&size=" + curSize, context);
+
+    }
+    public NewsEventJsonGetter(String url, Context context,JsonGetterFinishListener listener,int curPage,String curType,int curSize)
+    {
+        super(url + "?type=" + curType + "&page=" + curPage + "&size=" + curSize, context,listener);
+    }
+
     static JSONObject newsEventJson = null;
     static JSONArray newsEventJsonArray = null;
 
@@ -203,7 +215,7 @@ class NewsEventJsonGetter extends JsonGetter
     {
         newsEventJson = super.doInBackground(objects);
         if(newsEventJson==null)return null;
-        page += 1;//increment the page number for future use;
+
         NewsRepo newsRepo = new NewsRepo(context);
         try
         {
@@ -231,9 +243,7 @@ class NewsEventJsonGetter extends JsonGetter
                     News potentialExisting = newsRepo.getNewsById(news._id);//check if this news is already stored
                     if (potentialExisting == null)
                         newsRepo.insert(news);
-                    else {
-                        newsRepo.update(news);
-                    }
+                    // we do not over write existing data here because the newly-created News is not complete
 
                     // now we use lazy method instead of getting news content along with list
 //                    NewsContentJsonGetter newsContentJsonGetter = new NewsContentJsonGetter(newsContentURL, context, news);

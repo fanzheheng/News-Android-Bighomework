@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity
     public void printNewsDB()
     {
         NewsRepo repo=new NewsRepo(this);
+        repo.clearTable();
         ArrayList<News> list = repo.getNewsList();
         for (News news:list) {
             System.out.println(news._id);

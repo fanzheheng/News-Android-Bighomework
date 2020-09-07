@@ -15,6 +15,11 @@ import com.example.news_android.R;
 import java.util.ArrayList;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsTitleViewHolder> {
+    public void setNewsArrayList(ArrayList<News> newsArrayList)
+    {
+        this.newsArrayList = newsArrayList;
+    }
+
     ArrayList<News> newsArrayList;
     //TODO
     public NewsListAdapter(ArrayList<News> newsArrayList) {
@@ -32,10 +37,14 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsTi
     public void onBindViewHolder(@NonNull final NewsTitleViewHolder holder, int position) {
         final News news = newsArrayList.get(position);
         //set whether news have been visited
-        holder.setVisited(news.date.equals(""));
+        holder.setVisited(!news.date.equals(""));
         holder.textView.setText(news.title);
         if(holder.visited) {
             holder.textView.setTextColor(Color.rgb(180, 180, 180)); //gray
+        }
+        else
+        {
+            holder.textView.setTextColor(Color.BLACK);
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

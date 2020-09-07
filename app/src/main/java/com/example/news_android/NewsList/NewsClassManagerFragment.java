@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
+
+import com.example.news_android.DataBase.News;
+import com.example.news_android.DataBase.NewsRepo;
 import com.example.news_android.NewsList.ClassChooser.ClassGridAdapter;
 import com.example.news_android.R;
 import com.google.android.material.tabs.TabLayout;
@@ -27,7 +30,6 @@ public class NewsClassManagerFragment extends Fragment {
     private List<NewsListFragment> mFragmensts = new ArrayList<>();
     private ViewPager mViewPager;
     private TabLayout mTablayout;
-    String[] classNamesArray = new String[]{"AA"};
     List<String> classNames = new ArrayList<>();
     private PopupWindow classChooseWindow;
     private RecyclerView addedClassNameView, availableClassNameView;
@@ -41,23 +43,26 @@ public class NewsClassManagerFragment extends Fragment {
         mTablayout.setupWithViewPager(mViewPager);
 
         //init fragments
-        //TODO
-        for(String className : classNamesArray) {
-            mFragmensts.add(NewsListFragment.newInstance(className));
-            classNames.add(className);
-        }
-
-        //now we add expert and epidemic lists
         String expertClassName="Expert List";
         String epidemicClassName="Epidemic Data";
         String entityClassName="Entity List";
+        String NewsPaperClassName="News & Paper";
+        String OnlyNewsClassName="News";
+        String OnlyPaperClassName="Paper";
         mFragmensts.add(new ExpertFragment(expertClassName));
         mFragmensts.add(new EpidemicDataFragment(epidemicClassName));
         mFragmensts.add(new EntityFragment(entityClassName,"病毒"));
+        NewsRepo repo=new NewsRepo(getContext());
+
+        mFragmensts.add(new NewsListFragment(NewsPaperClassName,"all"));
+        mFragmensts.add(new NewsListFragment(OnlyNewsClassName,"news"));
+        mFragmensts.add(new NewsListFragment(OnlyPaperClassName,"paper"));
         classNames.add(entityClassName);
         classNames.add(expertClassName);
         classNames.add(epidemicClassName);
-
+        classNames.add(NewsPaperClassName);
+        classNames.add(OnlyNewsClassName);
+        classNames.add(OnlyPaperClassName);
         mViewPager.setAdapter(new NewsClassFragmentPagerAdapter(getChildFragmentManager(), mFragmensts));
 
         //Choose class

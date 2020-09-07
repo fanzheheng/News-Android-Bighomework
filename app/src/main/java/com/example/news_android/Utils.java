@@ -174,19 +174,15 @@ public class Utils
         return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
 
-    public static void UpdateNewsDatabase(Context context,JsonGetter.JsonGetterFinishListener listener,boolean readNewest)
+    public static JsonGetter UpdateNewsDatabase(Context context,JsonGetter.JsonGetterFinishListener listener,boolean readNewest,String type)
     {
-        NewsEventJsonGetter jsonGetter=new NewsEventJsonGetter(newsEventURL,context,listener);
-        int tmpPage=NewsEventJsonGetter.page;
-        if(readNewest)
+        if(!readNewest)
         {
-            NewsEventJsonGetter.updatePage(1);
+            NewsEventJsonGetter.updatePage(NewsEventJsonGetter.page+1);//increment the max page num
         }
+        NewsEventJsonGetter jsonGetter=new NewsEventJsonGetter(newsEventURL,context,listener,readNewest?1:NewsEventJsonGetter.page,type,NewsEventJsonGetter.size);
         jsonGetter.execute();
-        if(readNewest)
-        {
-            NewsEventJsonGetter.updatePage(tmpPage);
-        }
+        return jsonGetter;
     }
 
     public static void UpdateNewsContentDatabase(Context context, JsonGetter.JsonGetterFinishListener listener, News news)
