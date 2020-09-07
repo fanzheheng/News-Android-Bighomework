@@ -39,7 +39,7 @@ public class EntityDetailActivity extends AppCompatActivity {
         String label = bundle.getString(Entity.labelKey);
         if(label != null) {
             EntityRepo repo = new EntityRepo(this);
-            ImageRepo imgRepo = new ImageRepo(this);
+            final ImageRepo imgRepo = new ImageRepo(this);
             Entity entity = repo.getEntityByLabel(label);
             if(entity != null) {
                 etLabel.setText(label);
@@ -70,6 +70,32 @@ public class EntityDetailActivity extends AppCompatActivity {
                 if(image!=null) {
                     etImage.setImageBitmap(image);
                 } else {
+                    ImageDownloader imageDownloader=new ImageDownloader(new ImageDownloader.OnImageLoaderListener()
+                    {
+                        @Override
+                        public void onError(ImageDownloader.ImageError error)
+                        {
+
+                        }
+
+                        @Override
+                        public void onProgressChange(int percent)
+                        {
+
+                        }
+
+                        @Override
+                        public void onComplete(Bitmap result, String imgUrl)
+                        {
+                            imgRepo.insert(imgUrl,result);
+                            etImage.setImageBitmap(result);
+                            etImage.setVisibility(View.VISIBLE);
+                        }
+                    });
+                    if(entity.imgURL!=null&&!entity.imgURL.equals("null"))
+                    {
+                        imageDownloader.download(entity.imgURL,false);
+                    }
                     etImage.setVisibility(View.GONE);
                 }
             }

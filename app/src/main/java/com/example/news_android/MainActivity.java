@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     public void printImageDB()
     {
         ImageRepo repo = new ImageRepo(this);
+        repo.clearTable();
         ArrayList<String> urlList = repo.getImageURLList();
         for (String s : urlList) {
             System.out.println(s);

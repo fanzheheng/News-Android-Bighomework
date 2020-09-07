@@ -323,26 +323,26 @@ class EntityJsonGetter extends JsonGetter
         if(entityJson==null)return null;
         final ImageRepo imageRepo = new ImageRepo(context);
         EntityRepo entityRepo=new EntityRepo(context);
-        final ImageDownloader imgDownloader = new ImageDownloader(new ImageDownloader.OnImageLoaderListener()
-        {
-            @Override
-            public void onError(ImageDownloader.ImageError error)
-            {
-
-            }
-
-            @Override
-            public void onProgressChange(int percent)
-            {
-
-            }
-
-            @Override
-            public void onComplete(Bitmap result, final String imgUrl)
-            {
-                imageRepo.insert(imgUrl, result);
-            }
-        });
+//        final ImageDownloader imgDownloader = new ImageDownloader(new ImageDownloader.OnImageLoaderListener()
+//        {
+//            @Override
+//            public void onError(ImageDownloader.ImageError error)
+//            {
+//
+//            }
+//
+//            @Override
+//            public void onProgressChange(int percent)
+//            {
+//
+//            }
+//
+//            @Override
+//            public void onComplete(Bitmap result, final String imgUrl)
+//            {
+//                imageRepo.insert(imgUrl, result);
+//            }
+//        });
         try
         {
             entityJsonArray = entityJson.getJSONArray("data");
@@ -394,8 +394,8 @@ class EntityJsonGetter extends JsonGetter
 
                     String imgUrl = obj.getString(Entity.imgURLKey);
                     entity.setImgURL(imgUrl);
-                    if(imgUrl!=null&&imageRepo.getImageByURL(imgUrl)==null)
-                        imgDownloader.download(imgUrl, true);
+//                    if(imgUrl!=null&&imageRepo.getImageByURL(imgUrl)==null)
+//                        imgDownloader.download(imgUrl, true);
                     if(entityRepo.getEntityByLabel(entity.label)==null)
                         entityRepo.insert(entity);
                     else
@@ -437,26 +437,26 @@ class ExpertJsonGetter extends JsonGetter
         if(expertJson==null)return null;
         ExpertRepo repo=new ExpertRepo(context);
         final ImageRepo imageRepo = new ImageRepo(context);
-        ImageDownloader imageDownloader=new ImageDownloader(new ImageDownloader.OnImageLoaderListener()
-        {
-            @Override
-            public void onError(ImageDownloader.ImageError error)
-            {
-
-            }
-
-            @Override
-            public void onProgressChange(int percent)
-            {
-
-            }
-
-            @Override
-            public void onComplete(Bitmap result, String imgUrl)
-            {
-                imageRepo.insert(imgUrl, result);
-            }
-        });
+//        ImageDownloader imageDownloader=new ImageDownloader(new ImageDownloader.OnImageLoaderListener()
+//        {
+//            @Override
+//            public void onError(ImageDownloader.ImageError error)
+//            {
+//
+//            }
+//
+//            @Override
+//            public void onProgressChange(int percent)
+//            {
+//
+//            }
+//
+//            @Override
+//            public void onComplete(Bitmap result, String imgUrl)
+//            {
+//                imageRepo.insert(imgUrl, result);
+//            }
+//        });
         try
         {
             expertJsonArray = expertJson.getJSONArray("data");
@@ -503,7 +503,7 @@ class ExpertJsonGetter extends JsonGetter
                         }
                         else if(key.equals(Expert.bioKey))
                         {
-                            expert.setBio(profile.getString(key));
+                            expert.setBio(profile.getString(key).replaceAll("<br>","\n"));
                         }
                         else if(key.equals(Expert.eduKey))
                         {
@@ -518,8 +518,8 @@ class ExpertJsonGetter extends JsonGetter
                             expert.setWork(profile.getString(key));
                         }
                     }
-                    if(expert.avatar!=""&&imageRepo.getImageByURL(expert.avatar)==null)
-                        imageDownloader.download(expert.avatar,true);
+//                    if(expert.avatar!=""&&imageRepo.getImageByURL(expert.avatar)==null)
+//                        imageDownloader.download(expert.avatar,true);
                     if(repo.getExpertById(expert.id)==null)
                         repo.insert(expert);
                 } catch (JSONException e)

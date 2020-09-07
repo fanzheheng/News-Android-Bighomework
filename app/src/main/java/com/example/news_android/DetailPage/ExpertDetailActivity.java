@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.news_android.DataBase.Expert;
 import com.example.news_android.DataBase.ExpertRepo;
+import com.example.news_android.DataBase.ImageDownloader;
 import com.example.news_android.DataBase.ImageRepo;
 import com.example.news_android.R;
 
@@ -41,7 +42,7 @@ public class ExpertDetailActivity extends AppCompatActivity
         if (id != null)
         {
             ExpertRepo repo = new ExpertRepo(this);
-            ImageRepo imgRepo=new ImageRepo(this);
+            final ImageRepo imgRepo=new ImageRepo(this);
             Expert expert = repo.getExpertById(id);
             if (expert != null)
             {
@@ -60,6 +61,31 @@ public class ExpertDetailActivity extends AppCompatActivity
                 if(avatar!=null)
                 {
                     ivAvatar.setImageBitmap(avatar);
+                }
+                else if(expert.avatar!=null&&!expert.avatar.equals("null"))
+                {
+                    ImageDownloader imageDownloader=new ImageDownloader(new ImageDownloader.OnImageLoaderListener()
+                    {
+                        @Override
+                        public void onError(ImageDownloader.ImageError error)
+                        {
+
+                        }
+
+                        @Override
+                        public void onProgressChange(int percent)
+                        {
+
+                        }
+
+                        @Override
+                        public void onComplete(Bitmap result, String imgUrl)
+                        {
+                            imgRepo.insert(imgUrl,result);
+                            ivAvatar.setImageBitmap(result);
+                        }
+                    });
+                    imageDownloader.download(expert.avatar,false);
                 }
             }
         }

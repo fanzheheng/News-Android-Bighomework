@@ -62,7 +62,7 @@ public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.Ex
             }
             else //re-download the image
             {
-                ImageDownloader downloader=new ImageDownloader(new ImageDownloader.OnImageLoaderListener()
+                ImageDownloader imgDownloader=new ImageDownloader(new ImageDownloader.OnImageLoaderListener()
                 {
                     @Override
                     public void onError(ImageDownloader.ImageError error)
@@ -80,9 +80,11 @@ public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.Ex
                     public void onComplete(Bitmap result, String imgUrl)
                     {
                         imgRepo.insert(imgUrl,result);
+                        holder.ivAvatar.setImageBitmap(result);
                         notifyDataSetChanged();
                     }
                 });
+                imgDownloader.download(expert.avatar,false);
             }
             holder.itemView.setOnClickListener(new View.OnClickListener()
             {

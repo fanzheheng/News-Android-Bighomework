@@ -110,7 +110,7 @@ public class ImageRepo
 
     public Bitmap getImageByURL(String url)
     {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
         String selectQuery = "SELECT " +
                 Image.imgURLKey + "," +
                 Image.imgContentKey + " FROM " + Image.TABLE +
