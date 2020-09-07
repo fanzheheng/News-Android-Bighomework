@@ -118,12 +118,9 @@ public class MainActivity extends AppCompatActivity
         printExpertDB();
         printNewsDB();
 
-
-
         JsonGetter jsonGetter=new NewsEventJsonGetter(Utils.newsEventURL,this);
         jsonGetter.execute();
 
-        printNewsDB();
 
         searchBar = findViewById(R.id.search_bar_text);
         searchBar.setOnClickListener(new View.OnClickListener() {
@@ -133,9 +130,9 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this, searchBar, "search_bar").toBundle());
             }
         });
-        Intent intent=new Intent(this, NewsDetailActivity.class);
-        intent.putExtra(News._idKey,"5f560a119fced0a24b39257c");
-        startActivity(intent);
+//        Intent intent=new Intent(this, NewsDetailActivity.class);
+//        intent.putExtra(News._idKey,"5f560a119fced0a24b39257c");
+//        startActivity(intent);
 
 
 
