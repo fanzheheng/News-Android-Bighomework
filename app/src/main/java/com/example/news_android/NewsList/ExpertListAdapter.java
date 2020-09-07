@@ -81,7 +81,6 @@ public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.Ex
                     {
                         imgRepo.insert(imgUrl,result);
                         holder.ivAvatar.setImageBitmap(result);
-                        notifyDataSetChanged();
                     }
                 });
                 imgDownloader.download(expert.avatar,false);
