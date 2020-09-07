@@ -1,9 +1,9 @@
 package com.example.news_android.DetailPage;
 
 import android.view.View;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.news_android.DataBase.Expert;
 import com.example.news_android.DataBase.News;
 import com.example.news_android.DataBase.NewsRepo;
 import com.example.news_android.JsonGetter;
@@ -12,13 +12,6 @@ import com.example.news_android.Utils;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
-import android.widget.TableRow;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -41,7 +34,6 @@ public class NewsDetailActivity extends AppCompatActivity
         topView = findViewById(R.id.news_top_view);
 
         topView.setDefaultBackButtonListener(this);
-
         Bundle bundle = getIntent().getExtras();
         final String id = bundle.getString(News._idKey);
         NewsRepo repo=new NewsRepo(this);

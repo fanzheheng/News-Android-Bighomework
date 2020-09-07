@@ -28,6 +28,7 @@ import java.util.ArrayList;
  */
 public class EpidemicDataFragment extends NewsListFragment
 {
+    RefreshLayout refreshLayout;
 
     protected EpidemicDataFragment(String className)
     {
@@ -68,10 +69,10 @@ public class EpidemicDataFragment extends NewsListFragment
         districts[0] =provinces.toArray(new String[0]);
         final EpidemicListAdapter epidemicAdapter=new EpidemicListAdapter(districts[0]);
 
-        RefreshLayout refreshLayout = view.findViewById(R.id.refreshLayout);
+        refreshLayout = view.findViewById(R.id.refreshLayout);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+            public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
                 //refresh news
                 System.out.println("refresh");
 
@@ -90,10 +91,10 @@ public class EpidemicDataFragment extends NewsListFragment
                         districts[0] =provinces.toArray(new String[0]);
                         epidemicAdapter.setDistricts(districts[0]);
                         epidemicAdapter.notifyDataSetChanged();
+                        refreshLayout.finishRefresh();
                     }
                 };
                 Utils.UpdateEpidemicDatabase(getContext(),listener);
-                refreshLayout.finishRefresh(100);
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {

@@ -154,7 +154,7 @@ class EntityRelationAdapter extends RecyclerView.Adapter<EntityRelationAdapter.E
 
     @Override
     public int getItemCount() {
-        return relations.size();
+        return Math.min(relations.size(), 100);
     }
 
     static class EntityRelationHolder extends RecyclerView.ViewHolder {
