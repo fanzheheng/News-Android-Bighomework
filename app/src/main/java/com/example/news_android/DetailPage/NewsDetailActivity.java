@@ -109,6 +109,7 @@ public class NewsDetailActivity extends AppCompatActivity
             tbvEntities.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
             for(int i=0;i<entities.size();i++)
             {
+                if(entities.get(i)==null||entities.get(i).length()==0)continue;
                 TextView tv=new TextView(this);
                 tv.setText(entities.get(i));
                 tv.setBackgroundResource(R.drawable.gray_rect);

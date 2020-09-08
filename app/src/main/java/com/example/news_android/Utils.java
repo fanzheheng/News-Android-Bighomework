@@ -152,7 +152,7 @@ public class Utils
     public static ArrayList<String> convertStringToArray(String str)
     {
         ArrayList<String> res = new ArrayList<String>();
-        if (str == null) return res;
+        if (str == null||str.length()==0) return res;
         String[] arr = str.split(strSeparator);
 
         for (int i = 0; i < arr.length; i++)
