@@ -52,18 +52,16 @@ public class ExpertFragment extends NewsListFragment
 
     RefreshLayout refreshLayout;
     RadioButton aliveExpertRadio, deadExpertRadio;
-
+    ArrayList<String> aliveExperts = new ArrayList<>();
+    ArrayList<String> deadExperts = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
         System.out.println(className + "CreateView!!");
         final View view = inflater.inflate(R.layout.fragment_expert_list, container, false);
-
-        final String[][] ids = {{}};
         final ExpertRepo repo = new ExpertRepo(getContext());
-        final ArrayList<String> idList = repo.getAllExpertId();//now we get all expert id (dead or alive)
-        final ExpertListAdapter expertListAdapter=new ExpertListAdapter(idList);
+        final ExpertListAdapter expertListAdapter=new ExpertListAdapter(new ArrayList<String>());
         final RadioGroup radioGroup = view.findViewById(R.id.expert_radios);
         aliveExpertRadio = view.findViewById(R.id.alive_expert_radio);
         deadExpertRadio = view.findViewById(R.id.dead_expert_radio);
@@ -100,24 +98,36 @@ public class ExpertFragment extends NewsListFragment
                     int checkedId = radioGroup.getCheckedRadioButtonId();
                     System.out.println(checkedId);
                     if(checkedId == R.id.alive_expert_radio) {
-                        expertListAdapter.setIds(repo.getAliveExpertId());
+                        if(aliveExperts.isEmpty()) {
+                            aliveExperts = repo.getAliveExpertId();
+                        }
+                        expertListAdapter.setIds(aliveExperts);
                     } else {
-                        expertListAdapter.setIds(repo.getDeadExpertId());
+                        if(deadExperts.isEmpty()) {
+                            deadExperts = repo.getDeadExpertId();
+                        }
+                        expertListAdapter.setIds(deadExperts);
                     }
+                    expertListAdapter.notifyDataSetChanged();
                     aliveExpertRadio.setClickable(true);
                     deadExpertRadio.setClickable(true);
                     refreshLayout.finishRefresh();
                 }
             }
         });
-        radioGroup.setClickable(false);
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        aliveExpertRadio.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                expertListAdapter.notifyDataSetChanged();
+            public void onClick(View v) {
                 refreshLayout.autoRefresh();
             }
         });
+        deadExpertRadio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshLayout.autoRefresh();
+            }
+        });
+        radioGroup.setClickable(false);
 
         //refreshLayout.autoRefresh();
         refreshLayout.setEnableLoadMore(false);

@@ -123,7 +123,7 @@ public class NewsRepo
                 News.titleKey+","+
                 News.typeKey+","+
                 News.relatedEventsKey+" FROM "+News.TABLE+
-                " WHERE "+News.dateKey+"=?";
+                " WHERE "+News.dateKey+"<>?";
         ArrayList<News>newsList=new ArrayList<News>();
         Cursor cursor=db.rawQuery(selectQuery,new String[]{""});
         if(cursor.moveToFirst())

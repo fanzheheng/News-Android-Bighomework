@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import com.example.news_android.R;
 
 import cn.sharesdk.onekeyshare.OnekeyShare;
@@ -14,14 +15,24 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 
 public class TopView extends RelativeLayout {
     Button backButton, shareButton;
+    TextView textView;
     public TopView(Context context) {
         super(context);
     }
     public TopView(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.topview_layout,this);
+        textView = findViewById(R.id.top_view_title);
         backButton = findViewById(R.id.topview_back_button);
         shareButton = findViewById(R.id.topview_share_button);
+    }
+
+    public void setTopViewTitle(String title) {
+        textView.setVisibility(VISIBLE);
+        textView.setText(title);
+    }
+    public void setShareButtonVisibility(int visibility) {
+        shareButton.setVisibility(visibility);
     }
     public void setBackButtonListener(OnClickListener onClickListener) {
         backButton.setOnClickListener(onClickListener);

@@ -27,6 +27,7 @@ import com.example.news_android.DataBase.ImageRepo;
 import com.example.news_android.DataBase.News;
 import com.example.news_android.DataBase.NewsRepo;
 import com.example.news_android.DetailPage.EntityDetailActivity;
+import com.example.news_android.DetailPage.HistoryActivity;
 import com.example.news_android.DetailPage.NewsDetailActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.example.news_android.SearchPage.SearchPageActivity;
@@ -86,8 +87,6 @@ public class MainActivity extends AppCompatActivity
         System.out.println("_________");
     }
 
-    TextView searchBar;
-
 
 
     public void printNewsDB()
@@ -100,6 +99,10 @@ public class MainActivity extends AppCompatActivity
         }
         System.out.println("_________");
     }
+
+    TextView searchBar;
+    Button historyButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -124,11 +127,19 @@ public class MainActivity extends AppCompatActivity
 
 
         searchBar = findViewById(R.id.search_bar_text);
+        historyButton = findViewById(R.id.history_button);
         searchBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SearchPageActivity.class);
                 startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this, searchBar, "search_bar").toBundle());
+            }
+        });
+        historyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+                startActivity(intent);
             }
         });
 //        Intent intent=new Intent(this, NewsDetailActivity.class);
