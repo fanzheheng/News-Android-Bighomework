@@ -116,7 +116,7 @@ public class NewsListFragment extends Fragment
                 jsonGetter=Utils.UpdateNewsDatabase(getContext(),listener,false,type);
             }
         });
-
+        //refreshLayout.autoRefresh();
         //newsListView init
         newsListView = view.findViewById(R.id.news_list_view);
 

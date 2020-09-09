@@ -34,7 +34,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsTi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final NewsTitleViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final NewsTitleViewHolder holder, final int position) {
         final News news = newsArrayList.get(position);
         //set whether news have been visited
         holder.setVisited(!news.date.equals(""));
@@ -49,11 +49,13 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsTi
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder.visited = true;
                 //Open News Detail
                 Context context = holder.itemView.getContext();
                 Intent intent = new Intent(context, NewsDetailActivity.class);
                 intent.putExtra(News._idKey, news._id);
                 context.startActivity(intent);
+                holder.textView.setTextColor(Color.rgb(180, 180, 180));
             }
         });
     }

@@ -27,6 +27,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewsClassManagerFragment extends Fragment {
+
+    final String expertClassName="Expert List";
+    final String epidemicClassName="Epidemic Data";
+    final String entityClassName="Entity List";
+    final String NewsPaperClassName="News & Paper";
+    final String OnlyNewsClassName="News";
+    final String OnlyPaperClassName="Paper";
+
     private List<NewsListFragment> mFragmensts = new ArrayList<>();
     private ViewPager mViewPager;
     private TabLayout mTablayout;
@@ -43,17 +51,10 @@ public class NewsClassManagerFragment extends Fragment {
         mTablayout.setupWithViewPager(mViewPager);
 
         //init fragments
-        String expertClassName="Expert List";
-        String epidemicClassName="Epidemic Data";
-        String entityClassName="Entity List";
-        String NewsPaperClassName="News & Paper";
-        String OnlyNewsClassName="News";
-        String OnlyPaperClassName="Paper";
         mFragmensts.add(new ExpertFragment(expertClassName));
         mFragmensts.add(new EpidemicDataFragment(epidemicClassName));
         mFragmensts.add(new EntityFragment(entityClassName,"病毒"));
         NewsRepo repo=new NewsRepo(getContext());
-
         mFragmensts.add(new NewsListFragment(NewsPaperClassName,"all"));
         mFragmensts.add(new NewsListFragment(OnlyNewsClassName,"news"));
         mFragmensts.add(new NewsListFragment(OnlyPaperClassName,"paper"));

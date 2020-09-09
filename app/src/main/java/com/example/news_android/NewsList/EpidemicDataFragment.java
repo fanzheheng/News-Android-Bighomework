@@ -105,11 +105,11 @@ public class EpidemicDataFragment extends NewsListFragment
                 refreshLayout.finishLoadMore(100);
             }
         });
+
+        refreshLayout.setEnableLoadMore(false);
+        //refreshLayout.autoRefresh();
         //newsListView init
         newsListView = view.findViewById(R.id.news_list_view);
-
-
-
         newsListView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         newsListView.setAdapter(epidemicAdapter);
         //add divider
