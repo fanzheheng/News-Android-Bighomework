@@ -40,7 +40,7 @@ public class ExpertDetailActivity extends AppCompatActivity
         topView = findViewById(R.id.expert_top_view);
 
         topView.setDefaultBackButtonListener(this);
-
+        topView.setDefaultShareButtonListener();
         Bundle bundle = getIntent().getExtras();
         String id = bundle.getString(Expert.idKey);
         if (id != null)

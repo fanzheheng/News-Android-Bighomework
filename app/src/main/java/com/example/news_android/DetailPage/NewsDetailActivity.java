@@ -34,6 +34,7 @@ public class NewsDetailActivity extends AppCompatActivity
         topView = findViewById(R.id.news_top_view);
 
         topView.setDefaultBackButtonListener(this);
+        topView.setDefaultShareButtonListener();
         Bundle bundle = getIntent().getExtras();
         final String id = bundle.getString(News._idKey);
         NewsRepo repo=new NewsRepo(this);

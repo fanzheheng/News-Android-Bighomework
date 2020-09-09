@@ -37,7 +37,7 @@ public class EntityDetailActivity extends AppCompatActivity {
         topView = findViewById(R.id.entity_top_view);
 
         topView.setDefaultBackButtonListener(this);
-
+        topView.setDefaultShareButtonListener();
         Bundle bundle = getIntent().getExtras();
         String label = bundle.getString(Entity.labelKey);
         if(label != null) {
