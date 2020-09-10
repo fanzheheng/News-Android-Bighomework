@@ -44,6 +44,7 @@ public class NewsDetailActivity extends AppCompatActivity
             tvTitle.setText(news.title);
             tvTime.setText(news.time);
             if(news.source != null) {
+                tvSource.setVisibility(View.VISIBLE);
                 tvSource.setText(news.source);
             } else {
                 tvSource.setVisibility(View.GONE);
@@ -96,6 +97,7 @@ public class NewsDetailActivity extends AppCompatActivity
             tvTitle.setText(news.title);
             tvTime.setText(news.time);
             if(news.source != null) {
+                tvSource.setVisibility(View.VISIBLE);
                 tvSource.setText(news.source);
             } else {
                 tvSource.setVisibility(View.GONE);
