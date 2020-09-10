@@ -41,7 +41,7 @@
         <activity android:name=".DetailPage.ExpertDetailActivity" />
         <activity android:name=".SearchPage.SearchPageActivity"/>
         <activity android:name=".DetailPage.HistoryActivity"/>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:theme="@style/Theme.Design.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

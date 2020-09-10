@@ -21,7 +21,6 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsTi
     }
 
     ArrayList<News> newsArrayList;
-    //TODO
     public NewsListAdapter(ArrayList<News> newsArrayList) {
         this.newsArrayList = newsArrayList;
     }

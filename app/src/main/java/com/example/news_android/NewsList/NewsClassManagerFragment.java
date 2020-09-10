@@ -17,8 +17,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.news_android.DataBase.News;
-import com.example.news_android.DataBase.NewsRepo;
 import com.example.news_android.NewsList.ClassChooser.ClassGridAdapter;
 import com.example.news_android.R;
 import com.google.android.material.tabs.TabLayout;
@@ -34,6 +32,7 @@ public class NewsClassManagerFragment extends Fragment {
     final String NewsPaperClassName="News & Paper";
     final String OnlyNewsClassName="News";
     final String OnlyPaperClassName="Paper";
+    final String EventClassName="Event";
 
     private List<NewsListFragment> mFragmensts = new ArrayList<>();
     private ViewPager mViewPager;
@@ -53,17 +52,11 @@ public class NewsClassManagerFragment extends Fragment {
         //init fragments
         mFragmensts.add(new ExpertFragment(expertClassName));
         mFragmensts.add(new EpidemicDataFragment(epidemicClassName));
-        mFragmensts.add(new EntityFragment(entityClassName,"病毒"));
-        NewsRepo repo=new NewsRepo(getContext());
+        //mFragmensts.add(new EntityFragment(entityClassName,"病毒"));
         mFragmensts.add(new NewsListFragment(NewsPaperClassName,"all"));
         mFragmensts.add(new NewsListFragment(OnlyNewsClassName,"news"));
         mFragmensts.add(new NewsListFragment(OnlyPaperClassName,"paper"));
-        classNames.add(entityClassName);
-        classNames.add(expertClassName);
-        classNames.add(epidemicClassName);
-        classNames.add(NewsPaperClassName);
-        classNames.add(OnlyNewsClassName);
-        classNames.add(OnlyPaperClassName);
+        mFragmensts.add(new EventNewsFragment(EventClassName));
         mViewPager.setAdapter(new NewsClassFragmentPagerAdapter(getChildFragmentManager(), mFragmensts));
 
         //Choose class

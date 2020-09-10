@@ -6,16 +6,39 @@
     <RadioGroup android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="@color/search_gray"
-                android:id="@+id/expert_radios"
-    >
+                android:id="@+id/event_radios"
+    >        <RadioButton android:layout_width="0dp" android:layout_height="match_parent"
+                          android:id="@+id/cluster0_radio"
+                          android:paddingVertical="5dp"
+                          android:layout_marginEnd="1dp"
+                          android:layout_weight="1"
+                          android:layout_marginBottom="1dp"
+                          android:gravity="center"
+                          android:checked="true"
+                          android:button="@null"
+                          android:textSize="20sp"
+                          android:background="@drawable/expert_type_selector"
+                          android:text="高关注学者"
+    />
         <RadioButton android:layout_width="0dp" android:layout_height="match_parent"
-                     android:id="@+id/alive_expert_radio"
+                     android:paddingVertical="5dp"
+                     android:layout_marginLeft="1dp"
+                     android:id="@+id/cluster1_radio"
+                     android:layout_marginBottom="1dp"
+                     android:layout_weight="1"
+                     android:text="追忆学者"
+                     android:gravity="center"
+                     android:button="@null"
+                     android:textSize="20sp"
+                     android:background="@drawable/expert_type_selector"
+        />
+        <RadioButton android:layout_width="0dp" android:layout_height="match_parent"
+                     android:id="@+id/cluster2_radio"
                      android:paddingVertical="5dp"
                      android:layout_marginEnd="1dp"
                      android:layout_weight="1"
                      android:layout_marginBottom="1dp"
                      android:gravity="center"
-                     android:checked="true"
                      android:button="@null"
                      android:textSize="20sp"
                      android:background="@drawable/expert_type_selector"
@@ -24,7 +47,7 @@
         <RadioButton android:layout_width="0dp" android:layout_height="match_parent"
                      android:paddingVertical="5dp"
                      android:layout_marginLeft="1dp"
-                     android:id="@+id/dead_expert_radio"
+                     android:id="@+id/cluster3_radio"
                      android:layout_marginBottom="1dp"
                      android:layout_weight="1"
                      android:text="追忆学者"
@@ -34,8 +57,9 @@
                      android:background="@drawable/expert_type_selector"
         />
     </RadioGroup>
+
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
-            android:id="@+id/refreshLayout"
+            android:id="@+id/event_refreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -46,7 +70,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent" android:layout_height="match_parent"
-                android:id="@+id/news_list_view"
+                android:id="@+id/event_list_view"
         />
 
         <com.scwang.smart.refresh.footer.ClassicsFooter

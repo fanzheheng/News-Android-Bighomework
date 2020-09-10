@@ -21,6 +21,7 @@ public class NewsDetailActivity extends AppCompatActivity
     TextView tvTitle,tvContent,tvSource,tvTime;
     TableRow tbvEntities;
     TopView topView;
+    News news;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -38,18 +39,17 @@ public class NewsDetailActivity extends AppCompatActivity
         Bundle bundle = getIntent().getExtras();
         final String id = bundle.getString(News._idKey);
         NewsRepo repo=new NewsRepo(this);
-        News news=repo.getNewsById(id);
+        news=repo.getNewsById(id);
         if(news!=null)
         {
             tvTitle.setText(news.title);
             tvTime.setText(news.time);
-            if(news.source != null) {
+            if(news.source != null && !news.source.equals("")) {
                 tvSource.setVisibility(View.VISIBLE);
                 tvSource.setText(news.source);
             } else {
                 tvSource.setVisibility(View.GONE);
             }
-
             String date=news.date;
             if(date.equals(""))
             {

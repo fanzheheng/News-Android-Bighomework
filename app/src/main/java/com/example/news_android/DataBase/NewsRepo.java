@@ -369,6 +369,7 @@ public class NewsRepo
                 res.add(news);
             } while (cursor.moveToNext());
         }
+
         return res;
     }
 
