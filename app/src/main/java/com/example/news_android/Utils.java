@@ -223,6 +223,7 @@ public class Utils
                 R.raw.cluster4);
         BufferedReader reader = new BufferedReader(new InputStreamReader(ins));
         NewsRepo repo=new NewsRepo(context);
+        if(repo.getNewsByCluster(0).size()!=0)return;
         try
         {
             String csvLine;
