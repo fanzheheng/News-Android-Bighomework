@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity
 //        intent.putExtra(News._idKey,"5f560a119fced0a24b39257c");
 //        startActivity(intent);
 
-
+        Utils.ReadCluster(this);
 
         OnekeyShare oks = new OnekeyShare();
 //关闭sso授权

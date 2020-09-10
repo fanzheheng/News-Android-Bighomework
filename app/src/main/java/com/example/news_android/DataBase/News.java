@@ -20,6 +20,7 @@ public class News
     public static final String sourceKey="source";
     public static final String entitiesKey="entities";
     public static final String relatedEventsKey="related_events";
+    public static final String clusterKey="cluster";
 
     public  String _id;
     public  String type;
@@ -140,9 +141,15 @@ public class News
         this.relatedEvents = relatedEvents;
     }
 
+    public void setCluster(int cluster)
+    {
+        this.cluster = cluster;
+    }
+
     public  String content;
     public  String date="";
     public  String source;
+    public int cluster=-1;
     public ArrayList<String> entities=new ArrayList<String>();//label of related entities
     public ArrayList<String> relatedEvents=new ArrayList<String>();//id of related events
 

@@ -12,7 +12,11 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.news_android.DataBase.News;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -208,5 +212,26 @@ public class Utils
         EpidemicDataJsonGetter jsonGetter=new EpidemicDataJsonGetter(epidemicURL,context,listener);
         jsonGetter.execute();
     }
+
+    public static void ReadCluster(Context context)
+    {
+        InputStream ins =context.getResources().openRawResource(
+                R.raw.comment);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(ins));
+        try {
+            String csvLine;
+            while ((csvLine = reader.readLine()) != null) {
+                String[] row = csvLine.split(",");
+                System.out.println(csvLine);
+                System.out.println(row);
+            }
+        }
+        catch (IOException  ex) {
+            throw new RuntimeException("Error in reading CSV file: "+ex);
+        }
+
+
+    }
+
 
 }

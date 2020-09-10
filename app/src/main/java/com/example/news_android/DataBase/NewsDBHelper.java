@@ -52,7 +52,8 @@ public class NewsDBHelper extends SQLiteOpenHelper
                          +News.dateKey+" TEXT,"
                          +News.sourceKey+" TEXT,"
                          +News.entitiesKey+" TEXT,"
-                         +News.relatedEventsKey+" TEXT)";
+                         +News.relatedEventsKey+" TEXT,"
+                         +News.clusterKey+" INT)";
         sqLiteDatabase.execSQL(CREATE_TABLE);
     }
 
