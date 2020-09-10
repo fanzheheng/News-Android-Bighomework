@@ -36,7 +36,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.3.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation "com.google.android.material:material:1.2.0"        //pagerIndicator
+    implementation "com.google.android.material:material:1.2.1"        //pagerIndicator
 
     implementation 'com.scwang.smart:refresh-layout-kernel:2.0.1'      //refresh and load module
     implementation  'com.scwang.smart:refresh-header-classics:2.0.1'
@@ -44,34 +44,34 @@ dependencies {
 
     implementation "androidx.recyclerview:recyclerview:1.1.0"
 }
-
-MobSDK {
-    appKey "30b5f6b9d1b28"
-    appSecret "a14db551162d7a9b56ce5049830ab079"
-    ShareSDK {
-        loopShare false
-        devInfo {
-            SinaWeibo {
-                appKey "568898243"
-                appSecret "38a4f8204cc784f81f9f0daaf31e02e3"
-                callbackUri "http://www.sharesdk.cn"
-            }
-            Wechat {
-                appId "wx4868b35061f87885"
-                appSecret "64020361b8ec4c99936c0e3999a9f249"
-                userName "gh_afb25ac019c9"
-                path "pages/index/index.html?id=1"
-                withShareTicket true
-                miniprogramType 2
-            }
-            WechatMoments {
-                appId "wx4868b35061f87885"
-                appSecret "64020361b8ec4c99936c0e3999a9f249"
-            }
-            WechatFavorite {
-                appId "wx4868b35061f87885"
-                appSecret "64020361b8ec4c99936c0e3999a9f249"
-            }
-        }
-    }
-}
+//
+//MobSDK {
+//    appKey "30b5f6b9d1b28"
+//    appSecret "a14db551162d7a9b56ce5049830ab079"
+//    ShareSDK {
+//        loopShare false
+//        devInfo {
+//            SinaWeibo {
+//                appKey "568898243"
+//                appSecret "38a4f8204cc784f81f9f0daaf31e02e3"
+//                callbackUri "http://www.sharesdk.cn"
+//            }
+//            Wechat {
+//                appId "wx4868b35061f87885"
+//                appSecret "64020361b8ec4c99936c0e3999a9f249"
+//                userName "gh_afb25ac019c9"
+//                path "pages/index/index.html?id=1"
+//                withShareTicket true
+//                miniprogramType 2
+//            }
+//            WechatMoments {
+//                appId "wx4868b35061f87885"
+//                appSecret "64020361b8ec4c99936c0e3999a9f249"
+//            }
+//            WechatFavorite {
+//                appId "wx4868b35061f87885"
+//                appSecret "64020361b8ec4c99936c0e3999a9f249"
+//            }
+//        }
+//    }
+//}
