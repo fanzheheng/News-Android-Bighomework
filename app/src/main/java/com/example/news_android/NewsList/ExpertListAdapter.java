@@ -18,16 +18,21 @@ import com.example.news_android.DataBase.ImageRepo;
 import com.example.news_android.DetailPage.ExpertDetailActivity;
 import com.example.news_android.R;
 
+import java.util.ArrayList;
+
 public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.ExpertViewHolder>
 {
-    String[] ids;
+    ArrayList<String> ids;
 
-    public void setIds(String[] ids)
+    public void setIds(ArrayList<String> ids)
     {
         this.ids = ids;
+        for(String s : ids) System.out.println(s);
+        System.out.println("asdasdasdsd");
+        notifyDataSetChanged();
     }
 
-    public ExpertListAdapter(String[] ids)
+    public ExpertListAdapter(ArrayList<String> ids)
     {
         this.ids=ids;
     }
@@ -45,7 +50,7 @@ public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.Ex
     {
         final ExpertRepo repo=new ExpertRepo(holder.itemView.getContext());
         final ImageRepo imgRepo=new ImageRepo(holder.itemView.getContext());
-        Expert expert=repo.getExpertById(ids[position]);
+        Expert expert=repo.getExpertById(ids.get(position));
         if(expert!=null)
         {
             holder.tvName.setText(expert.nameZh+" "+expert.name);
@@ -91,7 +96,7 @@ public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.Ex
                 public void onClick(View v)
                 {
                     Intent intent=new Intent(v.getContext(), ExpertDetailActivity.class);
-                    intent.putExtra(Expert.idKey,ids[position]);
+                    intent.putExtra(Expert.idKey,ids.get(position));
                     v.getContext().startActivity(intent);
                 }
             });
@@ -101,7 +106,7 @@ public class ExpertListAdapter extends RecyclerView.Adapter<ExpertListAdapter.Ex
     @Override
     public int getItemCount()
     {
-        return ids.length;
+        return ids.size();
     }
 
     static class ExpertViewHolder extends RecyclerView.ViewHolder

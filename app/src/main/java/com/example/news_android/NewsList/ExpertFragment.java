@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -14,6 +16,7 @@ import com.example.news_android.DataBase.ExpertRepo;
 import com.example.news_android.JsonGetter;
 import com.example.news_android.R;
 import com.example.news_android.Utils;
+import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
@@ -48,50 +51,86 @@ public class ExpertFragment extends NewsListFragment
     }
 
     RefreshLayout refreshLayout;
-
+    RadioButton aliveExpertRadio, deadExpertRadio;
+    ArrayList<String> aliveExperts = new ArrayList<>();
+    ArrayList<String> deadExperts = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
         System.out.println(className + "CreateView!!");
-        View view = inflater.inflate(R.layout.fragment_news_list, container, false);
-
-        final String[][] ids = {{}};
-        final ExpertRepo repo=new ExpertRepo(getContext());
-        final ArrayList<String>[] idList = new ArrayList[]{repo.getAllExpertId()};//now we get all expert id (dead or alive)
-        ids[0] = idList[0].toArray(new String[0]);
-        final ExpertListAdapter expertListAdapter=new ExpertListAdapter(ids[0]);
+        final View view = inflater.inflate(R.layout.fragment_expert_list, container, false);
+        final ExpertRepo repo = new ExpertRepo(getContext());
+        final ExpertListAdapter expertListAdapter=new ExpertListAdapter(new ArrayList<String>());
+        final RadioGroup radioGroup = view.findViewById(R.id.expert_radios);
+        aliveExpertRadio = view.findViewById(R.id.alive_expert_radio);
+        deadExpertRadio = view.findViewById(R.id.dead_expert_radio);
 
         refreshLayout = view.findViewById(R.id.refreshLayout);
-
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
                 //refresh news
                 System.out.println("refresh");
+                aliveExpertRadio.setClickable(false);
+                deadExpertRadio.setClickable(false);
                 JsonGetter.JsonGetterFinishListener refreshFinishListener = new JsonGetter.JsonGetterFinishListener()
                 {
                     @Override
                     public void OnFinish()
                     {
-                        ArrayList<String>idList=repo.getAllExpertId();//now we get all expert id (dead or alive)
-                        ids[0] =idList.toArray(new String[0]);
-                        expertListAdapter.setIds(ids[0]);
+                        int checkedId = radioGroup.getCheckedRadioButtonId();
+                        System.out.println(checkedId);
+                        if(checkedId == R.id.alive_expert_radio) {
+                            expertListAdapter.setIds(repo.getAliveExpertId());
+                        } else {
+                            expertListAdapter.setIds(repo.getDeadExpertId());
+                        }
                         expertListAdapter.notifyDataSetChanged();
-                        refreshLayout.finishRefresh(2000, jsonGetter.getResult(), !jsonGetter.getResult());
+                        refreshLayout.finishRefresh(0, jsonGetter.getResult(), !jsonGetter.getResult());
+                        aliveExpertRadio.setClickable(true);
+                        deadExpertRadio.setClickable(true);
                     }
                 };
-                jsonGetter = Utils.UpdateExpertDatabase(getContext(),refreshFinishListener);
+                if(expertListAdapter.getItemCount() == 0) {
+                    jsonGetter = Utils.UpdateExpertDatabase(getContext(),refreshFinishListener);
+                } else {
+                    int checkedId = radioGroup.getCheckedRadioButtonId();
+                    System.out.println(checkedId);
+                    if(checkedId == R.id.alive_expert_radio) {
+                        if(aliveExperts.isEmpty()) {
+                            aliveExperts = repo.getAliveExpertId();
+                        }
+                        expertListAdapter.setIds(aliveExperts);
+                    } else {
+                        if(deadExperts.isEmpty()) {
+                            deadExperts = repo.getDeadExpertId();
+                        }
+                        expertListAdapter.setIds(deadExperts);
+                    }
+                    expertListAdapter.notifyDataSetChanged();
+                    aliveExpertRadio.setClickable(true);
+                    deadExpertRadio.setClickable(true);
+                    refreshLayout.finishRefresh();
+                }
             }
         });
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+        aliveExpertRadio.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                //load more news
-                System.out.println("load more");
-                refreshLayout.finishLoadMore(100);
+            public void onClick(View v) {
+                refreshLayout.autoRefresh();
             }
         });
+        deadExpertRadio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshLayout.autoRefresh();
+            }
+        });
+        radioGroup.setClickable(false);
+
+        //refreshLayout.autoRefresh();
+        refreshLayout.setEnableLoadMore(false);
         //newsListView init
         newsListView = view.findViewById(R.id.news_list_view);
         newsListView.setLayoutManager(new LinearLayoutManager(this.getContext()));

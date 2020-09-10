@@ -12,7 +12,11 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.news_android.DataBase.News;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -152,7 +156,7 @@ public class Utils
     public static ArrayList<String> convertStringToArray(String str)
     {
         ArrayList<String> res = new ArrayList<String>();
-        if (str == null) return res;
+        if (str == null||str.length()==0) return res;
         String[] arr = str.split(strSeparator);
 
         for (int i = 0; i < arr.length; i++)
@@ -174,19 +178,15 @@ public class Utils
         return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
 
-    public static void UpdateNewsDatabase(Context context,JsonGetter.JsonGetterFinishListener listener,boolean readNewest)
+    public static JsonGetter UpdateNewsDatabase(Context context,JsonGetter.JsonGetterFinishListener listener,boolean readNewest,String type)
     {
-        NewsEventJsonGetter jsonGetter=new NewsEventJsonGetter(newsEventURL,context,listener);
-        int tmpPage=NewsEventJsonGetter.page;
-        if(readNewest)
+        if(!readNewest)
         {
-            NewsEventJsonGetter.updatePage(1);
+            NewsEventJsonGetter.updatePage(NewsEventJsonGetter.page+1);//increment the max page num
         }
+        NewsEventJsonGetter jsonGetter=new NewsEventJsonGetter(newsEventURL,context,listener,readNewest?1:NewsEventJsonGetter.page,type,NewsEventJsonGetter.size);
         jsonGetter.execute();
-        if(readNewest)
-        {
-            NewsEventJsonGetter.updatePage(tmpPage);
-        }
+        return jsonGetter;
     }
 
     public static void UpdateNewsContentDatabase(Context context, JsonGetter.JsonGetterFinishListener listener, News news)
@@ -212,5 +212,26 @@ public class Utils
         EpidemicDataJsonGetter jsonGetter=new EpidemicDataJsonGetter(epidemicURL,context,listener);
         jsonGetter.execute();
     }
+
+    public static void ReadCluster(Context context)
+    {
+        InputStream ins =context.getResources().openRawResource(
+                R.raw.comment);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(ins));
+        try {
+            String csvLine;
+            while ((csvLine = reader.readLine()) != null) {
+                String[] row = csvLine.split(",");
+                System.out.println(csvLine);
+                System.out.println(row);
+            }
+        }
+        catch (IOException  ex) {
+            throw new RuntimeException("Error in reading CSV file: "+ex);
+        }
+
+
+    }
+
 
 }

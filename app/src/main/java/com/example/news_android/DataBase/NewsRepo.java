@@ -31,7 +31,7 @@ public class NewsRepo
         values.put(News.titleKey,news.title);
         values.put(News.typeKey,news.type);
         values.put(News.relatedEventsKey,Utils.convertArrayToString(news.relatedEvents));
-
+        values.put(News.clusterKey,news.cluster);
         db.insert(News.TABLE,null,values);
         db.close();
     }
@@ -64,6 +64,7 @@ public class NewsRepo
         values.put(News.titleKey,news.title);
         values.put(News.typeKey,news.type);
         values.put(News.relatedEventsKey,Utils.convertArrayToString(news.relatedEvents));
+        values.put(News.clusterKey,news.cluster);
         db.update(News.TABLE,values,News._idKey+"=?",new String[]{news._id});
         db.close();
     }
@@ -82,7 +83,8 @@ public class NewsRepo
                 News.timeKey+","+
                 News.titleKey+","+
                 News.typeKey+","+
-                News.relatedEventsKey+" FROM "+News.TABLE;
+                News.relatedEventsKey+","+
+                News.clusterKey+" FROM "+News.TABLE;
         ArrayList<News>newsList=new ArrayList<News>();
         Cursor cursor=db.rawQuery(selectQuery,null);
         if(cursor.moveToFirst())
@@ -100,6 +102,134 @@ public class NewsRepo
                 news.setTitle(cursor.getString(cursor.getColumnIndex(News.titleKey)));
                 news.setType(cursor.getString(cursor.getColumnIndex(News.typeKey)));
                 news.setRelatedEvents(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(News.relatedEventsKey))));
+                news.setCluster(cursor.getInt(cursor.getColumnIndex(News.clusterKey)));
+                newsList.add(news);
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return newsList;
+    }
+
+    public ArrayList<News>getReadNewsList()
+    {
+        SQLiteDatabase db=dbHelper.getWritableDatabase();
+        String selectQuery="SELECT "+
+                News._idKey+","+
+                News.categoryKey+","+
+                News.contentKey+","+
+                News.dateKey+","+
+                News.entitiesKey+","+
+                News.langKey+","+
+                News.sourceKey+","+
+                News.timeKey+","+
+                News.titleKey+","+
+                News.typeKey+","+
+                News.relatedEventsKey+","+
+                News.clusterKey+" FROM "+News.TABLE+
+                " WHERE "+News.dateKey+"<>?";
+        ArrayList<News>newsList=new ArrayList<News>();
+        Cursor cursor=db.rawQuery(selectQuery,new String[]{""});
+        if(cursor.moveToFirst())
+        {
+            do{
+                News news=new News();
+                news.set_id(cursor.getString(cursor.getColumnIndex(News._idKey)));
+                news.setCategory(cursor.getString(cursor.getColumnIndex(News.categoryKey)));
+                news.setContent(cursor.getString(cursor.getColumnIndex(News.contentKey)));
+                news.setDate(cursor.getString(cursor.getColumnIndex(News.dateKey)));
+                news.setEntities(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(News.entitiesKey))));
+                news.setLang(cursor.getString(cursor.getColumnIndex(News.langKey)));
+                news.setSource(cursor.getString(cursor.getColumnIndex(News.sourceKey)));
+                news.setTime(cursor.getString(cursor.getColumnIndex(News.timeKey)));
+                news.setTitle(cursor.getString(cursor.getColumnIndex(News.titleKey)));
+                news.setType(cursor.getString(cursor.getColumnIndex(News.typeKey)));
+                news.setRelatedEvents(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(News.relatedEventsKey))));
+                news.setCluster(cursor.getInt(cursor.getColumnIndex(News.clusterKey)));
+                newsList.add(news);
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return newsList;
+    }
+
+    public ArrayList<News>getNewsListByType(String type)
+    {
+        SQLiteDatabase db=dbHelper.getWritableDatabase();
+        if(type==null||type.equals("all"))
+        {
+            String selectQuery="SELECT "+
+                    News._idKey+","+
+                    News.categoryKey+","+
+                    News.contentKey+","+
+                    News.dateKey+","+
+                    News.entitiesKey+","+
+                    News.langKey+","+
+                    News.sourceKey+","+
+                    News.timeKey+","+
+                    News.titleKey+","+
+                    News.typeKey+","+
+                    News.relatedEventsKey+","+
+                    News.clusterKey+" FROM "+News.TABLE;
+            ArrayList<News>newsList=new ArrayList<News>();
+            Cursor cursor=db.rawQuery(selectQuery,null);
+            if(cursor.moveToFirst())
+            {
+                do{
+                    News news=new News();
+                    news.set_id(cursor.getString(cursor.getColumnIndex(News._idKey)));
+                    news.setCategory(cursor.getString(cursor.getColumnIndex(News.categoryKey)));
+                    news.setContent(cursor.getString(cursor.getColumnIndex(News.contentKey)));
+                    news.setDate(cursor.getString(cursor.getColumnIndex(News.dateKey)));
+                    news.setEntities(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(News.entitiesKey))));
+                    news.setLang(cursor.getString(cursor.getColumnIndex(News.langKey)));
+                    news.setSource(cursor.getString(cursor.getColumnIndex(News.sourceKey)));
+                    news.setTime(cursor.getString(cursor.getColumnIndex(News.timeKey)));
+                    news.setTitle(cursor.getString(cursor.getColumnIndex(News.titleKey)));
+                    news.setType(cursor.getString(cursor.getColumnIndex(News.typeKey)));
+                    news.setRelatedEvents(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(News.relatedEventsKey))));
+                    news.setCluster(cursor.getInt(cursor.getColumnIndex(News.clusterKey)));
+                    newsList.add(news);
+                }while(cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            return newsList;
+        }
+
+        String selectQuery="SELECT "+
+                News._idKey+","+
+                News.categoryKey+","+
+                News.contentKey+","+
+                News.dateKey+","+
+                News.entitiesKey+","+
+                News.langKey+","+
+                News.sourceKey+","+
+                News.timeKey+","+
+                News.titleKey+","+
+                News.typeKey+","+
+                News.relatedEventsKey+","+
+                News.clusterKey+" FROM "+News.TABLE
+                +" WHERE "+ News.typeKey+"=?";
+        ArrayList<News>newsList=new ArrayList<News>();
+        Cursor cursor=db.rawQuery(selectQuery,new String[]{type});
+        if(cursor.moveToFirst())
+        {
+            do{
+                News news=new News();
+                news.set_id(cursor.getString(cursor.getColumnIndex(News._idKey)));
+                news.setCategory(cursor.getString(cursor.getColumnIndex(News.categoryKey)));
+                news.setContent(cursor.getString(cursor.getColumnIndex(News.contentKey)));
+                news.setDate(cursor.getString(cursor.getColumnIndex(News.dateKey)));
+                news.setEntities(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(News.entitiesKey))));
+                news.setLang(cursor.getString(cursor.getColumnIndex(News.langKey)));
+                news.setSource(cursor.getString(cursor.getColumnIndex(News.sourceKey)));
+                news.setTime(cursor.getString(cursor.getColumnIndex(News.timeKey)));
+                news.setTitle(cursor.getString(cursor.getColumnIndex(News.titleKey)));
+                news.setType(cursor.getString(cursor.getColumnIndex(News.typeKey)));
+                news.setRelatedEvents(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(News.relatedEventsKey))));
+                news.setCluster(cursor.getInt(cursor.getColumnIndex(News.clusterKey)));
                 newsList.add(news);
             }while(cursor.moveToNext());
         }
@@ -122,7 +252,8 @@ public class NewsRepo
                 News.timeKey + "," +
                 News.titleKey + "," +
                 News.typeKey + "," +
-                News.relatedEventsKey + " FROM " + News.TABLE +
+                News.relatedEventsKey +","+
+                News.clusterKey + " FROM " + News.TABLE +
                 " WHERE " +
                 News._idKey + "=?";
         News news = new News();
@@ -142,6 +273,7 @@ public class NewsRepo
                 news.setTitle(cursor.getString(cursor.getColumnIndex(News.titleKey)));
                 news.setType(cursor.getString(cursor.getColumnIndex(News.typeKey)));
                 news.setRelatedEvents(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(News.relatedEventsKey))));
+                news.setCluster(cursor.getInt(cursor.getColumnIndex(News.clusterKey)));
             } while (cursor.moveToNext());
         }
         else
@@ -169,7 +301,8 @@ public class NewsRepo
                 News.timeKey + "," +
                 News.titleKey + "," +
                 News.typeKey + "," +
-                News.relatedEventsKey + " FROM " + News.TABLE +
+                News.relatedEventsKey +","+
+                News.clusterKey+" FROM " + News.TABLE +
                 " WHERE " +News.titleKey+" LIKE "+"'%"+searchInput+"%'";
         ArrayList<News>res=new ArrayList<News>();
         Cursor cursor = db.rawQuery(selectQuery, new String[]{});
@@ -189,6 +322,49 @@ public class NewsRepo
                 news.setTitle(cursor.getString(cursor.getColumnIndex(News.titleKey)));
                 news.setType(cursor.getString(cursor.getColumnIndex(News.typeKey)));
                 news.setRelatedEvents(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(News.relatedEventsKey))));
+                news.setCluster(cursor.getInt(cursor.getColumnIndex(News.clusterKey)));
+                res.add(news);
+            } while (cursor.moveToNext());
+        }
+        return res;
+    }
+
+    public ArrayList<News>getNewsByCluster(Integer cluster)
+    {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String selectQuery = "SELECT " +
+                News._idKey + "," +
+                News.categoryKey + "," +
+                News.contentKey + "," +
+                News.dateKey + "," +
+                News.entitiesKey + "," +
+                News.langKey + "," +
+                News.sourceKey + "," +
+                News.timeKey + "," +
+                News.titleKey + "," +
+                News.typeKey + "," +
+                News.relatedEventsKey +","+
+                News.clusterKey+" FROM " + News.TABLE +
+                " WHERE " +News.clusterKey+"=?";
+        ArrayList<News>res=new ArrayList<News>();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{cluster.toString()});
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                News news=new News();
+                news.set_id(cursor.getString(cursor.getColumnIndex(News._idKey)));
+                news.setCategory(cursor.getString(cursor.getColumnIndex(News.categoryKey)));
+                news.setContent(cursor.getString(cursor.getColumnIndex(News.contentKey)));
+                news.setDate(cursor.getString(cursor.getColumnIndex(News.dateKey)));
+                news.setEntities(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(News.dateKey))));
+                news.setLang(cursor.getString(cursor.getColumnIndex(News.langKey)));
+                news.setSource(cursor.getString(cursor.getColumnIndex(News.sourceKey)));
+                news.setTime(cursor.getString(cursor.getColumnIndex(News.timeKey)));
+                news.setTitle(cursor.getString(cursor.getColumnIndex(News.titleKey)));
+                news.setType(cursor.getString(cursor.getColumnIndex(News.typeKey)));
+                news.setRelatedEvents(Utils.convertStringToArray(cursor.getString(cursor.getColumnIndex(News.relatedEventsKey))));
+                news.setCluster(cursor.getInt(cursor.getColumnIndex(News.clusterKey)));
                 res.add(news);
             } while (cursor.moveToNext());
         }
