@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity
     public void printNewsDB()
     {
         NewsRepo repo=new NewsRepo(this);
+        repo.clearTable();
         ArrayList<News> list = repo.getNewsList();
         for (News news:list) {
             System.out.println(news._id);
@@ -144,9 +145,6 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this, searchBar, "search_bar").toBundle());
             }
         });
-//        Intent intent=new Intent(this, NewsDetailActivity.class);
-//        intent.putExtra(News._idKey,"5f560a119fced0a24b39257c");
-//        startActivity(intent);
 
 
 //

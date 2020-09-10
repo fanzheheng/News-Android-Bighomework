@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import androidx.core.app.ActivityCompat;
 
 import com.example.news_android.DataBase.News;
+import com.example.news_android.DataBase.NewsRepo;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -65,7 +66,8 @@ public class Utils
         if (map == null) return str;
 
         Set<String> keys = map.keySet();
-        for (String k : keys) {
+        for (String k : keys)
+        {
             str += k;
             str += strSeparator;
             str += map.get(k);
@@ -156,7 +158,7 @@ public class Utils
     public static ArrayList<String> convertStringToArray(String str)
     {
         ArrayList<String> res = new ArrayList<String>();
-        if (str == null||str.length()==0) return res;
+        if (str == null || str.length() == 0) return res;
         String[] arr = str.split(strSeparator);
 
         for (int i = 0; i < arr.length; i++)
@@ -172,66 +174,74 @@ public class Utils
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
         return stream.toByteArray();
     }
+
     // convert from byte array to bitmap
     public static Bitmap getImageFromBytes(byte[] image)
     {
         return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
 
-    public static JsonGetter UpdateNewsDatabase(Context context,JsonGetter.JsonGetterFinishListener listener,boolean readNewest,String type)
+    public static JsonGetter UpdateNewsDatabase(Context context, JsonGetter.JsonGetterFinishListener listener, boolean readNewest, String type)
     {
-        if(!readNewest)
+        if (!readNewest)
         {
-            NewsEventJsonGetter.updatePage(NewsEventJsonGetter.page+1);//increment the max page num
+            NewsEventJsonGetter.updatePage(NewsEventJsonGetter.page + 1);//increment the max page num
         }
-        NewsEventJsonGetter jsonGetter=new NewsEventJsonGetter(newsEventURL,context,listener,readNewest?1:NewsEventJsonGetter.page,type,NewsEventJsonGetter.size);
+        NewsEventJsonGetter jsonGetter = new NewsEventJsonGetter(newsEventURL, context, listener, readNewest ? 1 : NewsEventJsonGetter.page, type, NewsEventJsonGetter.size);
         jsonGetter.execute();
         return jsonGetter;
     }
 
     public static void UpdateNewsContentDatabase(Context context, JsonGetter.JsonGetterFinishListener listener, News news)
     {
-        NewsContentJsonGetter jsonGetter=new NewsContentJsonGetter(newsContentURL+news._id,context,news,listener);
+        NewsContentJsonGetter jsonGetter = new NewsContentJsonGetter(newsContentURL + news._id, context, news, listener);
         jsonGetter.execute();
     }
 
-    public static void UpdateEntityDatabase(Context context,String label, JsonGetter.JsonGetterFinishListener listener)
+    public static void UpdateEntityDatabase(Context context, String label, JsonGetter.JsonGetterFinishListener listener)
     {
-        EntityJsonGetter jsonGetter=new EntityJsonGetter(entityURL+"?entity="+label,context,listener);
+        EntityJsonGetter jsonGetter = new EntityJsonGetter(entityURL + "?entity=" + label, context, listener);
         jsonGetter.execute();
     }
 
-    public static JsonGetter UpdateExpertDatabase(Context context,JsonGetter.JsonGetterFinishListener listener)
+    public static JsonGetter UpdateExpertDatabase(Context context, JsonGetter.JsonGetterFinishListener listener)
     {
-        ExpertJsonGetter jsonGetter=new ExpertJsonGetter(expertURL,context,listener);
+        ExpertJsonGetter jsonGetter = new ExpertJsonGetter(expertURL, context, listener);
         jsonGetter.execute();
         return jsonGetter;
     }
-    public static void UpdateEpidemicDatabase(Context context,JsonGetter.JsonGetterFinishListener listener)
+
+    public static void UpdateEpidemicDatabase(Context context, JsonGetter.JsonGetterFinishListener listener)
     {
-        EpidemicDataJsonGetter jsonGetter=new EpidemicDataJsonGetter(epidemicURL,context,listener);
+        EpidemicDataJsonGetter jsonGetter = new EpidemicDataJsonGetter(epidemicURL, context, listener);
         jsonGetter.execute();
     }
 
     public static void ReadCluster(Context context)
     {
-        InputStream ins =context.getResources().openRawResource(
-                R.raw.comment);
+        InputStream ins = context.getResources().openRawResource(
+                R.raw.cluster4);
         BufferedReader reader = new BufferedReader(new InputStreamReader(ins));
-        try {
+        NewsRepo repo=new NewsRepo(context);
+        try
+        {
             String csvLine;
-            while ((csvLine = reader.readLine()) != null) {
+            csvLine = reader.readLine();
+            while ((csvLine = reader.readLine()) != null)
+            {
                 String[] row = csvLine.split(",");
-                System.out.println(csvLine);
-                System.out.println(row);
+                if (row.length < 8) continue;
+                String id=row[1],type=row[2],title=row[3],category=row[4],time=row[5],lang=row[6],cluster=row[7];
+                News news=new News();
+                news.set_id(id);news.setType(type);news.setTitle(title);
+                news.setCategory(category);news.setTime(time);
+                news.setCluster(Integer.parseInt(cluster));
+                repo.insert(news);
             }
+        } catch (IOException ex)
+        {
+            throw new RuntimeException("Error in reading CSV file: " + ex);
         }
-        catch (IOException  ex) {
-            throw new RuntimeException("Error in reading CSV file: "+ex);
-        }
-
 
     }
-
-
 }

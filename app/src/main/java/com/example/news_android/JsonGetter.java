@@ -92,7 +92,6 @@ public class JsonGetter extends AsyncTask
         {
             result = false;
         }
-        System.out.println(jsonObject);
         return jsonObject;
     }
 
@@ -494,7 +493,6 @@ class ExpertJsonGetter extends JsonGetter
             {
                 try
                 {
-                    System.out.println(expertJsonArray.get(i));
                     Expert expert=new Expert();
                     JSONObject obj= (JSONObject) expertJsonArray.get(i);
                     expert.setAvatar(obj.getString(Expert.avatarKey));
