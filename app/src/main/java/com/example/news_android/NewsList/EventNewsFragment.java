@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +28,8 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,14 +53,22 @@ public class EventNewsFragment extends NewsListFragment
     }
 
     final String[] clusterNames = new String[]{"疫情信息", "病毒研究", "疫苗研发", "医疗突破"};
+    final String[][] EventKeywords = new String[][] {
+            new String[]{"疫情", "检测", "新冠", "肺炎", "研究", "中国", "感染", "美国"},
+            new String[]{"病毒", "研究", "新冠", "发现", "感染", "细胞", "人员", "结构"},
+            new String[]{"疫苗", "临床试验", "新冠", "重组", "期", "研究所", "研制", "动物"},
+            new String[]{"患者", "研究", "治疗", "肺炎", "新冠", "重症", "临床", "发现"}
+    };
     int clusterButtonIds[];
     NewsListAdapter newsListAdapter;
+    EventKeywordsAdapter eventKeywordsAdapter;
+
     RefreshLayout refreshLayout;
     NewsRepo repo;
     RadioGroup radioGroup;
     int checkedType = 0;
     ArrayList<News> eventList;
-    RecyclerView recyclerView;
+    RecyclerView recyclerView, eventKeywordsRecyclerView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -92,8 +104,10 @@ public class EventNewsFragment extends NewsListFragment
             public void onRefresh(@NonNull @NotNull RefreshLayout refreshLayout) {
                 eventList = repo.getNewsByCluster(checkedType);
                 newsListAdapter.setNewsArrayList(eventList);
+                eventKeywordsAdapter.setKeywords(EventKeywords[checkedType]);
                 recyclerView.scrollToPosition(recyclerView.getTop());
                 newsListAdapter.notifyDataSetChanged();
+                eventKeywordsAdapter.notifyDataSetChanged();
                 refreshLayout.finishRefresh();
             }
         });
@@ -112,6 +126,47 @@ public class EventNewsFragment extends NewsListFragment
         });
         //add divider
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        eventKeywordsRecyclerView = view.findViewById(R.id.event_keywords);
+        eventKeywordsAdapter = new EventKeywordsAdapter(EventKeywords[checkedType]);
+        eventKeywordsRecyclerView.setAdapter(eventKeywordsAdapter);
+        eventKeywordsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
         return view;
+    }
+}
+
+class EventKeywordsAdapter extends RecyclerView.Adapter<EventKeywordsAdapter.EventKeywordHolder> {
+    String[] keywords;
+
+    public void setKeywords(String[] keywords)
+    {
+        this.keywords = keywords;
+    }
+    public EventKeywordsAdapter(String[] keywords) {
+        this.keywords = keywords;
+    }
+
+    @NonNull
+    @Override
+    public EventKeywordHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_keyword_view, parent, false);
+        return new EventKeywordHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull final EventKeywordHolder holder, int position) {
+        holder.keywordText.setText(keywords[position]);
+    }
+
+    @Override
+    public int getItemCount() {
+        return keywords.length;
+    }
+
+    static class EventKeywordHolder extends RecyclerView.ViewHolder {
+        TextView keywordText;
+        public EventKeywordHolder(@NonNull View itemView) {
+            super(itemView);
+            keywordText = itemView.findViewById(R.id.class_name_textview);
+        }
     }
 }
